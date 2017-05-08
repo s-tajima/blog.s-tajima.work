@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://blog.s-tajima.work/post/2017/hello/</loc>
+    <lastmod>2017-05-05T23:03:50+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/about/</loc>
+    <lastmod>2017-05-05T21:58:57+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/about_en/</loc>
+    <lastmod>2017-05-05T21:58:57+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/post/2016/intro-github-dice/</loc>
+    <lastmod>2016-12-19T00:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/tags/hello/</loc>
+    <lastmod>2017-05-05T23:03:50+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/post/</loc>
+    <lastmod>2017-05-05T23:03:50+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/tags/</loc>
+    <lastmod>2017-05-05T23:03:50+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/categories/tools/</loc>
+    <lastmod>2016-12-19T00:00:00+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/</loc>
+    <lastmod>2017-05-05T23:03:50+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

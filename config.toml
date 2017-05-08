@@ -1,0 +1,29 @@
+baseURL = "https://blog.s-tajima.work/"
+languageCode = "ja-JP"
+title = "s_tajima::TechBlog"
+publishDir = "docs"
+theme = "hugo-future-imperfect-custom"
+hasCJKLanguage = true
+googleAnalytics = "UA-22927498-5"
+
+[params]
+    description          = "s_tajima::TechBlog"
+    navbarTitle          = "s_tajima::TechBlog"
+    socialAppearAtTop    = true
+    socialAppearAtBottom = false
+    viewMorePostLink     = "/post/"
+    customcss            = ["default", "/css/custom.css"]
+
+[params.intro]
+    paragraph = "Tech blog, written by infrastructure engineer work in Shibuya."
+    about     = "Written by Satoshi Tajima. I'm a infrastructure engineer, work in Shibuya."
+
+[[menu.main]]
+    name = "About"
+    url = "/about"
+    identifier = "fa fa-user"
+    weight = 1
+
+[social]
+    github = "s-tajima"
+    twitter = "s_tajima_tech"

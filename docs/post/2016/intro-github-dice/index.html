@@ -1,0 +1,672 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        
+            
+                <title>GitHubのPull Requestへのレビュアーアサインを自動化するツール「github-dice」の紹介</title>
+            
+        
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="generator" content="Hugo 0.20.7" />
+        
+
+
+        
+            <meta name="author" content="Satoshi Tajima">
+        
+        
+            
+                <meta name="description" content="s_tajima::TechBlog">
+            
+        
+
+        
+
+  <meta name="twitter:card" content="summary"/>
+
+
+
+<meta name="twitter:text:title" content="GitHubのPull Requestへのレビュアーアサインを自動化するツール「github-dice」の紹介"/>
+<meta name="twitter:title" content="GitHubのPull Requestへのレビュアーアサインを自動化するツール「github-dice」の紹介"/>
+<meta name="twitter:description" content="ブログ移転のテストです。 元の記事はこちら。 http://s-tajima.hateblo.jp/entry/2016/12/19/131319 こんにちは、今回はGitHubのPull Requestへのアサインを自動化するツール 「githu"/>
+<meta name="twitter:site" content="@s_tajima_tech"/>
+
+        <meta property="og:title" content="GitHubのPull Requestへのレビュアーアサインを自動化するツール「github-dice」の紹介" />
+<meta property="og:description" content="ブログ移転のテストです。 元の記事はこちら。 http://s-tajima.hateblo.jp/entry/2016/12/19/131319 こんにちは、今回はGitHubのPull Requestへのアサインを自動化するツール 「githu" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.s-tajima.work/post/2016/intro-github-dice/" />
+
+
+
+<meta property="article:published_time" content="2016-12-19T00:00:00&#43;09:00"/>
+<meta property="article:modified_time" content="2016-12-19T00:00:00&#43;09:00"/>
+
+
+
+
+
+
+
+
+
+
+
+        
+<meta itemprop="name" content="GitHubのPull Requestへのレビュアーアサインを自動化するツール「github-dice」の紹介">
+<meta itemprop="description" content="ブログ移転のテストです。 元の記事はこちら。 http://s-tajima.hateblo.jp/entry/2016/12/19/131319 こんにちは、今回はGitHubのPull Requestへのアサインを自動化するツール 「githu">
+
+
+<meta itemprop="dateModified" content="2016-12-19T00:00:00&#43;09:00" />
+<meta itemprop="wordCount" content="1380">
+
+
+
+<meta itemprop="keywords" content="tools,hello," />
+
+        
+
+        
+
+        
+        
+            
+        
+
+        
+        
+            <link rel="stylesheet" href="/css/google-font.css" />
+            <link rel="stylesheet" href="/css/font-awesome.min.css" />
+            <link rel="stylesheet" href="/css/main.css" />
+            <link rel="stylesheet" href="/css/add-on.css" />
+            <link rel="stylesheet" href="/css/monokai-sublime.css">
+        
+
+        
+            
+                
+            
+                
+                    <link rel="stylesheet" href="/css/custom.css" />
+                
+            
+        
+
+        
+        
+        
+            
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-22927498-5', 'auto');
+ga('send', 'pageview');
+</script>
+
+        
+    </head>
+    <body>
+
+        
+        <div id="wrapper">
+
+    
+    
+<header id="header">
+    
+        <h2><a href="/">s_tajima::TechBlog</i></a></h2>
+    
+
+    <nav class="links">
+        <ul>
+            
+                <li>
+                    <a href="/about">
+                        
+                            <i class="fa fa-user">&nbsp;</i>About
+                    </a>
+                </li>
+            
+        </ul>
+    </nav>
+    <nav class="main">
+        <ul>
+            
+            <li id="share-nav" class="share-menu" style="display:none;">
+                <a class="fa-share-alt" href="#share-menu">Share</a>
+            </li>
+            
+            <li class="search">
+                <a class="fa-search" href="#search">Search</a>
+                <form id="search" method="get" action="//google.com/search">
+                    <input type="text" name="q" placeholder="Search" />
+                    <input type="hidden" name="q" value="site:https://blog.s-tajima.work/">
+                </form>
+            </li>
+            <li class="menu">
+                <a class="fa-bars" href="#menu">Menu</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+<section id="menu">
+
+    
+        <section>
+            <form class="search" method="get" action="//google.com/search">
+                <input type="text" name="q" placeholder="Search" />
+                <input type="hidden" name="q" value="site:https://blog.s-tajima.work/">
+            </form>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                
+                    <li>
+                        <a href="/about">
+                            <h3>
+                                
+                                    <i class="fa fa-user">&nbsp;</i>
+                                
+                                About
+                            </h3>
+                        </a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2017/hello/"><p>Hello</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2016/intro-github-dice/"><p>GitHubのPull Requestへのレビュアーアサインを自動化するツール「github-dice」の紹介</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/"><p>Posts</p></a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        
+</section>
+
+    <section id="share-menu">
+    <section id="social-share-nav">
+        <ul class="links">
+            <header>
+                <h3>Share this post <i class="fa fa-smile-o"></i></h3>
+            </header>
+            
+
+
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2016%2fintro-github-dice%2f&text=GitHub%e3%81%aePull%20Request%e3%81%b8%e3%81%ae%e3%83%ac%e3%83%93%e3%83%a5%e3%82%a2%e3%83%bc%e3%82%a2%e3%82%b5%e3%82%a4%e3%83%b3%e3%82%92%e8%87%aa%e5%8b%95%e5%8c%96%e3%81%99%e3%82%8b%e3%83%84%e3%83%bc%e3%83%ab%e3%80%8cgithub-dice%e3%80%8d%e3%81%ae%e7%b4%b9%e4%bb%8b&via=s_tajima_tech" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
+
+
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2016%2fintro-github-dice%2f" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2016%2fintro-github-dice%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2016%2fintro-github-dice%2f&title=GitHub%e3%81%aePull%20Request%e3%81%b8%e3%81%ae%e3%83%ac%e3%83%93%e3%83%a5%e3%82%a2%e3%83%bc%e3%82%a2%e3%82%b5%e3%82%a4%e3%83%b3%e3%82%92%e8%87%aa%e5%8b%95%e5%8c%96%e3%81%99%e3%82%8b%e3%83%84%e3%83%bc%e3%83%ab%e3%80%8cgithub-dice%e3%80%8d%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2016%2fintro-github-dice%2f&title=GitHub%e3%81%aePull%20Request%e3%81%b8%e3%81%ae%e3%83%ac%e3%83%93%e3%83%a5%e3%82%a2%e3%83%bc%e3%82%a2%e3%82%b5%e3%82%a4%e3%83%b3%e3%82%92%e8%87%aa%e5%8b%95%e5%8c%96%e3%81%99%e3%82%8b%e3%83%84%e3%83%bc%e3%83%ab%e3%80%8cgithub-dice%e3%80%8d%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2016%2fintro-github-dice%2f&title=GitHub%e3%81%aePull%20Request%e3%81%b8%e3%81%ae%e3%83%ac%e3%83%93%e3%83%a5%e3%82%a2%e3%83%bc%e3%82%a2%e3%82%b5%e3%82%a4%e3%83%b3%e3%82%92%e8%87%aa%e5%8b%95%e5%8c%96%e3%81%99%e3%82%8b%e3%83%84%e3%83%bc%e3%83%ab%e3%80%8cgithub-dice%e3%80%8d%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2016%2fintro-github-dice%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+</section>
+
+    
+    <div id="main">
+        
+        
+        <article class="post">
+    <header>
+    <div class="title">
+        
+            <h1><a href="https://blog.s-tajima.work/post/2016/intro-github-dice/">GitHubのPull Requestへのレビュアーアサインを自動化するツール「github-dice」の紹介</a></h1>
+            
+        
+        
+    </div>
+    <div class="meta">
+        
+            
+        
+
+        <time class="published"
+            datetime='2016-12-19'>
+            December 19, 2016</time>
+        <span class="author">Satoshi Tajima</span>
+        
+        
+    </div>
+</header>
+
+
+    
+
+    <div id="content">
+        
+
+<p>ブログ移転のテストです。<br />
+元の記事はこちら。<br />
+<a href="http://s-tajima.hateblo.jp/entry/2016/12/19/131319">http://s-tajima.hateblo.jp/entry/2016/12/19/131319</a></p>
+
+<hr />
+
+<p>こんにちは、今回はGitHubのPull Requestへのアサインを自動化するツール<br />
+「github-dice」を作成したお話です。</p>
+
+<h1 id="背景">背景</h1>
+
+<p>GitHubのPull Requestベースの開発をする際、コードレビューはとても大事な工程の一つです。</p>
+
+<p>よくあるコードレビューは、 <strong>技術力の高い/システムの理解度が深い/ベテラン</strong> のメンバーが、<strong>技術力の低い/システムの理解度の浅い/若手</strong> のメンバーが書いたコードをレビューするようなやり方かなと思います。</p>
+
+<p>しかしコードレビューは、レビューを受ける側(レビュイー)にとってとても良い成長の機会ですが、同時にレビューをする側(レビュアー)にとっても良い成長の機会となります。
+自分より実力の高い人の書いたコードをレビューすることで、新しい知見を得て、技術力の向上に繋げることができます。<br />
+システムの理解の深い人間が増えることは、システムの属人性を減らすことにも繋がるでしょう。</p>
+
+<p>そこで、僕の所属しているチームでは、技術力/システムの理解度/在籍期間等に関係なく、チームのメンバーが均等にレビュアーの機会を経験できるような運用を行っています。</p>
+
+<h1 id="github-dice">github-dice</h1>
+
+<p><a href="https://github.com/s-tajima/github-dice">github-dice</a></p>
+
+<p>github-diceは、GitHubのPull Requestへのレビュアーのアサインを自動化するためのツールです。<br />
+あらかじめ指定した<a href="https://help.github.com/articles/setting-up-teams/">Team</a>のメンバーから、サイコロを振るようにランダムにレビュアーを選出しアサインします。</p>
+
+<p>導入方法、使い方はREADMEに記載の通りです。<br />
+Golang製のツールなのでバイナリを配置するだけで使用できます。<br />
+github-diceを使用すると、以下のようにコメントと共にレビュアーがアサインされます。<br />
+(オプションで起票者を同時にアサインすることもできます。)</p>
+
+<p><img src="./github.png" alt="github.png" /></p>
+
+<p>尚、<code>-q, --query</code> オプションで検索クエリを書き換えられるので、Pull Requestだけでなく、Issueを自動アサインの対象にすることも可能です。</p>
+
+<h1 id="終わりに">終わりに</h1>
+
+<p>技術的知見があまりなく、業務用件の理解も浅いコードをいきなりレビューするのはそれなりに負担が高いです。<br />
+「チームのメンバーが均等にレビュアーの機会を経験できるように」という方針だけ立ててあとは各メンバーの自主性に任せるというやり方では結局うまく回らなそうだと考え、ランダムにレビュアーを選出し機械的にアサインをするというアプローチをとりました。</p>
+
+<p>自信のないときにはしっかり他のメンバーのサポートも受けられる体制も合わせた運用をすることで、過度に心理的, 技術的な負荷のかかるレビューをしなければいけない状況を避けられるようにしています。
+(僕も大いに助けられています。)</p>
+
+<p>実際に半年ほど運用を続けていますが、自分が直接は触らないようなコードの理解も深まり、最初は大きかった負担もだんだん小さくなっていくのを感じています。</p>
+
+<p>以上、簡単ですがgithub-diceの紹介でした。<br />
+ぜひ使ってみてください。Pull Requestもお待ちしております。</p>
+
+<h1 id="余談">余談</h1>
+
+<p>先日、GitHubはPull Requestに対してAssigneesとは別にReviewersを割り当てられるようになりました。<br />
+<a href="https://github.com/blog/2291-introducing-review-requests">https://github.com/blog/2291-introducing-review-requests</a></p>
+
+<p>ちょうどこの記事を書いているタイミングで、このReviewersに対するAPIもEarly Accessが開始されました。<br />
+<a href="https://developer.github.com/changes/2016-12-16-review-requests-api/">https://developer.github.com/changes/2016-12-16-review-requests-api/</a></p>
+
+<p>github-diceも近いうちにこの機能に対応しようと考えています。</p>
+
+    </div>
+
+    <footer>
+        <ul class="stats">
+    
+        
+
+        
+        
+            <li>
+                
+                
+                    
+
+                    
+                        Category
+                    
+                
+            </li>
+        
+    
+
+    
+    
+        <li><a href='/categories/tools'>Tools</a></li>
+    
+</ul>
+
+    </footer>
+
+    <section id="social-share">
+        <ul class="icons">
+            
+
+
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2016%2fintro-github-dice%2f&text=GitHub%e3%81%aePull%20Request%e3%81%b8%e3%81%ae%e3%83%ac%e3%83%93%e3%83%a5%e3%82%a2%e3%83%bc%e3%82%a2%e3%82%b5%e3%82%a4%e3%83%b3%e3%82%92%e8%87%aa%e5%8b%95%e5%8c%96%e3%81%99%e3%82%8b%e3%83%84%e3%83%bc%e3%83%ab%e3%80%8cgithub-dice%e3%80%8d%e3%81%ae%e7%b4%b9%e4%bb%8b&via=s_tajima_tech" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
+
+
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2016%2fintro-github-dice%2f" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2016%2fintro-github-dice%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2016%2fintro-github-dice%2f&title=GitHub%e3%81%aePull%20Request%e3%81%b8%e3%81%ae%e3%83%ac%e3%83%93%e3%83%a5%e3%82%a2%e3%83%bc%e3%82%a2%e3%82%b5%e3%82%a4%e3%83%b3%e3%82%92%e8%87%aa%e5%8b%95%e5%8c%96%e3%81%99%e3%82%8b%e3%83%84%e3%83%bc%e3%83%ab%e3%80%8cgithub-dice%e3%80%8d%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2016%2fintro-github-dice%2f&title=GitHub%e3%81%aePull%20Request%e3%81%b8%e3%81%ae%e3%83%ac%e3%83%93%e3%83%a5%e3%82%a2%e3%83%bc%e3%82%a2%e3%82%b5%e3%82%a4%e3%83%b3%e3%82%92%e8%87%aa%e5%8b%95%e5%8c%96%e3%81%99%e3%82%8b%e3%83%84%e3%83%bc%e3%83%ab%e3%80%8cgithub-dice%e3%80%8d%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2016%2fintro-github-dice%2f&title=GitHub%e3%81%aePull%20Request%e3%81%b8%e3%81%ae%e3%83%ac%e3%83%93%e3%83%a5%e3%82%a2%e3%83%bc%e3%82%a2%e3%82%b5%e3%82%a4%e3%83%b3%e3%82%92%e8%87%aa%e5%8b%95%e5%8c%96%e3%81%99%e3%82%8b%e3%83%84%e3%83%bc%e3%83%ab%e3%80%8cgithub-dice%e3%80%8d%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2016%2fintro-github-dice%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+</article>
+<ul class="actions pagination">
+    
+
+    
+        <li><a href="https://blog.s-tajima.work/post/2017/hello/"
+                class="button big next">Hello</a></li>
+    
+</ul>
+
+
+
+
+    </div>
+    
+<section id="sidebar">
+
+    
+        <section id="intro">
+            
+            
+            
+                <header>
+                    <h2></h2>
+                    <p>Tech blog, written by infrastructure engineer work in Shibuya.</p>
+                </header>
+            
+            <ul class="icons">
+                
+                
+                    
+<li><a href="//github.com/s-tajima" target="_blank" title="GitHub" class="fa fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/s_tajima_tech" target="_blank" title="Twitter" class="fa fa-twitter"></a></li>
+
+
+
+
+                
+            </ul>
+        </section>
+
+    
+        <section id="recent-posts">
+            <ul class="posts">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2017/hello/">Hello</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2017-05-05'>
+                                    May 5, 2017</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2016/intro-github-dice/">GitHubのPull Requestへのレビュアーアサインを自動化するツール「github-dice」の紹介</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2016-12-19'>
+                                    December 19, 2016</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/">Posts</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2017-05-05'>
+                                    May 5, 2017</time>
+                            </header>
+                        </article>
+                    </li>
+                
+
+                
+            </ul>
+        </section>
+
+    
+    
+    
+    
+        <section id="categories">
+            <ul class="posts">
+                <header>
+                    <h3><a href="/categories/">Categories</a></h3>
+                </header>
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/tools/">tools</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+            </ul>
+        </section>
+    
+
+    
+        
+        <section class="blurb">
+            <h2>About</h2>
+            <p>Written by Satoshi Tajima. I&#39;m a infrastructure engineer, work in Shibuya.</p>
+
+            <ul class="actions">
+                <li><a href="/about/" class="button">Learn More</a></li>
+            </ul>
+        </section>
+        
+
+    
+        <section id="footer">
+            <ul class="icons">
+                
+                
+            </ul>
+
+            <p class="copyright">&copy; s_tajima::TechBlog. Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a>. Ported by <a href="//github.com/jpescador" target="_blank">Julio Pescador</a>. Powered by <a href="//gohugo.io" target="_blank">Hugo</a></p>
+        </section>
+
+</section>
+
+            </div>
+        <a id="back-to-top" href="#" class="fa fa-arrow-up fa-border fa-2x"></a>
+        
+
+        
+        
+            
+        
+
+        
+        
+            <script src="/js/jquery.min.js"></script>
+            <script src="/js/skel.min.js"></script>
+            <script src="/js/util.js"></script>
+            <script src="/js/main.js"></script>
+            <script src="/js/backToTop.js"></script>
+            <script src="/js/highlight.pack.js"></script>
+        
+
+        
+
+            
+            <script>hljs.initHighlightingOnLoad();</script>
+            
+    </body>
+</html>
+
