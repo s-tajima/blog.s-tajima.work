@@ -15,7 +15,7 @@ title = "tsharkを用いたネットワークトラフィックの内訳の調�
 具体的な数値はマスクしてありますが、数週間かけてじわじわとトラフィック量が増加しています。  
 今回はtsharkを用いてこの通信の内容を調査し、トラフィック量増加の原因を特定した話です。  
 
-![traffic.png](./traffic.png)
+![traffic.png](post/2017/intro-tshark/traffic.png)
 
 # tsharkとは
 
