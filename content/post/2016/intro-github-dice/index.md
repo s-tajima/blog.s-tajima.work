@@ -1,6 +1,6 @@
 +++
 author = "Satoshi Tajima"
-categories = ["Tools"]
+categories = [ "ja", "tools"]
 date = "2016-12-19T00:00:00+09:00"
 description = ""
 featured = ""

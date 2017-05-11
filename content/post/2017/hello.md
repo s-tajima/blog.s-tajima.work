@@ -1,10 +1,13 @@
 +++
 author = "Satoshi Tajima"
-Categories = []
-Description = "This is a first article."
-Tags = ["Hello"]
+categories = [ "ja" ]
 date = "2017-05-05T23:03:50+09:00"
-title = "Hello"
+description = "This is a first article."
+featured = ""
+featuredalt = ""
+featuredpath = ""
+linktitle = ""
+title = "hello"
 
 +++
 

@@ -20,5 +20,23 @@
       <description></description>
     </item>
     
+    <item>
+      <title>Linux</title>
+      <link>https://blog.s-tajima.work/tags/linux/</link>
+      <pubDate>Wed, 10 May 2017 19:11:08 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tools</title>
+      <link>https://blog.s-tajima.work/tags/tools/</link>
+      <pubDate>Wed, 10 May 2017 19:11:08 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/tags/tools/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

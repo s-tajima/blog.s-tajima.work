@@ -4,7 +4,7 @@
     <head>
         
             
-                <title>tsharkを用いたネットワークトラフィックの内訳の調査</title>
+                <title>Breakdown investigation of network traffic using tshark.</title>
             
         
 
@@ -29,20 +29,24 @@
 
 
 
-<meta name="twitter:text:title" content="tsharkを用いたネットワークトラフィックの内訳の調査"/>
-<meta name="twitter:title" content="tsharkを用いたネットワークトラフィックの内訳の調査"/>
-<meta name="twitter:description" content="下の図は、とあるサーバのネットワークトラフィックのモニタリングのグラフです。 具体的な数値はマスクしてありますが、数週間かけてじわじわとトラフ"/>
+<meta name="twitter:text:title" content="Breakdown investigation of network traffic using tshark."/>
+<meta name="twitter:title" content="Breakdown investigation of network traffic using tshark."/>
+<meta name="twitter:description" content="This graph represents network traffic of a server. Concrete figures have been masked, however, it can be seen that network traffic volume is gradually increasing over several weeks. This article provides that how to investigate network traffic breakdown using tshark.
+[f:id:s_tajima:20170502181650p:plain]
+What is tshark tshark is a CUI equivalent of Wireshark. If you are using RHEL-based distribution, You can use tshark by installing wireshark package. This article was written with Tshark 1."/>
 <meta name="twitter:site" content="@s_tajima_tech"/>
 
-        <meta property="og:title" content="tsharkを用いたネットワークトラフィックの内訳の調査" />
-<meta property="og:description" content="下の図は、とあるサーバのネットワークトラフィックのモニタリングのグラフです。 具体的な数値はマスクしてありますが、数週間かけてじわじわとトラフ" />
+        <meta property="og:title" content="Breakdown investigation of network traffic using tshark." />
+<meta property="og:description" content="This graph represents network traffic of a server. Concrete figures have been masked, however, it can be seen that network traffic volume is gradually increasing over several weeks. This article provides that how to investigate network traffic breakdown using tshark.
+[f:id:s_tajima:20170502181650p:plain]
+What is tshark tshark is a CUI equivalent of Wireshark. If you are using RHEL-based distribution, You can use tshark by installing wireshark package. This article was written with Tshark 1." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.s-tajima.work/post/2017/intro-tshark/" />
+<meta property="og:url" content="https://blog.s-tajima.work/post/2017/intro-tshark_en/" />
 
 
 
-<meta property="article:published_time" content="2017-05-10T19:11:08&#43;09:00"/>
-<meta property="article:modified_time" content="2017-05-10T19:11:08&#43;09:00"/>
+<meta property="article:published_time" content="2017-05-11T00:00:00&#43;09:00"/>
+<meta property="article:modified_time" content="2017-05-11T00:00:00&#43;09:00"/>
 
 
 
@@ -55,12 +59,14 @@
 
 
         
-<meta itemprop="name" content="tsharkを用いたネットワークトラフィックの内訳の調査">
-<meta itemprop="description" content="下の図は、とあるサーバのネットワークトラフィックのモニタリングのグラフです。 具体的な数値はマスクしてありますが、数週間かけてじわじわとトラフ">
+<meta itemprop="name" content="Breakdown investigation of network traffic using tshark.">
+<meta itemprop="description" content="This graph represents network traffic of a server. Concrete figures have been masked, however, it can be seen that network traffic volume is gradually increasing over several weeks. This article provides that how to investigate network traffic breakdown using tshark.
+[f:id:s_tajima:20170502181650p:plain]
+What is tshark tshark is a CUI equivalent of Wireshark. If you are using RHEL-based distribution, You can use tshark by installing wireshark package. This article was written with Tshark 1.">
 
 
-<meta itemprop="dateModified" content="2017-05-10T19:11:08&#43;09:00" />
-<meta itemprop="wordCount" content="2357">
+<meta itemprop="dateModified" content="2017-05-11T00:00:00&#43;09:00" />
+<meta itemprop="wordCount" content="1066">
 
 
 
@@ -231,43 +237,43 @@ ga('send', 'pageview');
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f&text=tshark%e3%82%92%e7%94%a8%e3%81%84%e3%81%9f%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%88%e3%83%a9%e3%83%95%e3%82%a3%e3%83%83%e3%82%af%e3%81%ae%e5%86%85%e8%a8%b3%e3%81%ae%e8%aa%bf%e6%9f%bb&via=s_tajima_tech" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark_en%2f&text=Breakdown%20investigation%20of%20network%20traffic%20using%20tshark.&via=s_tajima_tech" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark_en%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark_en%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f&title=tshark%e3%82%92%e7%94%a8%e3%81%84%e3%81%9f%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%88%e3%83%a9%e3%83%95%e3%82%a3%e3%83%83%e3%82%af%e3%81%ae%e5%86%85%e8%a8%b3%e3%81%ae%e8%aa%bf%e6%9f%bb" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark_en%2f&title=Breakdown%20investigation%20of%20network%20traffic%20using%20tshark." target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f&title=tshark%e3%82%92%e7%94%a8%e3%81%84%e3%81%9f%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%88%e3%83%a9%e3%83%95%e3%82%a3%e3%83%83%e3%82%af%e3%81%ae%e5%86%85%e8%a8%b3%e3%81%ae%e8%aa%bf%e6%9f%bb" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark_en%2f&title=Breakdown%20investigation%20of%20network%20traffic%20using%20tshark." target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f&title=tshark%e3%82%92%e7%94%a8%e3%81%84%e3%81%9f%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%88%e3%83%a9%e3%83%95%e3%82%a3%e3%83%83%e3%82%af%e3%81%ae%e5%86%85%e8%a8%b3%e3%81%ae%e8%aa%bf%e6%9f%bb" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark_en%2f&title=Breakdown%20investigation%20of%20network%20traffic%20using%20tshark." target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark_en%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -284,7 +290,7 @@ ga('send', 'pageview');
     <header>
     <div class="title">
         
-            <h1><a href="https://blog.s-tajima.work/post/2017/intro-tshark/">tsharkを用いたネットワークトラフィックの内訳の調査</a></h1>
+            <h1><a href="https://blog.s-tajima.work/post/2017/intro-tshark_en/">Breakdown investigation of network traffic using tshark.</a></h1>
             
         
         
@@ -295,8 +301,8 @@ ga('send', 'pageview');
         
 
         <time class="published"
-            datetime='2017-05-10'>
-            May 10, 2017</time>
+            datetime='2017-05-11'>
+            May 11, 2017</time>
         <span class="author">Satoshi Tajima</span>
         
         
@@ -309,30 +315,30 @@ ga('send', 'pageview');
     <div id="content">
         
 
-<p>下の図は、とあるサーバのネットワークトラフィックのモニタリングのグラフです。<br />
-具体的な数値はマスクしてありますが、数週間かけてじわじわとトラフィック量が増加しています。<br />
-今回はtsharkを用いてこの通信の内容を調査し、トラフィック量増加の原因を特定した話です。</p>
+<p>This graph represents network traffic of a server.
+Concrete figures have been masked, however, it can be seen that network traffic volume is gradually increasing over several weeks.
+This article provides that how to investigate network traffic breakdown using tshark.</p>
 
-<p><img src="/post/2017/intro-tshark/traffic.png" alt="traffic.png" /></p>
+<p>[f:id:s_tajima:20170502181650p:plain]</p>
 
-<h1 id="tsharkとは">tsharkとは</h1>
+<h1 id="what-is-tshark">What is tshark</h1>
 
-<p>tsharkは、おそらくこの記事を読んでいる多くの方がご存知であろう、<a href="https://www.wireshark.org/">Wireshark</a>のCUI版のツールです。
-RHEL系のOSであれば、<code>wireshark</code>のパッケージをインストールすることで利用可能になります。<br />
-今回の記事の内容は、<code>wireshark-1.8.10-17.el6.x86_64</code> からインストールされる、<code>TShark 1.8.10</code> を利用して作成しています。</p>
+<p>tshark is a CUI equivalent of <a href="https://www.wireshark.org/">Wireshark</a>.
+If you are using RHEL-based distribution, You can use tshark by installing <code>wireshark</code> package.
+This article was written with <code>Tshark 1.8.10</code>, installed by <code>wireshark-1.8.10-17.el6.x86_64</code></p>
 
-<p>CUIベースでのパケットキャプチャツールとしては、tcpdumpがとても有名なツールだと思います。<br />
-パケットをキャプチャし通信の内容を表示することができるという観点では同じようなツールなのですが、tsharkは通信の内容をHuman-Readableにデコードしたり、一定期間の通信を集計をして統計情報を表示できたりと、便利な機能が多く実装されています。</p>
+<p>tcpdump is one of the most famous tools as CUI-based packet capture tool.
+It is a similar tool from the point of view that it can capture packets and display the contents; however, tshark is a more helpful tool that has many functions, such as to decode the packets into Human-Readable and to aggregates packets over a given time interval and calculates statistical information.</p>
 
-<p>tsharkの基本的な使い方は、manを見るか、既に多くまとめられている他のサイトを見ることをおすすめします。</p>
+<p>You can see how to use tshark by man command, or some nice articles were written already.</p>
 
-<h1 id="調査">調査</h1>
+<h1 id="investigation">Investigation</h1>
 
-<p>tsharkの便利な機能の1つに、<code>-z</code> オプションを使った統計情報の表示があります。<br />
-今回はその <code>-z</code> オプションで表示できる統計情報をいくつか用いて調査を行います。</p>
+<p><code>-z</code> is one of the best useful options implemented in tshark, it allows you to display statistical information.
+In this post, I investigated network traffic by using the statistical information displayed by <code>-z</code> option.</p>
 
-<p>まずは手始めに、この通信のTCPとUDPの割合を確認してみます。<br />
-※尚、入力したコマンドや出力の内容は、IPアドレスや各種数値等、便宜的に手で書き換えている部分があります。</p>
+<p>At first, I see the ratio between TCP and UDP of this packets.
+Notes: For the sake of convenience, I rewrote some of the commands, outputs, IP addresses, figures and others by hand.</p>
 
 <pre><code class="language-text">$ tshark -a duration:60 -f 'dst host 172.17.XXX.XXX' -q -z io,stat,10,tcp,udp
 Capturing on eth0
@@ -359,18 +365,23 @@ Capturing on eth0
 ===================================================================
 </code></pre>
 
-<p>コマンドのオプションを解説します。</p>
+<p>I will explain the command line options.</p>
 
 <ul>
-<li><code>-a duration:60</code>: tsharkの停止条件を指定しています。<code>duration:60</code> は <code>60秒後に停止</code> を意味しています。</li>
-<li><code>-f 'dst host 172.17.XXX.XXX'</code>: キャプチャするパケットのフィルタを記載します。inboundのトラフィックについて調査したいので自ホストが送信先になっているパケットを対象とします。</li>
-<li><code>-q</code>: キャプチャしたパケットを、1件ずつ出力するのをやめます。今回は統計情報だけ見れればよいので有効にしておきます。</li>
-<li><code>-z io,stat,10,tcp,udp</code>: <code>-z</code> は統計情報を出力するためのオプションです。 <code>io,stat,interval[,filter][,filter][,filter]...</code> は <code>interval</code> の間隔の間に、<code>filter</code> にマッチする通信がどれくらいの パケット数/Byte数 だったかを集計してくれるオプションです。 <code>tcp</code>, <code>udp</code> は見て分かる通りそれぞれ TCPの通信とUDPの通信を表しています。</li>
+<li><code>-a duration:60</code>: Specify the condition of stopping tshark. <code>duration:60</code> means <code>stop 60 seconds later.</code></li>
+<li><code>-f 'dst host 172.17.XXX.XXX'</code>: Set the capture filter expression. To investigate inbound traffic, specify <code>destination host is an own IP address.</code></li>
+<li><code>-q</code>: Suppress output of each captured packets. It is necessary to show only statistical information.</li>
+<li><code>-z io,stat,10,tcp,udp</code>: <code>-z</code> is an option for showing statistical information.
+<code>io,stat,interval[,filter][,filter][,filter]...</code> means that aggregates how many packets / bytes the communication matching <code>filter</code> was during the<code>interval</code> interval. <code>tcp</code>, <code>udp</code> represent TCP communication and UDP communication respectively as you can see.</li>
 </ul>
 
-<p>出力の内容はそれほど難しくないと思います。表中の <code>2</code> がTCPでの通信、<code>3</code> がUDPでの通信を表しています。<code>1</code> はキャプチャしたパケット全体の量です。</p>
+<p>I think the content of the output is not so difficult.
+<code>2</code> in the table indicates TCP communication, and<code>3</code> indicates UDP communication .
+<code>1</code> is the total amount of captured packets.</p>
 
-<p>この結果から、通信の大半はTCPだということがわかりました。ではこのTCPの通信は、どこのホストとのどんな通信でしょうか。それは次のコマンドで確認します。</p>
+<p>From this result, I found that most of the communication is TCP.
+So, in this TCP communication, what host is the destination and what kind of communication is it?
+I checked it with the following command.</p>
 
 <pre><code class="language-text">$ tshark -n -a duration:60 -f 'dst host 172.17.XXX.XXX' -q -z conv,tcp
 Capturing on eth0
@@ -393,14 +404,15 @@ Filter:&lt;No Filter&gt;
 ================================================================================
 </code></pre>
 
-<p>今回新たに使ったコマンドのオプションを解説します。</p>
+<p>I explain the options of the newly used command this time.</p>
 
 <ul>
-<li><code>-n</code>: ホスト名やポート名の名前解決を無効にします。<br /></li>
-<li><code>-z conv,tcp</code>: ホストとTCPのポートのペア毎に、通信のパケット数/Byte数を出力します。<br /></li>
+<li><code>-n</code>: Disable name resolution of hostname, port and so on.</li>
+<li><code>-z conv,tcp</code>:For each pair of host and port, output the number of packets / Byte of communication.</li>
 </ul>
 
-<p>あるホストのTCP80番ポートに対するリクエストの応答が、通信の大半を占めていることがわかりました。次のコマンドで、このhttpの通信の内容を統計的に見てみます。</p>
+<p>I found that the response of the request for TCP port 80 of a host occupies most of the communication.
+Statistically see the contents of this http communication with the following command.</p>
 
 <pre><code class="language-text">$ tshark -a duration:60 -q -z http_req,tree
 Capturing on eth0
@@ -424,30 +436,31 @@ HTTP Requests by HTTP Host                                         58       0.00
 ===================================================================
 </code></pre>
 
-<p>今回新たに使ったコマンドのオプションを解説します。</p>
+<p>I explain the options of the newly used command this time.</p>
 
 <ul>
-<li><code>-z http_req,tree</code>: キャプチャしたパケットのうち、HTTPの通信を集計して、ホストとパス毎にグルーピングして統計情報を表示します。</li>
+<li><code>-z http_req,tree</code>: Calculate the HTTP requests by server. Displayed values are the server name and the URI path.</li>
 </ul>
 
-<p>Amazon S3との通信であることがわかりました。このあたりまでわかれば、あとはどの処理が通信を行っているのか心当たりがつくのではないでしょうか。初見の環境などで、まったく検討もつかない場合はssコマンドやnetstatコマンドを組み合わせてプロセスを特定しましょう。</p>
+<p>I found out that it is communication with Amazon S3.
+If we came up until here, after that, it would be easy to clarify which process is communicating.
+If making it difficult yet, you can also use <code>ss</code> or <code>netstat</code> and so on for clarifying the process.</p>
 
-<p>今回のケースではあるS3バケットに対して定期的な <code>s3 sync</code> を行っているのですが、そのS3バケットのオブジェクト数が徐々に増えていたため、その増加に応じてファイルリスト取得時の通信量も増えていたということがわかりました。(S3との通信がhttpになってしまっているのは意図していなかったのでそれは後日修正しました&hellip;.)</p>
+<p>In this case, we are doing periodic <code>s3 sync</code> to a certain S3 bucket. And the number of objects in this S3 bucket is gradually increasing. I found that accordance with the increase of the size of the file list, the traffic volume was also increasing.</p>
 
-<h1 id="まとめ">まとめ</h1>
+<h1 id="conclusion">Conclusion</h1>
 
-<p>以前はこのような調査を</p>
+<p>Previously,I conducted such a survey like this way.</p>
 
 <ol>
-<li>tcpdumpでpcapファイルを作成</li>
-<li>GUI環境に転送してWiresharkで確認</li>
+<li>Create a pcap file with tcpdump</li>
+<li>Transfer to GUI environment and check with Wireshark</li>
 </ol>
 
-<p>といったステップで行っていたのですが、tstarkを使うことでより簡単に実施することができるようになりました。</p>
+<p>But now, using tstark makes it easier to carry out.</p>
 
-<p>実際には今回のようにきれいに原因を特定できず、もう少し泥臭い調査をしなければ行けないケースもあるかと思いますが、<code>-z</code> のオプションには他にもたくさんの種類があるので、調査したい内容に合わせてより都合のいいものを選ぶとよいと思います。</p>
-
-<p>以上、tsharkを用いたネットワークトラフィックの内訳の調査でした。</p>
+<p>In fact, I think that there are cases in which it is impossible to identify the cause cleanly like this time, and it is not possible to go ahead if we do a more muddy survey,
+There are many other types of options for <code>-z</code>, so I think that it is better to choose a more convenient one to suit the content you want to investigate.</p>
 
     </div>
 
@@ -471,43 +484,43 @@ HTTP Requests by HTTP Host                                         58       0.00
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f&text=tshark%e3%82%92%e7%94%a8%e3%81%84%e3%81%9f%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%88%e3%83%a9%e3%83%95%e3%82%a3%e3%83%83%e3%82%af%e3%81%ae%e5%86%85%e8%a8%b3%e3%81%ae%e8%aa%bf%e6%9f%bb&via=s_tajima_tech" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark_en%2f&text=Breakdown%20investigation%20of%20network%20traffic%20using%20tshark.&via=s_tajima_tech" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark_en%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark_en%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f&title=tshark%e3%82%92%e7%94%a8%e3%81%84%e3%81%9f%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%88%e3%83%a9%e3%83%95%e3%82%a3%e3%83%83%e3%82%af%e3%81%ae%e5%86%85%e8%a8%b3%e3%81%ae%e8%aa%bf%e6%9f%bb" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark_en%2f&title=Breakdown%20investigation%20of%20network%20traffic%20using%20tshark." target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f&title=tshark%e3%82%92%e7%94%a8%e3%81%84%e3%81%9f%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%88%e3%83%a9%e3%83%95%e3%82%a3%e3%83%83%e3%82%af%e3%81%ae%e5%86%85%e8%a8%b3%e3%81%ae%e8%aa%bf%e6%9f%bb" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark_en%2f&title=Breakdown%20investigation%20of%20network%20traffic%20using%20tshark." target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f&title=tshark%e3%82%92%e7%94%a8%e3%81%84%e3%81%9f%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%88%e3%83%a9%e3%83%95%e3%82%a3%e3%83%83%e3%82%af%e3%81%ae%e5%86%85%e8%a8%b3%e3%81%ae%e8%aa%bf%e6%9f%bb" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark_en%2f&title=Breakdown%20investigation%20of%20network%20traffic%20using%20tshark." target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark_en%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -517,13 +530,10 @@ HTTP Requests by HTTP Host                                         58       0.00
 </article>
 <ul class="actions pagination">
     
-        <li><a href="https://blog.s-tajima.work/post/2017/hello/"
-                class="button big previous">Hello</a></li>
+        <li><a href="https://blog.s-tajima.work/post/2017/intro-tshark/"
+                class="button big previous">tsharkを用いたネットワークトラフィックの内訳の調査</a></li>
     
 
-    
-        <li><a href="https://blog.s-tajima.work/post/2017/intro-tshark_en/"
-                class="button big next">Breakdown investigation of network traffic using tshark.</a></li>
     
 </ul>
 

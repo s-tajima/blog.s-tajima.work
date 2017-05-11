@@ -1,6 +1,12 @@
 +++
+author = "Satoshi Tajima"
+categories = [  ]
 date = "2017-05-05T21:58:57+09:00"
-draft = false
+description = ""
+featured = ""
+featuredalt = ""
+featuredpath = ""
+linktitle = ""
 title = "about"
 
 +++
