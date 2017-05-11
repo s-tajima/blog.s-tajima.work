@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>En on s_tajima::TechBlog</title>
+    <link>https://blog.s-tajima.work/categories/en/</link>
+    <description>Recent content in En on s_tajima::TechBlog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-JP</language>
+    <lastBuildDate>Thu, 11 May 2017 00:00:00 +0900</lastBuildDate>
+    
+	<atom:link href="https://blog.s-tajima.work/categories/en/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Breakdown investigation of network traffic using tshark.</title>
+      <link>https://blog.s-tajima.work/post/2017/intro-tshark_en/</link>
+      <pubDate>Thu, 11 May 2017 00:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2017/intro-tshark_en/</guid>
+      <description>This graph represents network traffic of a server.
+Concrete figures have been masked, however, it can be seen that network traffic volume is gradually increasing over several weeks.
+This article provides that how to investigate network traffic breakdown using tshark.
+What is tshark tshark is a CUI equivalent of Wireshark.
+If you are using RHEL-based distribution, You can use tshark by installing wireshark package.
+This article was written with Tshark 1.</description>
+    </item>
+    
+  </channel>
+</rss>

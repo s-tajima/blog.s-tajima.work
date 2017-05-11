@@ -183,7 +183,7 @@ ga('send', 'pageview');
                     </li>
                 
                     <li>
-                        <a href="https://blog.s-tajima.work/post/2017/hello/"><p>Hello</p></a>
+                        <a href="https://blog.s-tajima.work/post/2017/hello/"><p>hello</p></a>
                     </li>
                 
                     <li>
@@ -232,29 +232,29 @@ ga('send', 'pageview');
     <div id="content">
         
 
-<p>This graph represents network traffic of a server.
-Concrete figures have been masked, however, it can be seen that network traffic volume is gradually increasing over several weeks.
+<p>This graph represents network traffic of a server.<br />
+Concrete figures have been masked, however, it can be seen that network traffic volume is gradually increasing over several weeks.<br />
 This article provides that how to investigate network traffic breakdown using tshark.</p>
 
-<p>[f:id:s_tajima:20170502181650p:plain]</p>
+<p><img src="/post/2017/intro-tshark_en/traffic.png" alt="traffic.png" /></p>
 
 <h1 id="what-is-tshark">What is tshark</h1>
 
-<p>tshark is a CUI equivalent of <a href="https://www.wireshark.org/">Wireshark</a>.
-If you are using RHEL-based distribution, You can use tshark by installing <code>wireshark</code> package.
+<p>tshark is a CUI equivalent of <a href="https://www.wireshark.org/">Wireshark</a>.<br />
+If you are using RHEL-based distribution, You can use tshark by installing <code>wireshark</code> package.<br />
 This article was written with <code>Tshark 1.8.10</code>, installed by <code>wireshark-1.8.10-17.el6.x86_64</code></p>
 
-<p>tcpdump is one of the most famous tools as CUI-based packet capture tool.
+<p>tcpdump is one of the most famous tools as CUI-based packet capture tool.<br />
 It is a similar tool from the point of view that it can capture packets and display the contents; however, tshark is a more helpful tool that has many functions, such as to decode the packets into Human-Readable and to aggregates packets over a given time interval and calculates statistical information.</p>
 
 <p>You can see how to use tshark by man command, or some nice articles were written already.</p>
 
 <h1 id="investigation">Investigation</h1>
 
-<p><code>-z</code> is one of the best useful options implemented in tshark, it allows you to display statistical information.
+<p><code>-z</code> is one of the best useful options implemented in tshark, it allows you to display statistical information.<br />
 In this post, I investigated network traffic by using the statistical information displayed by <code>-z</code> option.</p>
 
-<p>At first, I see the ratio between TCP and UDP of this packets.
+<p>At first, I see the ratio between TCP and UDP of this packets.<br />
 Notes: For the sake of convenience, I rewrote some of the commands, outputs, IP addresses, figures and others by hand.</p>
 
 <pre><code class="language-text">$ tshark -a duration:60 -f 'dst host 172.17.XXX.XXX' -q -z io,stat,10,tcp,udp
@@ -285,11 +285,10 @@ Capturing on eth0
 <p>I will explain the command line options.</p>
 
 <ul>
-<li><code>-a duration:60</code>: Specify the condition of stopping tshark. <code>duration:60</code> means <code>stop 60 seconds later.</code></li>
-<li><code>-f 'dst host 172.17.XXX.XXX'</code>: Set the capture filter expression. To investigate inbound traffic, specify <code>destination host is an own IP address.</code></li>
+<li><code>-a duration:60</code>: Specify the condition of stopping tshark. <em>duration:60</em> means stop 60 seconds later.</li>
+<li><code>-f 'dst host 172.17.XXX.XXX'</code>: Set the capture filter expression. To investigate inbound traffic, specify destination host is an own IP address.</li>
 <li><code>-q</code>: Suppress output of each captured packets. It is necessary to show only statistical information.</li>
-<li><code>-z io,stat,10,tcp,udp</code>: <code>-z</code> is an option for showing statistical information.
-<code>io,stat,interval[,filter][,filter][,filter]...</code> means that aggregates how many packets / bytes the communication matching <code>filter</code> was during the<code>interval</code> interval. <code>tcp</code>, <code>udp</code> represent TCP communication and UDP communication respectively as you can see.</li>
+<li><code>-z io,stat,10,tcp,udp</code>: <em>-z</em> is an option for showing statistical information. <em>io,stat,interval[,filter][,filter][,filter]&hellip;</em> means that aggregates how many packets / bytes the communication matching <em>filter</em> was during the <em>interval</em> interval. <em>tcp</em>, <em>udp</em> represent TCP communication and UDP communication respectively as you can see.</li>
 </ul>
 
 <p>I think the content of the output is not so difficult.
@@ -388,9 +387,24 @@ There are many other types of options for <code>-z</code>, so I think that it is
 
         
         
+            <li>
+                
+                
+                    
+
+                    
+                        Categories
+                    
+                
+            </li>
+        
     
 
     
+    
+        <li><a href='/categories/en'>en</a></li>
+    
+        <li><a href='/categories/tools'>tools</a></li>
     
 </ul>
 
@@ -639,7 +653,7 @@ There are many other types of options for <code>-z</code>, so I think that it is
                     <li>
                         <article>
                             <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2017/hello/">Hello</a></h3>
+                                <h3><a href="https://blog.s-tajima.work/post/2017/hello/">hello</a></h3>
                                 
                                     
                                 
@@ -711,8 +725,26 @@ There are many other types of options for <code>-z</code>, so I think that it is
                     <li>
                         <article>
                             <header>
-                                <a href="/categories/tools/">tools</a>
+                                <a href="/categories/en/">en</a>
                                 <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/ja/">ja</a>
+                                <span style="float:right;">3</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/tools/">tools</a>
+                                <span style="float:right;">3</span>
                             </header>
                         </article>
                     </li>

@@ -17,9 +17,12 @@
       <pubDate>Thu, 11 May 2017 00:00:00 +0900</pubDate>
       
       <guid>https://blog.s-tajima.work/post/2017/intro-tshark_en/</guid>
-      <description>This graph represents network traffic of a server. Concrete figures have been masked, however, it can be seen that network traffic volume is gradually increasing over several weeks. This article provides that how to investigate network traffic breakdown using tshark.
-[f:id:s_tajima:20170502181650p:plain]
-What is tshark tshark is a CUI equivalent of Wireshark. If you are using RHEL-based distribution, You can use tshark by installing wireshark package. This article was written with Tshark 1.</description>
+      <description>This graph represents network traffic of a server.
+Concrete figures have been masked, however, it can be seen that network traffic volume is gradually increasing over several weeks.
+This article provides that how to investigate network traffic breakdown using tshark.
+What is tshark tshark is a CUI equivalent of Wireshark.
+If you are using RHEL-based distribution, You can use tshark by installing wireshark package.
+This article was written with Tshark 1.</description>
     </item>
     
     <item>
@@ -32,7 +35,7 @@ What is tshark tshark is a CUI equivalent of Wireshark. If you are using RHEL-ba
     </item>
     
     <item>
-      <title>Hello</title>
+      <title>hello</title>
       <link>https://blog.s-tajima.work/post/2017/hello/</link>
       <pubDate>Fri, 05 May 2017 23:03:50 +0900</pubDate>
       

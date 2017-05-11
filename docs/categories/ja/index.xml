@@ -1,29 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tools on s_tajima::TechBlog</title>
-    <link>https://blog.s-tajima.work/categories/tools/</link>
-    <description>Recent content in Tools on s_tajima::TechBlog</description>
+    <title>Ja on s_tajima::TechBlog</title>
+    <link>https://blog.s-tajima.work/categories/ja/</link>
+    <description>Recent content in Ja on s_tajima::TechBlog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Thu, 11 May 2017 00:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 10 May 2017 19:11:08 +0900</lastBuildDate>
     
-	<atom:link href="https://blog.s-tajima.work/categories/tools/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://blog.s-tajima.work/categories/ja/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Breakdown investigation of network traffic using tshark.</title>
-      <link>https://blog.s-tajima.work/post/2017/intro-tshark_en/</link>
-      <pubDate>Thu, 11 May 2017 00:00:00 +0900</pubDate>
-      
-      <guid>https://blog.s-tajima.work/post/2017/intro-tshark_en/</guid>
-      <description>This graph represents network traffic of a server.
-Concrete figures have been masked, however, it can be seen that network traffic volume is gradually increasing over several weeks.
-This article provides that how to investigate network traffic breakdown using tshark.
-What is tshark tshark is a CUI equivalent of Wireshark.
-If you are using RHEL-based distribution, You can use tshark by installing wireshark package.
-This article was written with Tshark 1.</description>
-    </item>
     
     <item>
       <title>tsharkを用いたネットワークトラフィックの内訳の調査</title>
@@ -32,6 +18,15 @@ This article was written with Tshark 1.</description>
       
       <guid>https://blog.s-tajima.work/post/2017/intro-tshark/</guid>
       <description>下の図は、とあるサーバのネットワークトラフィックのモニタリングのグラフです。 具体的な数値はマスクしてありますが、数週間かけてじわじわとトラフ</description>
+    </item>
+    
+    <item>
+      <title>hello</title>
+      <link>https://blog.s-tajima.work/post/2017/hello/</link>
+      <pubDate>Fri, 05 May 2017 23:03:50 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2017/hello/</guid>
+      <description>Hatena Blogから移転してきました。 本ブログは ホスティングはGitHub Pages コンテンツ作成はHugo CDN, TLS配信はCloudflare を利用して運</description>
     </item>
     
     <item>

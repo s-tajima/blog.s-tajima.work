@@ -11,9 +11,27 @@
     
     
     <item>
+      <title>En</title>
+      <link>https://blog.s-tajima.work/categories/en/</link>
+      <pubDate>Thu, 11 May 2017 00:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/categories/en/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ja</title>
+      <link>https://blog.s-tajima.work/categories/ja/</link>
+      <pubDate>Wed, 10 May 2017 19:11:08 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/categories/ja/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Tools</title>
       <link>https://blog.s-tajima.work/categories/tools/</link>
-      <pubDate>Mon, 19 Dec 2016 00:00:00 +0900</pubDate>
+      <pubDate>Thu, 11 May 2017 00:00:00 +0900</pubDate>
       
       <guid>https://blog.s-tajima.work/categories/tools/</guid>
       <description></description>
