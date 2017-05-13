@@ -3,10 +3,6 @@ h1, h2, h3, h4, h5, h6 {
     letter-spacing: 0.10em;
 }
 
-h1 {
-    font-size: 1.3em;
-}
-
 .button {
 	text-transform: none; 
     letter-spacing: 0.10em;
@@ -23,3 +19,16 @@ header p {
     width: 18em;
 }
 
+
+#content h1 {
+    margin: 1em 0 1em 0;
+    font-size: 1.3em;
+}
+
+#content ul, #content ol, #content pre {
+	margin: 0.5em 0 0.5em 0;
+}
+
+#content ul ul, #content p {
+	margin: 0 0 0.5em 0;
+}
