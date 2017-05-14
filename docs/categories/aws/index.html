@@ -1,11 +1,19 @@
+
+
+
+    
+        
+    
+
+
+
+
 <!DOCTYPE HTML>
 
 <html>
     <head>
         
-            
-                <title>s_tajima::TechBlog</title>
-            
+            <title>Aws Posts - s_tajima::TechBlog</title>
         
 
         <meta charset="utf-8" />
@@ -22,10 +30,10 @@
         
 
         
-        <meta property="og:title" content="s_tajima::TechBlog" />
+        <meta property="og:title" content="Aws" />
 <meta property="og:description" content="s_tajima::TechBlog" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://blog.s-tajima.work/" />
+<meta property="og:url" content="https://blog.s-tajima.work/categories/aws/" />
 
 
 
@@ -41,7 +49,7 @@
 
 
         
-<meta itemprop="name" content="s_tajima::TechBlog">
+<meta itemprop="name" content="Aws">
 <meta itemprop="description" content="s_tajima::TechBlog">
 
 
@@ -95,10 +103,9 @@ ga('send', 'pageview');
         <div id="wrapper">
 
     
-    
 <header id="header">
     
-        <h1><a href="/">s_tajima::TechBlog</i></a></h1>
+        <h2><a href="/">s_tajima::TechBlog</i></a></h2>
     
 
     <nav class="links">
@@ -115,10 +122,6 @@ ga('send', 'pageview');
     </nav>
     <nav class="main">
         <ul>
-            
-            <li id="share-nav" class="share-menu" style="display:none;">
-                <a class="fa-share-alt" href="#share-menu">Share</a>
-            </li>
             
             <li class="search">
                 <a class="fa-search" href="#search">Search</a>
@@ -203,6 +206,8 @@ ga('send', 'pageview');
 
     
     <div id="main">
+        <h1>Aws</h1>
+        
         
             <article class="post">
     <header>
@@ -226,123 +231,14 @@ ga('send', 'pageview');
     </div>
 </header>
 
-
     
 
-    <div id="content">
-        
-
-<h1 id="tl-dr">TL; DR</h1>
-
-<ul>
-<li>AWSでは自分で作成したAMIを使いたい。</li>
-<li>PackerのEBS Surrogate Builderを使うと便利にAMIを作成できる。</li>
-<li>EBS Surrogate Builderをより簡単に使えるように autoknitter という参照実行を公開した。</li>
-</ul>
-
-<h1 id="背景">背景</h1>
-
-<p>AWSのEC2を使う上で、どのAMIを利用するかというのはとても重要な選択の1つです。</p>
-
-<p>細かい選択肢は色々ありますが、大きく分けると</p>
-
-<ol>
-<li>Community AMIsにて提供されているAMIを利用する</li>
-<li>AWS Marketplaceにて提供されているAMIを利用する</li>
-<li>自分たちでAMIを作成する</li>
-</ol>
-
-<p>というパターンがあると思います。</p>
-
-<p>AWSへのロックインを避けたい、 AWS以外の環境でも同じOSを利用したいといった要件から、CentOSを利用したい場合を考えてみます。</p>
-
-<p>まず、1のCommunity AMIsで CentOS を検索してみます。</p>
-
-<p><img src="/post/2017/intro-autoknitter/choose-ami-community.png" alt="choose-ami-community" /></p>
-
-<p>このようにたくさんのAMIが出てきます。<br />
-しかし、基本的にはこれらは <em>だれが作ったのか</em> も <em>どうやって作ったのか</em> もわからないAMIです。
-悪意のあるAMIが公開されていない保証がないため使うにはリスクが伴います。</p>
-
-<p>AWSとしてもこのような <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/building-shared-amis.html">ガイドライン</a> を公開していますが、個人的には利用は避けたいところです。</p>
-
-<p>次に、2のAWS Marketplaceにて CentOS を検索してみます。</p>
-
-<p><img src="/post/2017/intro-autoknitter/choose-ami-marketplace.png" alt="choose-ami-marketplace" /></p>
-
-<p>こちらもいくつかのAMIが出てきます。<br />
-今度は Centos.org が提供するAMIも出てきました。
-Centos.org が提供するAMIであれば、Community AMIsの時のようなリスクは伴わないと考えてもよさそうです。
-しかしこれを利用するには注意が必要で、このAMIから作成されたEBSはRoot Volumeとして以外はアタッチできないという制限を受けることになります。</p>
-
-<p>サポートケースを起票すればその制限を解除してもらうこともできるようですが、障害対応時等、緊急度の高いときにはそんな余裕がないこともありそうなのでこの選択肢も避けたいところです。</p>
-
-<p>参考: <a href="https://www.quora.com/Amazon-EC2/Amazon-EC2-Is-it-possible-to-rescue-an-EBS-volume-which-has-marketplace-codes">https://www.quora.com/Amazon-EC2/Amazon-EC2-Is-it-possible-to-rescue-an-EBS-volume-which-has-marketplace-codes</a></p>
-
-<p>最後の手段として、3の通り自分たちでAMIをビルドすることになります。</p>
-
-<h1 id="packer-ebs-surrogate-builderの紹介">Packer, EBS Surrogate Builderの紹介</h1>
-
-<p><a href="https://www.packer.io/">Packer</a> には、AWSのAMIを作成するためのBuilderが実装されています。</p>
-
-<p><a href="https://www.packer.io/docs/builders/amazon.html">Amazon AMI Builder</a> に記載されている通り、そのためのBuilderは複数用意されているのですが、
-今回はその中でも <a href="https://www.packer.io/docs/builders/amazon-ebssurrogate.html">EBS Surrogate Builder</a> を利用してAMIを作成します。</p>
-
-<p>EBS Surrogate BuilderによるAMI作成の仕組みについて説明します。</p>
-
-<p><img src="/post/2017/intro-autoknitter/amazon-ebssurrogate.png" alt="amazon-ebssurrogate.png" /></p>
-
-<ol>
-<li>まずAMI構築の作業用インスタンス(Source Instance)が起動されます。</li>
-<li>Source Instanceにアタッチされた、AMIのルートボリュームとして利用するEBS(AMI Root Device)に対して、OSのイメージを書き込みます。</li>
-<li>AMI Root Deviceのスナップショットを作成し、そのスナップショットからAMIを作成します。</li>
-</ol>
-
-<p>EBS Surrogate Builderを使うことで、</p>
-
-<ul>
-<li>AMI作成の手順をコードで記述することで、自動化され再現性のある状態になる。</li>
-<li>元となるAMIを必要とせず、空のEBSからAMIを作成できる。</li>
-<li>作業用のインスタンスを毎回自動起動/ターミネートできる。</li>
-</ul>
-
-<p>といった条件でAMIを作成することができます。</p>
-
-<p>EBS Surrogate Builderはとても便利な手段なのですが、AMI Root Deviceに対してOSのイメージを書き込むための手順を実装するのが一番の手間になります。</p>
-
-<h1 id="autoknitter">autoknitter</h1>
-
-<p>EBS Surrogate Builderをより簡単に使えるように、autoknitterというリポジトリを公開しました。</p>
-
-<p><a href="https://github.com/s-tajima/autoknitter">https://github.com/s-tajima/autoknitter</a></p>
-
-<p>autoknitterはPackerのEBS Surrogate Builderを利用するための参考実装です。
-セットアップ後、このように <code>make build</code> するだけでAMIが作成できるようになっています。</p>
-
-<pre><code class="language-text">$ make build
-./bin/packer build \
-	-var-file ./variables.json \
-	-var-file ./resources/centos/6.9/variables.json \
-	./template.json
-amazon-ebssurrogate output will be in this color.
-
-==&gt; amazon-ebssurrogate: Prevalidating AMI Name...
-
-.. snip ..
-
-Build 'amazon-ebssurrogate' finished.
-
-==&gt; Builds finished. The artifacts of successful builds are:
---&gt; amazon-ebssurrogate: AMIs were created:
-
-ap-northeast-1: ami-XXXXXXXX
-</code></pre>
-
-<p>現在対応しているディストリビューションはCentOS 6.9のみですが、今後色々なバリエーションを増やしていく予定です。</p>
-
-    </div>
+    <p>TL; DR AWSでは自分で作成したAMIを使いたい。 PackerのEBS Surrogate Builderを使うと便利にAMIを作成できる。 EBS Surrogate Builderをより</p>
 
     <footer>
+        <ul class="actions">
+            <li><a href="https://blog.s-tajima.work/post/2017/intro-autoknitter/" class="button big">Continue Reading</a></li>
+        </ul>
         <ul class="stats">
     
         
@@ -371,124 +267,21 @@ ap-northeast-1: ami-XXXXXXXX
 </ul>
 
     </footer>
-
-    <section id="social-share">
-        <ul class="icons">
-            
-
-
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&text=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b&via=s_tajima_tech" target="_blank" class="share-btn twitter">
-    <i class="fa fa-twitter"></i>
-    <p>Twitter</p>
-</a></li>
-
-
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f" target="_blank" class="share-btn google-plus">
-    <i class="fa fa-google-plus"></i>
-    <p>Google+</p>
-</a></li>
-
-
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f" target="_blank" class="share-btn facebook">
-    <i class="fa fa-facebook"></i>
-    <p>Facebook</p>
-</a></li>
-
-
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&title=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn reddit">
-    <i class="fa fa-reddit-alien"></i>
-    <p>Reddit</p>
-</a></li>
-
-
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&title=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn linkedin">
-    <i class="fa fa-linkedin"></i>
-    <p>LinkedIn</p>
-</a></li>
-
-
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&title=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn stumbleupon">
-    <i class="fa fa-stumbleupon"></i>
-    <p>StumbleUpon</p>
-</a></li>
-
-
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f" target="_blank" class="share-btn email">
-    <i class="fa fa-envelope"></i>
-    <p>Email</p>
-</a></li>
-
-        </ul>
-    </section>
 </article>
+
+        
+
+        
 <ul class="actions pagination">
     
-        <li><a href="https://blog.s-tajima.work/post/2017/intro-tshark_en/"
-                class="button big previous">Breakdown investigation of network traffic using tshark.</a></li>
+        <li><a href="#" class="disabled button big previous">Previous Page</a></li>
     
 
+    
+        <li><a href="#" class="disabled button big next">Next Page</a></li>
     
 </ul>
 
-
-
-
-
-            <section id="share-menu">
-    <section id="social-share-nav">
-        <ul class="links">
-            <header>
-                <h3>Share this post <i class="fa fa-smile-o"></i></h3>
-            </header>
-            
-
-
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&text=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b&via=s_tajima_tech" target="_blank" class="share-btn twitter">
-    <i class="fa fa-twitter"></i>
-    <p>Twitter</p>
-</a></li>
-
-
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f" target="_blank" class="share-btn google-plus">
-    <i class="fa fa-google-plus"></i>
-    <p>Google+</p>
-</a></li>
-
-
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f" target="_blank" class="share-btn facebook">
-    <i class="fa fa-facebook"></i>
-    <p>Facebook</p>
-</a></li>
-
-
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&title=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn reddit">
-    <i class="fa fa-reddit-alien"></i>
-    <p>Reddit</p>
-</a></li>
-
-
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&title=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn linkedin">
-    <i class="fa fa-linkedin"></i>
-    <p>LinkedIn</p>
-</a></li>
-
-
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&title=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn stumbleupon">
-    <i class="fa fa-stumbleupon"></i>
-    <p>StumbleUpon</p>
-</a></li>
-
-
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f" target="_blank" class="share-btn email">
-    <i class="fa fa-envelope"></i>
-    <p>Email</p>
-</a></li>
-
-        </ul>
-    </section>
-</section>
-
-        
     </div>
     
 <section id="sidebar">
@@ -505,7 +298,7 @@ ap-northeast-1: ami-XXXXXXXX
             
             <ul class="icons">
                 
-                    <li><a href="https://blog.s-tajima.work/index.xml" type="application/rss+xml"
+                    <li><a href="https://blog.s-tajima.work/categories/aws/index.xml" type="application/rss+xml"
                         target="_blank" title="RSS" class="fa fa-rss"></a></li>
                 
                 
@@ -740,7 +533,7 @@ ap-northeast-1: ami-XXXXXXXX
         <section id="footer">
             <ul class="icons">
                 
-                    <li><a href="https://blog.s-tajima.work/index.xml" type="application/rss+xml"
+                    <li><a href="https://blog.s-tajima.work/categories/aws/index.xml" type="application/rss+xml"
                         target="_blank" title="RSS" class="fa fa-rss"></a></li>
                 
                 
