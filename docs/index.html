@@ -10,7 +10,7 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="generator" content="Hugo 0.20.7" />
+        <meta name="generator" content="Hugo 0.25.1" />
         
 
 
@@ -29,7 +29,7 @@
 
 
 
-<meta property="og:updated_time" content="2017-05-11T23:21:25&#43;09:00"/>
+<meta property="og:updated_time" content="2017-07-20T12:00:00&#43;09:00"/>
 
 
 
@@ -175,6 +175,10 @@ ga('send', 'pageview');
 
                 
                     <li>
+                        <a href="https://blog.s-tajima.work/post/2017/use-slapd-with-auditlog/"><p>CentOSでslapdのauditlogを有効にする</p></a>
+                    </li>
+                
+                    <li>
                         <a href="https://blog.s-tajima.work/post/2017/intro-autoknitter/"><p>AWSのAMIをゼロから作る autoknitterの紹介</p></a>
                     </li>
                 
@@ -188,10 +192,6 @@ ga('send', 'pageview');
                 
                     <li>
                         <a href="https://blog.s-tajima.work/post/2017/hello/"><p>hello</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="https://blog.s-tajima.work/post/2016/intro-github-dice/"><p>GitHubのPull Requestへのレビュアーアサインを自動化するツール「github-dice」の紹介</p></a>
                     </li>
                 
             </ul>
@@ -208,7 +208,7 @@ ga('send', 'pageview');
     <header>
     <div class="title">
         
-            <h2><a href="https://blog.s-tajima.work/post/2017/intro-autoknitter/">AWSのAMIをゼロから作る autoknitterの紹介</a></h2>
+            <h2><a href="https://blog.s-tajima.work/post/2017/use-slapd-with-auditlog/">CentOSでslapdのauditlogを有効にする</a></h2>
         
         
     </div>
@@ -218,8 +218,8 @@ ga('send', 'pageview');
         
 
         <time class="published"
-            datetime='2017-05-11'>
-            May 11, 2017</time>
+            datetime='2017-07-20'>
+            July 20, 2017</time>
         <span class="author">Satoshi Tajima</span>
         
         
@@ -232,113 +232,86 @@ ga('send', 'pageview');
     <div id="content">
         
 
-<h1 id="tl-dr">TL; DR</h1>
+<h1 id="概要">概要</h1>
 
-<ul>
-<li>AWSでは自分で作成したAMIを使いたい。</li>
-<li>PackerのEBS Surrogate Builderを使うと便利にAMIを作成できる。</li>
-<li>EBS Surrogate Builderをより簡単に使えるように autoknitter という参照実行を公開した。</li>
-</ul>
+<p>CentOSにてRPM(openldap-servers)でインストールしたslapdを使う際、auditlogの設定でハマったのでその対応のメモです。
+実際に検証したのは CentOS 7系 の環境ですが、CentOS 6系の環境にも適用できる話だと思います。</p>
 
-<h1 id="背景">背景</h1>
+<p>結論としては、Static Configurationの場合は <code>moduleload auditlog</code> を, Dynamic Configurationの場合は <code>olcModuleLoad: auditlog</code> を設定すればよいことがわかりました。
+わかってしまえば簡単な設定なのですが、そこにたどり着くまでが大変だったのでその過程を残しておきます。</p>
 
-<p>AWSのEC2を使う上で、どのAMIを利用するかというのはとても重要な選択の1つです。</p>
+<h1 id="slapdのoverlayについて">slapdのOverlayについて</h1>
 
-<p>細かい選択肢は色々ありますが、大きく分けると</p>
+<p>slapdには、<a href="http://www.openldap.org/doc/admin24/overlays.html#Audit Logging">Overlays</a>と呼ばれるLDAPサーバの機能を拡張するための機構があります。
+slapdにて監査ログを取得する場合、Audit Logging overlayを使用することができます。</p>
 
-<ol>
-<li>Community AMIsにて提供されているAMIを利用する</li>
-<li>AWS Marketplaceにて提供されているAMIを利用する</li>
-<li>自分たちでAMIを作成する</li>
-</ol>
+<p>manの<a href="https://linux.die.net/man/5/slapd.conf">slapd.conf</a>, <a href="https://linux.die.net/man/5/slapo-auditlog">slapo-auditlog</a> によると、 Static Configurationの場合、</p>
 
-<p>というパターンがあると思います。</p>
-
-<p>AWSへのロックインを避けたい、 AWS以外の環境でも同じOSを利用したいといった要件から、CentOSを利用したい場合を考えてみます。</p>
-
-<p>まず、1のCommunity AMIsで CentOS を検索してみます。</p>
-
-<p><img src="/post/2017/intro-autoknitter/choose-ami-community.png" alt="choose-ami-community" /></p>
-
-<p>このようにたくさんのAMIが出てきます。<br />
-しかし、基本的にはこれらは <em>だれが作ったのか</em> も <em>どうやって作ったのか</em> もわからないAMIです。
-悪意のあるAMIが公開されていない保証がないため使うにはリスクが伴います。</p>
-
-<p>AWSとしてもこのような <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/building-shared-amis.html">ガイドライン</a> を公開していますが、個人的には利用は避けたいところです。</p>
-
-<p>次に、2のAWS Marketplaceにて CentOS を検索してみます。</p>
-
-<p><img src="/post/2017/intro-autoknitter/choose-ami-marketplace.png" alt="choose-ami-marketplace" /></p>
-
-<p>こちらもいくつかのAMIが出てきます。<br />
-今度は Centos.org が提供するAMIも出てきました。
-Centos.org が提供するAMIであれば、Community AMIsの時のようなリスクは伴わないと考えてもよさそうです。
-しかしこれを利用するには注意が必要で、このAMIから作成されたEBSはRoot Volumeとして以外はアタッチできないという制限を受けることになります。</p>
-
-<p>サポートケースを起票すればその制限を解除してもらうこともできるようですが、障害対応時等、緊急度の高いときにはそんな余裕がないこともありそうなのでこの選択肢も避けたいところです。</p>
-
-<p>参考: <a href="https://www.quora.com/Amazon-EC2/Amazon-EC2-Is-it-possible-to-rescue-an-EBS-volume-which-has-marketplace-codes">https://www.quora.com/Amazon-EC2/Amazon-EC2-Is-it-possible-to-rescue-an-EBS-volume-which-has-marketplace-codes</a></p>
-
-<p>最後の手段として、3の通り自分たちでAMIをビルドすることになります。</p>
-
-<h1 id="packer-ebs-surrogate-builderの紹介">Packer, EBS Surrogate Builderの紹介</h1>
-
-<p><a href="https://www.packer.io/">Packer</a> には、AWSのAMIを作成するためのBuilderが実装されています。</p>
-
-<p><a href="https://www.packer.io/docs/builders/amazon.html">Amazon AMI Builder</a> に記載されている通り、そのためのBuilderは複数用意されているのですが、
-今回はその中でも <a href="https://www.packer.io/docs/builders/amazon-ebssurrogate.html">EBS Surrogate Builder</a> を利用してAMIを作成します。</p>
-
-<p>EBS Surrogate BuilderによるAMI作成の仕組みについて説明します。</p>
-
-<p><img src="/post/2017/intro-autoknitter/amazon-ebssurrogate.png" alt="amazon-ebssurrogate.png" /></p>
-
-<ol>
-<li>まずAMI構築の作業用インスタンス(Source Instance)が起動されます。</li>
-<li>Source Instanceにアタッチされた、AMIのルートボリュームとして利用するEBS(AMI Root Device)に対して、OSのイメージを書き込みます。</li>
-<li>AMI Root Deviceのスナップショットを作成し、そのスナップショットからAMIを作成します。</li>
-</ol>
-
-<p>EBS Surrogate Builderを使うことで、</p>
-
-<ul>
-<li>AMI作成の手順をコードで記述することで、自動化され再現性のある状態になる。</li>
-<li>元となるAMIを必要とせず、空のEBSからAMIを作成できる。</li>
-<li>作業用のインスタンスを毎回自動起動/ターミネートできる。</li>
-</ul>
-
-<p>といった条件でAMIを作成することができます。</p>
-
-<p>EBS Surrogate Builderはとても便利な手段なのですが、AMI Root Deviceに対してOSのイメージを書き込むための手順を実装するのが一番の手間になります。</p>
-
-<h1 id="autoknitter">autoknitter</h1>
-
-<p>EBS Surrogate Builderをより簡単に使えるように、autoknitterというリポジトリを公開しました。</p>
-
-<p><a href="https://github.com/s-tajima/autoknitter">https://github.com/s-tajima/autoknitter</a></p>
-
-<p>autoknitterはPackerのEBS Surrogate Builderを利用するための参考実装です。
-セットアップ後、このように <code>make build</code> するだけでAMIが作成できるようになっています。</p>
-
-<pre><code class="language-text">$ make build
-./bin/packer build \
-	-var-file ./variables.json \
-	-var-file ./resources/centos/6.9/variables.json \
-	./template.json
-amazon-ebssurrogate output will be in this color.
-
-==&gt; amazon-ebssurrogate: Prevalidating AMI Name...
-
-.. snip ..
-
-Build 'amazon-ebssurrogate' finished.
-
-==&gt; Builds finished. The artifacts of successful builds are:
---&gt; amazon-ebssurrogate: AMIs were created:
-
-ap-northeast-1: ami-XXXXXXXX
+<pre><code>overlay auditlog
 </code></pre>
 
-<p>現在対応しているディストリビューションはCentOS 6.9のみですが、今後色々なバリエーションを増やしていく予定です。</p>
+<p>にてauditlogのoverlayを有効にし、</p>
+
+<pre><code>auditlog &lt;filename&gt;  
+</code></pre>
+
+<p>にてauditlogの出力先を指定すればよさそうなことがわかります。</p>
+
+<h1 id="困ったこと">困ったこと</h1>
+
+<p>前述のように設定し、slapdを起動しようとすると</p>
+
+<blockquote>
+<p>overlay &ldquo;auditlog&rdquo; not found</p>
+</blockquote>
+
+<p>というエラーによって起動に失敗します。</p>
+
+<p>このエラーの解消方法を調べていると、いくつか紛らわしい情報が見つかります。</p>
+
+<h3 id="openldap-servers-overlays">openldap-servers-overlays</h3>
+
+<p>auditlogを始めとするoverlayの類は、<code>openldap-servers-overlays</code> というRPMをインストールすることで利用可能になるという記述が見つかります。しかし実際は、このRPMを使うのはCentOS 5系の話のようで、CentOS 7系の環境においてはこのRPMは存在しません。</p>
+
+<h3 id="by-default-it-is-not-built">By default it is not built.</h3>
+
+<p>manの <a href="https://linux.die.net/man/5/slapd.overlays">slapd.overlays</a> を見ると</p>
+
+<blockquote>
+<p>auditlog<br />
+Audit Logging. This overlay records changes on a given backend database to an LDIF log file. By default it is not built.</p>
+</blockquote>
+
+<p>という記述が見つかります。<br />
+ビルドオプションを変更してRPMをビルドしなおさなければならないように思えますが、実際はそうではありません。</p>
+
+<h3 id="modulepath">modulepath</h3>
+
+<p>このように、auditlogのmoduleはopenldap-serversによって既にインストールされていそうなことがわかります。</p>
+
+<pre><code>$ rpm -qpl openldap-servers-2.4.40-13.el7.x86_64.rpm | grep auditlog
+/usr/lib64/openldap/auditlog-2.4.so.2
+/usr/lib64/openldap/auditlog-2.4.so.2.10.3
+/usr/lib64/openldap/auditlog.la
+</code></pre>
+
+<p>ではなぜこのmoduleが読み込まれていないのかを調べます。
+関連しそうな設定として、<code>modulepath</code> がありました。しかし、このパラメータのデフォルトは <code>/usr/lib64/openldap</code> となっているようなので、これを変更することで解決することはなさそうです。</p>
+
+<h1 id="解決方法">解決方法</h1>
+
+<p><code>modulepath</code> と関連した設定として <code>moduleload</code> というパラメータがあります。
+ <code>modulepath</code> で指定したパスに存在するmoduleは自動的に読み込まれるものと思い込んでしまいましたが、実際は <code>moduleload</code> にてmodule名を指定する必要があるようです。</p>
+
+<p>ということで、最終的には以下のように設定することで、auditlogを出力することができるということがわかりました。</p>
+
+<pre><code>modulepath /usr/lib64/openldap # デフォルト値なので省略可
+moduleload auditlog
+overlay auditlog
+auditlog &lt;filename&gt;  
+</code></pre>
+
+<p>以上、CentOSでslapdのauditlogを使う方法でした。</p>
 
     </div>
 
@@ -366,7 +339,7 @@ ap-northeast-1: ami-XXXXXXXX
     
         <li><a href='/categories/ja'>ja</a></li>
     
-        <li><a href='/categories/aws'>aws</a></li>
+        <li><a href='/categories/ldap'>ldap</a></li>
     
 </ul>
 
@@ -377,43 +350,43 @@ ap-northeast-1: ami-XXXXXXXX
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&text=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b&via=s_tajima_tech" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&text=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b&via=s_tajima_tech" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&title=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&title=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&title=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&title=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&title=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&title=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -423,8 +396,8 @@ ap-northeast-1: ami-XXXXXXXX
 </article>
 <ul class="actions pagination">
     
-        <li><a href="https://blog.s-tajima.work/post/2017/intro-tshark_en/"
-                class="button big previous">Breakdown investigation of network traffic using tshark.</a></li>
+        <li><a href="https://blog.s-tajima.work/post/2017/intro-autoknitter/"
+                class="button big previous">AWSのAMIをゼロから作る autoknitterの紹介</a></li>
     
 
     
@@ -443,43 +416,43 @@ ap-northeast-1: ami-XXXXXXXX
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&text=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b&via=s_tajima_tech" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&text=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b&via=s_tajima_tech" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&title=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&title=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&title=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&title=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&title=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&title=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -587,6 +560,20 @@ ap-northeast-1: ami-XXXXXXXX
                     <li>
                         <article>
                             <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2017/use-slapd-with-auditlog/">CentOSでslapdのauditlogを有効にする</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2017-07-20'>
+                                    July 20, 2017</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
                                 <h3><a href="https://blog.s-tajima.work/post/2017/intro-autoknitter/">AWSのAMIをゼロから作る autoknitterの紹介</a></h3>
                                 
                                     
@@ -636,20 +623,6 @@ ap-northeast-1: ami-XXXXXXXX
                                 <time class="published" datetime=
                                     '2017-05-05'>
                                     May 5, 2017</time>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2016/intro-github-dice/">GitHubのPull Requestへのレビュアーアサインを自動化するツール「github-dice」の紹介</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2016-12-19'>
-                                    December 19, 2016</time>
                             </header>
                         </article>
                     </li>
@@ -706,7 +679,16 @@ ap-northeast-1: ami-XXXXXXXX
                         <article>
                             <header>
                                 <a href="/categories/ja/">ja</a>
-                                <span style="float:right;">4</span>
+                                <span style="float:right;">5</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/ldap/">ldap</a>
+                                <span style="float:right;">1</span>
                             </header>
                         </article>
                     </li>

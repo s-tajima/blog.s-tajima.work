@@ -32,9 +32,18 @@
     <item>
       <title>Ja</title>
       <link>https://blog.s-tajima.work/categories/ja/</link>
-      <pubDate>Thu, 11 May 2017 23:21:25 +0900</pubDate>
+      <pubDate>Thu, 20 Jul 2017 12:00:00 +0900</pubDate>
       
       <guid>https://blog.s-tajima.work/categories/ja/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ldap</title>
+      <link>https://blog.s-tajima.work/categories/ldap/</link>
+      <pubDate>Thu, 20 Jul 2017 12:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/categories/ldap/</guid>
       <description></description>
     </item>
     
