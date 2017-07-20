@@ -6,10 +6,19 @@
     <description>Recent content in Ja on s_tajima::TechBlog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Thu, 11 May 2017 23:21:25 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 20 Jul 2017 12:00:00 +0900</lastBuildDate>
     
 	<atom:link href="https://blog.s-tajima.work/categories/ja/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>CentOSでslapdのauditlogを有効にする</title>
+      <link>https://blog.s-tajima.work/post/2017/use-slapd-with-auditlog/</link>
+      <pubDate>Thu, 20 Jul 2017 12:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2017/use-slapd-with-auditlog/</guid>
+      <description>概要 CentOSにてRPM(openldap-servers)でインストールしたslapdを使う際、auditlogの設定でハマったのでその</description>
+    </item>
     
     <item>
       <title>AWSのAMIをゼロから作る autoknitterの紹介</title>

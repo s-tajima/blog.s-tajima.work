@@ -1,17 +1,11 @@
-
-
-
-    
-
-
-
-
 <!DOCTYPE HTML>
 
 <html>
     <head>
         
-            <title>about - s_tajima::TechBlog</title>
+            
+                <title>CentOSでslapdのauditlogを有効にする</title>
+            
         
 
         <meta charset="utf-8" />
@@ -35,20 +29,20 @@
 
 
 
-<meta name="twitter:text:title" content="about"/>
-<meta name="twitter:title" content="about"/>
-<meta name="twitter:description" content="In English me Satoshi Tajima (@s_tajima) 渋谷で働くインフラエンジニアです。 blog 本ブログは ホスティングはGitHub Pages コンテンツ作成はHugo CDN, TLS配信はCloudfla"/>
+<meta name="twitter:text:title" content="CentOSでslapdのauditlogを有効にする"/>
+<meta name="twitter:title" content="CentOSでslapdのauditlogを有効にする"/>
+<meta name="twitter:description" content="概要 CentOSにてRPM(openldap-servers)でインストールしたslapdを使う際、auditlogの設定でハマったのでその"/>
 <meta name="twitter:site" content="@s_tajima_tech"/>
 
-        <meta property="og:title" content="about" />
-<meta property="og:description" content="In English me Satoshi Tajima (@s_tajima) 渋谷で働くインフラエンジニアです。 blog 本ブログは ホスティングはGitHub Pages コンテンツ作成はHugo CDN, TLS配信はCloudfla" />
+        <meta property="og:title" content="CentOSでslapdのauditlogを有効にする" />
+<meta property="og:description" content="概要 CentOSにてRPM(openldap-servers)でインストールしたslapdを使う際、auditlogの設定でハマったのでその" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.s-tajima.work/about/" />
+<meta property="og:url" content="https://blog.s-tajima.work/post/2017/use-slapd-with-auditlog/" />
 
 
 
-<meta property="article:published_time" content="2017-05-05T21:58:57&#43;09:00"/>
-<meta property="article:modified_time" content="2017-05-05T21:58:57&#43;09:00"/>
+<meta property="article:published_time" content="2017-07-20T12:00:00&#43;09:00"/>
+<meta property="article:modified_time" content="2017-07-20T12:00:00&#43;09:00"/>
 
 
 
@@ -61,12 +55,12 @@
 
 
         
-<meta itemprop="name" content="about">
-<meta itemprop="description" content="In English me Satoshi Tajima (@s_tajima) 渋谷で働くインフラエンジニアです。 blog 本ブログは ホスティングはGitHub Pages コンテンツ作成はHugo CDN, TLS配信はCloudfla">
+<meta itemprop="name" content="CentOSでslapdのauditlogを有効にする">
+<meta itemprop="description" content="概要 CentOSにてRPM(openldap-servers)でインストールしたslapdを使う際、auditlogの設定でハマったのでその">
 
 
-<meta itemprop="dateModified" content="2017-05-05T21:58:57&#43;09:00" />
-<meta itemprop="wordCount" content="95">
+<meta itemprop="dateModified" content="2017-07-20T12:00:00&#43;09:00" />
+<meta itemprop="wordCount" content="1199">
 
 
 
@@ -122,6 +116,7 @@ ga('send', 'pageview');
         <div id="wrapper">
 
     
+    
 <header id="header">
     
         <h2><a href="/">s_tajima::TechBlog</i></a></h2>
@@ -141,6 +136,10 @@ ga('send', 'pageview');
     </nav>
     <nav class="main">
         <ul>
+            
+            <li id="share-nav" class="share-menu" style="display:none;">
+                <a class="fa-share-alt" href="#share-menu">Share</a>
+            </li>
             
             <li class="search">
                 <a class="fa-search" href="#search">Search</a>
@@ -223,47 +222,267 @@ ga('send', 'pageview');
         
 </section>
 
+    <section id="share-menu">
+    <section id="social-share-nav">
+        <ul class="links">
+            <header>
+                <h3>Share this post <i class="fa fa-smile-o"></i></h3>
+            </header>
+            
+
+
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&text=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b&via=s_tajima_tech" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
+
+
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&title=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&title=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&title=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+</section>
+
     
     <div id="main">
+        
+        
         <article class="post">
-            
-            <header>
+    <header>
     <div class="title">
         
-            <h1><a href="https://blog.s-tajima.work/about/">about</a></h1>
+            <h1><a href="https://blog.s-tajima.work/post/2017/use-slapd-with-auditlog/">CentOSでslapdのauditlogを有効にする</a></h1>
             
+        
+        
+    </div>
+    <div class="meta">
+        
+            
+        
+
+        <time class="published"
+            datetime='2017-07-20'>
+            July 20, 2017</time>
+        <span class="author">Satoshi Tajima</span>
         
         
     </div>
 </header>
 
-            <div id="content">
+
+    
+
+    <div id="content">
+        
+
+<h1 id="概要">概要</h1>
+
+<p>CentOSにてRPM(openldap-servers)でインストールしたslapdを使う際、auditlogの設定でハマったのでその対応のメモです。
+実際に検証したのは CentOS 7系 の環境ですが、CentOS 6系の環境にも適用できる話だと思います。</p>
+
+<p>結論としては、Static Configurationの場合は <code>moduleload auditlog</code> を, Dynamic Configurationの場合は <code>olcModuleLoad: auditlog</code> を設定すればよいことがわかりました。
+わかってしまえば簡単な設定なのですが、そこにたどり着くまでが大変だったのでその過程を残しておきます。</p>
+
+<h1 id="slapdのoverlayについて">slapdのOverlayについて</h1>
+
+<p>slapdには、<a href="http://www.openldap.org/doc/admin24/overlays.html#Audit Logging">Overlays</a>と呼ばれるLDAPサーバの機能を拡張するための機構があります。
+slapdにて監査ログを取得する場合、Audit Logging overlayを使用することができます。</p>
+
+<p>manの<a href="https://linux.die.net/man/5/slapd.conf">slapd.conf</a>, <a href="https://linux.die.net/man/5/slapo-auditlog">slapo-auditlog</a> によると、 Static Configurationの場合、</p>
+
+<pre><code>overlay auditlog
+</code></pre>
+
+<p>にてauditlogのoverlayを有効にし、</p>
+
+<pre><code>auditlog &lt;filename&gt;  
+</code></pre>
+
+<p>にてauditlogの出力先を指定すればよさそうなことがわかります。</p>
+
+<h1 id="困ったこと">困ったこと</h1>
+
+<p>前述のように設定し、slapdを起動しようとすると</p>
+
+<blockquote>
+<p>overlay &ldquo;auditlog&rdquo; not found</p>
+</blockquote>
+
+<p>というエラーによって起動に失敗します。</p>
+
+<p>このエラーの解消方法を調べていると、いくつか紛らわしい情報が見つかります。</p>
+
+<h3 id="openldap-servers-overlays">openldap-servers-overlays</h3>
+
+<p>auditlogを始めとするoverlayの類は、<code>openldap-servers-overlays</code> というRPMをインストールすることで利用可能になるという記述が見つかります。しかし実際は、このRPMを使うのはCentOS 5系の話のようで、CentOS 7系の環境においてはこのRPMは存在しません。</p>
+
+<h3 id="by-default-it-is-not-built">By default it is not built.</h3>
+
+<p>manの <a href="https://linux.die.net/man/5/slapd.overlays">slapd.overlays</a> を見ると</p>
+
+<blockquote>
+<p>auditlog<br />
+Audit Logging. This overlay records changes on a given backend database to an LDIF log file. By default it is not built.</p>
+</blockquote>
+
+<p>という記述が見つかります。<br />
+ビルドオプションを変更してRPMをビルドしなおさなければならないように思えますが、実際はそうではありません。</p>
+
+<h3 id="modulepath">modulepath</h3>
+
+<p>このように、auditlogのmoduleはopenldap-serversによって既にインストールされていそうなことがわかります。</p>
+
+<pre><code>$ rpm -qpl openldap-servers-2.4.40-13.el7.x86_64.rpm | grep auditlog
+/usr/lib64/openldap/auditlog-2.4.so.2
+/usr/lib64/openldap/auditlog-2.4.so.2.10.3
+/usr/lib64/openldap/auditlog.la
+</code></pre>
+
+<p>ではなぜこのmoduleが読み込まれていないのかを調べます。
+関連しそうな設定として、<code>modulepath</code> がありました。しかし、このパラメータのデフォルトは <code>/usr/lib64/openldap</code> となっているようなので、これを変更することで解決することはなさそうです。</p>
+
+<h1 id="解決方法">解決方法</h1>
+
+<p><code>modulepath</code> と関連した設定として <code>moduleload</code> というパラメータがあります。
+ <code>modulepath</code> で指定したパスに存在するmoduleは自動的に読み込まれるものと思い込んでしまいましたが、実際は <code>moduleload</code> にてmodule名を指定する必要があるようです。</p>
+
+<p>ということで、最終的には以下のように設定することで、auditlogを出力することができるということがわかりました。</p>
+
+<pre><code>modulepath /usr/lib64/openldap # デフォルト値なので省略可
+moduleload auditlog
+overlay auditlog
+auditlog &lt;filename&gt;  
+</code></pre>
+
+<p>以上、CentOSでslapdのauditlogを使う方法でした。</p>
+
+    </div>
+
+    <footer>
+        <ul class="stats">
+    
+        
+
+        
+        
+            <li>
                 
+                
+                    
 
-<p><a href="/about_en/">In English</a></p>
+                    
+                        Categories
+                    
+                
+            </li>
+        
+    
 
-<h1 id="me">me</h1>
-
-<p>Satoshi Tajima (@s_tajima)<br />
-渋谷で働くインフラエンジニアです。</p>
-
-<h1 id="blog">blog</h1>
-
-<p>本ブログは</p>
-
-<ul>
-<li>ホスティングはGitHub Pages</li>
-<li>コンテンツ作成はHugo</li>
-<li>CDN, TLS配信はCloudflare</li>
+    
+    
+        <li><a href='/categories/ja'>ja</a></li>
+    
+        <li><a href='/categories/ldap'>ldap</a></li>
+    
 </ul>
 
-<p>を利用して運用しています。</p>
+    </footer>
 
-<p>過去のブログはこちら。<br />
-<a href="http://s-tajima.hateblo.jp/">http://s-tajima.hateblo.jp/</a></p>
+    <section id="social-share">
+        <ul class="icons">
+            
 
-            </div>
-        </article>
+
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&text=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b&via=s_tajima_tech" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
+
+
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&title=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&title=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&title=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+</article>
+<ul class="actions pagination">
+    
+        <li><a href="https://blog.s-tajima.work/post/2017/intro-autoknitter/"
+                class="button big previous">AWSのAMIをゼロから作る autoknitterの紹介</a></li>
+    
+
+    
+</ul>
+
+
+
+
     </div>
     
 <section id="sidebar">
