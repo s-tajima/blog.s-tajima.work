@@ -16,8 +16,13 @@ title = "about"
 # me
 
 Satoshi Tajima (@s_tajima)  
-渋谷で働くインフラエンジニアです。
+渋谷で働くインフラエンジニアです。  
+主な仕事はLinuxサーバの管理、AWS等のクラウドサービスの運用です。  
+プログラムも書きます。RubyやGoを使うことが多いです。  
+  
+最近は趣味で機械学習, FinTech(主に暗号通貨) あたりの勉強をしています。
 
+Email: tajima1989 ~at~ gmail.com
 
 # blog
 

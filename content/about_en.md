@@ -16,7 +16,13 @@ title = "about"
 # me
 
 Satoshi Tajima (@s_tajima)  
-I'm a infrastructure engineer, work in Shibuya.
+Infrastructure engineer, work in Shibuya.  
+I'm in charge of Linux servers and Cloud Service (such as AWS) management.  
+And I can use Ruby, Go and some languages.  
+  
+Recently, I'm interested in Machine Learning, Fintech (especially CryptoCurrency).  
+
+Email: tajima1989 ~at~ gmail.com
 
 # blog
 

@@ -2,6 +2,7 @@ HUGO := bin/hugo
 
 build:
 	rm -rf docs/*
+	echo "blog.s-tajima.work" > docs/CNAME
 	$(HUGO)
 
 preview:
