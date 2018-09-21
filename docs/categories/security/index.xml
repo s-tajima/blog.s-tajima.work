@@ -17,7 +17,7 @@
       <pubDate>Thu, 21 Sep 2017 18:30:25 +0900</pubDate>
       
       <guid>https://blog.s-tajima.work/post/2018/cve-2018-17082/</guid>
-      <description>3行まとめ PHPにおいて、 リクエストヘッダの処理の不備により、XSSに結びつく可能性のある脆弱性が見つかった。 CVEは CVE-2018-17</description>
+      <description>こんにちは。久しぶりのブログになりました。 最近はインフラの仕事に加えてセキュリティ周りも見るようになりました。 (元々まったくやってなかったわ</description>
     </item>
     
   </channel>
