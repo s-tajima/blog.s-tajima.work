@@ -12,12 +12,12 @@
     
     
     <item>
-      <title>CVE-2018-17082によるXSSはそれほどの脅威ではないだろうという話</title>
+      <title>CVE-2018-17082によるXSSに関する見解</title>
       <link>https://blog.s-tajima.work/post/2018/cve-2018-17082/</link>
       <pubDate>Fri, 21 Sep 2018 18:30:25 +0900</pubDate>
       
       <guid>https://blog.s-tajima.work/post/2018/cve-2018-17082/</guid>
-      <description>こんにちは。久しぶりのブログになりました。 最近はインフラの仕事に加えてセキュリティ周りも見るようになりました。 (元々まったくやってなかったわ</description>
+      <description>2018/10/13 追記 徳丸さん(@ockeghem) により、mod_cache利用時にXSSが成立してしまうケースが確認されました。 これにより環境によっては</description>
     </item>
     
   </channel>
