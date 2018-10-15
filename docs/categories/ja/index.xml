@@ -12,7 +12,7 @@
     
     
     <item>
-      <title>ptraceを使ってプロセスの *現在の* 環境変数を確認する</title>
+      <title>ptraceを使ってプロセスの *現在の* 環境変数を参照する</title>
       <link>https://blog.s-tajima.work/post/2018/intro-peke-envs/</link>
       <pubDate>Mon, 15 Oct 2018 12:00:00 +0900</pubDate>
       

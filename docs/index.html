@@ -175,7 +175,7 @@ ga('send', 'pageview');
 
                 
                     <li>
-                        <a href="https://blog.s-tajima.work/post/2018/intro-peke-envs/"><p>ptraceを使ってプロセスの *現在の* 環境変数を確認する</p></a>
+                        <a href="https://blog.s-tajima.work/post/2018/intro-peke-envs/"><p>ptraceを使ってプロセスの *現在の* 環境変数を参照する</p></a>
                     </li>
                 
                     <li>
@@ -208,7 +208,7 @@ ga('send', 'pageview');
     <header>
     <div class="title">
         
-            <h2><a href="https://blog.s-tajima.work/post/2018/intro-peke-envs/">ptraceを使ってプロセスの *現在の* 環境変数を確認する</a></h2>
+            <h2><a href="https://blog.s-tajima.work/post/2018/intro-peke-envs/">ptraceを使ってプロセスの *現在の* 環境変数を参照する</a></h2>
         
         
     </div>
@@ -402,7 +402,7 @@ Rustやptrace(2)の勉強をするいい機会になりました。</p>
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&text=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b&via=s_tajima_tech" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&text=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e5%8f%82%e7%85%a7%e3%81%99%e3%82%8b&via=s_tajima_tech" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
@@ -420,19 +420,19 @@ Rustやptrace(2)の勉強をするいい機会になりました。</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e5%8f%82%e7%85%a7%e3%81%99%e3%82%8b" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e5%8f%82%e7%85%a7%e3%81%99%e3%82%8b" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e5%8f%82%e7%85%a7%e3%81%99%e3%82%8b" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
@@ -468,7 +468,7 @@ Rustやptrace(2)の勉強をするいい機会になりました。</p>
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&text=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b&via=s_tajima_tech" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&text=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e5%8f%82%e7%85%a7%e3%81%99%e3%82%8b&via=s_tajima_tech" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
@@ -486,19 +486,19 @@ Rustやptrace(2)の勉強をするいい機会になりました。</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e5%8f%82%e7%85%a7%e3%81%99%e3%82%8b" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e5%8f%82%e7%85%a7%e3%81%99%e3%82%8b" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e5%8f%82%e7%85%a7%e3%81%99%e3%82%8b" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
@@ -612,7 +612,7 @@ Rustやptrace(2)の勉強をするいい機会になりました。</p>
                     <li>
                         <article>
                             <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2018/intro-peke-envs/">ptraceを使ってプロセスの *現在の* 環境変数を確認する</a></h3>
+                                <h3><a href="https://blog.s-tajima.work/post/2018/intro-peke-envs/">ptraceを使ってプロセスの *現在の* 環境変数を参照する</a></h3>
                                 
                                     
                                 

@@ -7,7 +7,7 @@ featured = ""
 featuredalt = ""
 featuredpath = ""
 linktitle = ""
-title = "ptraceを使ってプロセスの *現在の* 環境変数を確認する"
+title = "ptraceを使ってプロセスの *現在の* 環境変数を参照する"
 
 +++
 
