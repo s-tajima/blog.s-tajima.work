@@ -29,7 +29,7 @@
 
 
 
-<meta property="og:updated_time" content="2018-09-21T18:30:25&#43;09:00"/>
+<meta property="og:updated_time" content="2018-10-15T12:00:00&#43;09:00"/>
 
 
 
@@ -175,6 +175,10 @@ ga('send', 'pageview');
 
                 
                     <li>
+                        <a href="https://blog.s-tajima.work/post/2018/intro-peke-envs/"><p>ptraceを使ってプロセスの *現在の* 環境変数を確認する</p></a>
+                    </li>
+                
+                    <li>
                         <a href="https://blog.s-tajima.work/post/2018/cve-2018-17082/"><p>CVE-2018-17082によるXSSに関する見解</p></a>
                     </li>
                 
@@ -188,10 +192,6 @@ ga('send', 'pageview');
                 
                     <li>
                         <a href="https://blog.s-tajima.work/post/2017/intro-tshark_en/"><p>Breakdown investigation of network traffic using tshark.</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="https://blog.s-tajima.work/post/2017/intro-tshark/"><p>tsharkを用いたネットワークトラフィックの内訳の調査</p></a>
                     </li>
                 
             </ul>
@@ -208,7 +208,7 @@ ga('send', 'pageview');
     <header>
     <div class="title">
         
-            <h2><a href="https://blog.s-tajima.work/post/2018/cve-2018-17082/">CVE-2018-17082によるXSSに関する見解</a></h2>
+            <h2><a href="https://blog.s-tajima.work/post/2018/intro-peke-envs/">ptraceを使ってプロセスの *現在の* 環境変数を確認する</a></h2>
         
         
     </div>
@@ -218,8 +218,8 @@ ga('send', 'pageview');
         
 
         <time class="published"
-            datetime='2018-09-21'>
-            September 21, 2018</time>
+            datetime='2018-10-15'>
+            October 15, 2018</time>
         <span class="author">Satoshi Tajima</span>
         
         
@@ -232,182 +232,138 @@ ga('send', 'pageview');
     <div id="content">
         
 
-<p><em>2018/10/13 追記</em></p>
+<p>ptraceを使って特定のプロセスの <strong>現在の</strong> 環境変数を参照するためのプログラムを書いてみたのでその紹介です。</p>
 
-<p>徳丸さん(@ockeghem) により、mod_cache利用時にXSSが成立してしまうケースが確認されました。<br />
-これにより環境によっては本脆弱性の緊急度合いが大きく変わってくるため、<br />
-タイトルと本文を一部修正しました。</p>
+<h2 id="背景">背景</h2>
 
-<p>詳細はこちらです。<br />
-<a href="https://blog.tokumaru.org/2018/09/cve-2018-17082-cache-poisoning.html">https://blog.tokumaru.org/2018/09/cve-2018-17082-cache-poisoning.html</a></p>
+<p>Linuxを使っていると、プロセスの環境変数を参照したいと思うことってありますよね。<br />
+そんなとき、僕はよく <code>/proc/[PID]/environ</code> を参照します。</p>
 
-<hr />
-
-<p>こんにちは。久しぶりのブログになりました。<br />
-最近はインフラの仕事に加えてセキュリティ周りも見るようになりました。<br />
-(元々まったくやってなかったわけではないけど)</p>
-
-<p>今回はPHPの脆弱性の話題です。</p>
-
-<h2 id="3行まとめ">3行まとめ</h2>
-
-<ul>
-<li>PHPにおいて、 リクエストヘッダの処理の不備により、XSSに結びつく可能性のある脆弱性が見つかった。</li>
-<li>CVEは <a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-17082">CVE-2018-17082</a>、 PHPは Sec Bug <a href="https://bugs.php.net/bug.php?id=76582">#76582</a> として扱われている。</li>
-<li>詳細を確認したところ、<del>現実的な脅威になるほどのものではなさそうという見解に落ち着いた。</del> 環境によっては大きく影響を受けることが確認されています。
-<br /></li>
-</ul>
-
-<h2 id="脆弱性の概要">脆弱性の概要</h2>
-
-<p>PHP BTSのURLはこちらです。<br />
-<a href="https://bugs.php.net/bug.php?id=76582">https://bugs.php.net/bug.php?id=76582</a></p>
-
-<p>該当のシステムに対して <code>Transfer-Encoding: chunked</code> を含んだ以下のようなリクエストを送信すると&hellip;</p>
-
-<pre><code>POST /lol.php HTTP/1.1  
-Host: localhost  
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:61.0) Gecko/20100101 Firefox/61.0  
-Accept-Language: en-US,en;q=0.5  
-Content-Type: application/json  
-Upgrade-Insecure-Requests: 1  
-Cache-Control: max-age=0  
-Transfer-Encoding: chunked  
-Content-Length: 25  
- 
-&lt;script&gt;alert(1)&lt;/script&gt;  
+<pre><code>$ strings /proc/1234/environ
+LANG=ja_JP.UTF-8
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+.. snip ..
 </code></pre>
 
-<p>本来 <code>&quot;{'hack':'1'}&quot;</code> というレスポンスが返ってくるはずが、<br />
-リクエストのボディが含まれた <code>&quot;{'hack':'1'}&quot;&lt;script&gt;alert(1)&lt;/script&gt;</code> というレスポンスになってしまう。</p>
+<p>(権限がないプロセスを対象にする場合はroot権限が必要です。)</p>
 
-<pre><code>HTTP/1.1 200 OK
-Date: Mon, 02 Jul 2018 05:23:16 GMT
-Server: Apache/2.4.33 (Unix) PHP/7.1.17
-X-Powered-By: PHP/7.1.17
-Content-Length: 39
-Connection: close
-Content-Type: text/html; charset=UTF-8
+<p>しかし、 <code>/proc/[PID]/environ</code> で参照できるのはあくまで <strong>プロセス実行時の</strong> 環境変数のみであり、<br />
+実行後に追加/変更されたものを参照することができません。</p>
 
-&quot;{'hack':'1'}&quot;&lt;script&gt;alert(1)&lt;/script&gt; 
-</code></pre>
-
-<p>よって同様のリクエストを他者に強要することで、XSSが成立するだろうという話のようです。</p>
-
-<h2 id="攻撃成立の難しさ">攻撃成立の難しさ</h2>
-
-<p>本脆弱性を利用してXSSを成立させるには、</p>
+<p>つまり、このようにDotenv等によって追加された変数を参照することはできないということです。</p>
 
 <ul>
-<li>他者のブラウザに該当のリクエストの発生を強要する</li>
-<li>本脆弱性を持つ環境に該当のリクエストを到達させる</li>
+<li>起動時にシェルから / 起動後にDotenvで 追加した環境変数を表示するスクリプト(env.rb)を実行。</li>
 </ul>
 
-<p>という必要があります。<br />
-この条件を満たすことにどれほどの現実性があるのかを考えてみます。</p>
+<pre><code>$ cat env.rb
+require 'dotenv'
+Dotenv.load
 
-<h3 id="他者のブラウザに該当のリクエストの発生を強要することについて">他者のブラウザに該当のリクエストの発生を強要することについて</h3>
+puts &quot;pid: #{$$}&quot;
+puts &quot;STARTUP_KEY: #{ENV['STARTUP_KEY']}&quot;
+puts &quot;DOTENV_ADDED_KEY: #{ENV['DOTENV_ADDED_KEY']}&quot;
+sleep 10
 
-<p>いわゆる反射型のXSSなので、基本的には攻撃対象者にリンクを踏ませるところが攻撃の起点です。<br />
-今回はPOSTのリクエストが必要なので、罠ページを用意してそこから攻撃対象サイトにPOSTするような方法が考えられます。</p>
+$ cat .env
+DOTENV_ADDED_KEY=DOTENV_ADDED_VAL
 
-<p>まずはそんなPOSTができる罠ページを用意するために、攻撃用のリクエストをもう一度見てみましょう。</p>
+$ STARTUP_KEY=STARTUP_VAL ruby env.rb
+pid: 7716
+STARTUP_KEY: STARTUP_VAL
+DOTENV_ADDED_KEY: DOTENV_ADDED_VAL
+# .. sleeping ..
+</code></pre>
 
-<p>細かい話として、 Transfer-Encoding と Content-Length を同時に指定するのは、<br />
-以下のように <a href="https://tools.ietf.org/html/rfc7230#section-3.3.2">RFC 7230</a> において禁止されているので、 Transfer-Encoding だけを指定することを考えましょう。</p>
+<ul>
+<li>別のシェルから <code>/proc/[PID]/environ</code> を確認。</li>
+</ul>
+
+<pre><code>$ strings /proc/7716/environ | grep _KEY=
+STARTUP_KEY=STARTUP_VAL
+</code></pre>
+
+<p>今開いているシェルのプロセスに限って言えば、 <code>env</code> コマンドを使うことができます。<br />
+<code>env</code> コマンドであれば、プロセス(シェル)起動後に追加された環境変数も参照できます。</p>
+
+<pre><code>$ env | grep ADDED_KEY
+$ export ADDED_KEY=ADDED_VALUE
+$ env | grep ADDED_KEY
+ADDED_KEY=ADDED_VALUE
+</code></pre>
+
+<p>では、それ以外のプロセスの <strong>現在の</strong> 環境変数を参照したい場合はどうすればよいでしょう。<br />
+今回は、それを実現するためのプログラムを書いてみたという話です。</p>
+
+<p>尚、プログラムを書いてみたのはあくまで学習目的であり、<br />
+同様のことを手軽にやるならgdbを使うことをおすすめします。</p>
+
+<h2 id="peke-envs">peke_envs</h2>
+
+<p>作成したプログラムはこちら。<br />
+<a href="https://github.com/s-tajima/peke_envs">https://github.com/s-tajima/peke_envs</a></p>
+
+<p>先程の env.rb のプロセスに対して実行すると、このようにDotenvで追加した環境変数も表示されます。</p>
+
+<pre><code>$ ./peek 7716
+.. snip ..
+STARTUP_KEY=STARTUP_VAL
+DOTENV_ADDED_KEY=DOTENV_ADDED_VAL
+.. snip ..
+</code></pre>
+
+<p>尚、現時点ではすべてのプロセスを対象にできるわけではなく、<br />
+libcをダイナミックリンクしているプロセスだけを対象にできます。<br />
+理由は次に記載する動作の仕組みによるものです。</p>
+
+<p><em>エラーハンドリングの不備により、対象のプロセスが停止状態のままになってしまう(SIGCONTを送れば再開できます) ケースがあるので、重要なプロセスを対象にするのは避けてください。</em></p>
+
+<h2 id="動作の仕組み">動作の仕組み</h2>
+
+<p><em>もしかしたら認識や表現が誤っている部分があるかもしれないですが、そのときはTwitterなどで教えてください。</em></p>
+
+<p>Linux上で稼働するプロセスは、POSIXに準拠しています。<br />
+環境変数というのは、POSIXで定義されている値で environ というポインタから参照できます。<br />
+現状、多くのプログラムはPOSIXに準拠するためにlibcというライブラリを使っています。</p>
+
+<p>よって、対象のプロセスにおいてlibcがマッピングされているアドレスを調べ、  そのlibcにおける environ ポインタのオフセットを調べ、  対象のプロセスにおいてenviron ポインタの値を参照し、  それを辿ることで環境変数の値が参照できます。</p>
+
+<p>肝となるのは ptrace(2) というシステムコールです。<br />
+<a href="http://man.he.net/?topic=ptrace&amp;section=all">http://man.he.net/?topic=ptrace&amp;section=all</a></p>
 
 <blockquote>
-<p>A sender MUST NOT send a Content-Length header field in any message that contains a Transfer-Encoding header field.</p>
+<p>The ptrace() system call provides a means by which one process (the &ldquo;tracer&rdquo;) may observe and control the execution of another process (the &ldquo;tracee&rdquo;), and examine and change the tracee&rsquo;s memory and registers.</p>
 </blockquote>
 
-<p>また、本脆弱性に関係ない他のヘッダも取り除いて考えます。</p>
+<p>ドキュメントにある通り、 ptrace を使うと特定のプロセスのメモリ値を参照したり、書き換えたりすることができます。
+操作の内容は、ptraceの第一引数で指定するのですが、 PTRACE_PEEKDATAで値の参照、PTRACE_POKEDATAで値の書き換えができます。これが peke_envsの名前の由来です。</p>
 
-<pre><code>POST /lol.php HTTP/1.1  
-Host: localhost  
-Content-Type: application/json  
-Transfer-Encoding: chunked  
- 
-&lt;script&gt;alert(1)&lt;/script&gt;  
-</code></pre>
+<p>この方法であれば、プロセスのメモリ <strong>現在の</strong> 状態を直接参照するので、起動後に追加された環境変数も参照できるのです。</p>
 
-<p>このリクエストでもレスポンスにリクエストのボディが含まれるため、XSSが成立しそうなことは確認できました。</p>
+<p>straceやgdbも、内部的にはこのptraceを使って動作しています。</p>
 
-<p>罠ページでは、このリクエストを強要することができればよさそうです。<br />
-しかし、ここに1つめのハードルがあります。</p>
+<h2 id="これから">これから</h2>
 
-<p>Transfer-Encoding ヘッダは、 <a href="https://fetch.spec.whatwg.org/#forbidden-header-name">forbidden header name</a> に含まれているため、<br />
-XHRの <code>setRequestHeader()</code> 等で、自由にリクエストに付与することはできません。<br />
-また、実はそもそもこのリクエストは、 HTTPの仕様として正しいものではありません。<br />
-Transfer-Encoding: chunked の場合の正しいボディ(chunked-body)は、</p>
+<p>peke_envsは勉強のためにRustで書いてみました。<br />
+Rustを書くのは初めてで、まだ慣れないところがあって思うようにかけてないところもありますが、<br />
+少しずつ良くしていこうと思っています。</p>
 
-<pre><code>chunked-body   = *chunk
-                 last-chunk
-                 trailer-part
-                 CRLF
-chunk          = chunk-size [ chunk-ext ] CRLF
-                 chunk-data CRLF
-chunk-size     = 1*HEXDIG
-last-chunk     = 1*(&quot;0&quot;) [ chunk-ext ] CRLF
-</code></pre>
+<p>また、現時点では環境変数を参照するところまでしかできていないのですが、<br />
+変更や追加もできるようにしてみようと思っています。<br />
+今のように環境変数のアドレスに対して直接操作(PEEKDATA/POKEDATA)するのではなく、<br />
+対象のプロセスの <code>putenv()/setenv()</code> を呼び出すというアプローチをとってみようと思っています。</p>
 
-<p>となっていなければいけません。 chunk-size や last-chunk が抜けているのです。<br />
-よって、(ブラウザのバグ等がない限り)攻撃対象者を罠ページに誘導することができたとしても、<br />
-上記のようなリクエストをブラウザから自然に送信させることは難しいでしょう。</p>
+<h2 id="余談">余談</h2>
 
-<p>尚、このように、HTTP的に正しいリクエストにしてしまうと今回の攻撃は再現しません。</p>
+<p>今回のように稼働中のプロセスの環境変数を操作してみようと思い至ったのは、Webアプリケーションにおけるデータベース等の認証情報の取り扱いについて考えたのがきっかけでした。</p>
 
-<pre><code>POST /lol.php HTTP/1.1
-Host: localhost
-Content-Type: application/json
-Transfer-Encoding: chunked
- 
-19&lt;CR&gt;&lt;LF&gt;
-&lt;script&gt;alert(1)&lt;/script&gt;&lt;CR&gt;&lt;LF&gt;
-0&lt;CR&gt;&lt;LF&gt;
-</code></pre>
+<p>AWS Secrets Manager や HashiCorp Vault を使うと、認証情報を定期的に自動的にローテートすることができるようになります。<br />
+問題となるのは、Webアプリケーションからローテート後の認証情報を使えるようにするところなのですが、通常は Secrets ManagerのAPIを呼び出すための <a href="https://aws.amazon.com/jp/tools/">SDK</a> や、Vaultの <a href="https://www.vaultproject.io/api/libraries.html">クライアントライブラリ</a> を使って認証情報を取得する実装を書く必要があります。<br />
+毎回そういった実装をアプリケーションに書いていくのは少し面倒だし、OSSなどでそのあたりを自由にコントロールできないというケースもあります。<br />
+「Secrets ManagerやVaultによる認証情報のローテートを検知して、対象のプロセスの環境変数を自動的に書き換えてくれるような仕組み」が作れると、既存のアプリケーションはあくまで環境変数を読み込むだけでよく、また開発環境のため処理を分岐するといったこともせずに済むので楽なのではと考えました。</p>
 
-<h2 id="本脆弱性を持つ環境に該当のリクエストを到達させることについて">本脆弱性を持つ環境に該当のリクエストを到達させることについて</h2>
-
-<p>運良く(悪く)、ブラウザから前述のような攻撃が成立するリクエストを投げる方法が見つかったとしましょう。<br />
-次のハードルは、そのリクエストをそのまま攻撃対象サイトのシステムに到達させるところです。</p>
-
-<p>ロードバランサやCDNのようなホップが間に入ってしまうと、そのままリクエストを攻撃対象に到達させることは難しくなります。<br />
-例えばAWSのALBにおいては、このようにALBから400が返ってきてしまいます。</p>
-
-<pre><code>POST /lol.php HTTP/1.1  
-Host: localhost  
-Content-Type: application/json  
-Transfer-Encoding: chunked  
- 
-&lt;script&gt;alert(1)&lt;/script&gt;
-HTTP/1.1 400 Bad Request
-Server: awselb/2.0
-Date: Fri, 21 Sep 2018 08:38:33 GMT
-Content-Type: text/html
-Content-Length: 138
-Connection: close
-
-&lt;html&gt;
-&lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;
-&lt;body bgcolor=&quot;white&quot;&gt;
-&lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-
-<p>もちろんそもそもこのようなホップが間に入らない場合もあるでしょうし、
-間に入る製品/サービスによって挙動が違うというのはあるので、その点は注意が必要です。</p>
-
-<h2 id="結論">結論</h2>
-
-<p>このように、CVE-2018-17082を悪用してXSSを成立させるには、超えるのが難しいハードルが存在するため、<br />
-<del>現実的にはそれほどの脅威にならないだろうと考えています。</del>
-冒頭に追記した通り、環境によってはXSSが容易に成立してしまうケースが確認されています。</p>
-
-<p>もし見落としている観点などあれば、Twitter等でご指摘いただけると嬉しいです。</p>
-
-<p>もちろん、この脆弱性が大きな脅威ではないからといってアップデートをしなくていいということにはなりません、<br />
-あくまでこの情報を優先順位や緊急度の参考とした上で、適切にアップデートは行いましょう。</p>
+<p>結局、こんなやり方をしなくとも、少し雑ですが「認証情報のローテートを検知して、認証情報を環境変数にセットした上で対象のプロセスを再起動する」という仕組みでも十分なのではと考え直したので、peke_envsはあくまで趣味の勉強のためという範疇にとどまるでしょう。<br />
+Rustやptrace(2)の勉強をするいい機会になりました。</p>
 
     </div>
 
@@ -435,7 +391,7 @@ Connection: close
     
         <li><a href='/categories/ja'>ja</a></li>
     
-        <li><a href='/categories/security'>security</a></li>
+        <li><a href='/categories/'></a></li>
     
 </ul>
 
@@ -446,43 +402,43 @@ Connection: close
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fcve-2018-17082%2f&text=CVE-2018-17082%e3%81%ab%e3%82%88%e3%82%8bXSS%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e8%a6%8b%e8%a7%a3&via=s_tajima_tech" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&text=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b&via=s_tajima_tech" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fcve-2018-17082%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fcve-2018-17082%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fcve-2018-17082%2f&title=CVE-2018-17082%e3%81%ab%e3%82%88%e3%82%8bXSS%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e8%a6%8b%e8%a7%a3" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fcve-2018-17082%2f&title=CVE-2018-17082%e3%81%ab%e3%82%88%e3%82%8bXSS%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e8%a6%8b%e8%a7%a3" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fcve-2018-17082%2f&title=CVE-2018-17082%e3%81%ab%e3%82%88%e3%82%8bXSS%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e8%a6%8b%e8%a7%a3" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fcve-2018-17082%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -492,8 +448,8 @@ Connection: close
 </article>
 <ul class="actions pagination">
     
-        <li><a href="https://blog.s-tajima.work/post/2017/use-slapd-with-auditlog/"
-                class="button big previous">CentOSでslapdのauditlogを有効にする</a></li>
+        <li><a href="https://blog.s-tajima.work/post/2018/cve-2018-17082/"
+                class="button big previous">CVE-2018-17082によるXSSに関する見解</a></li>
     
 
     
@@ -512,43 +468,43 @@ Connection: close
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fcve-2018-17082%2f&text=CVE-2018-17082%e3%81%ab%e3%82%88%e3%82%8bXSS%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e8%a6%8b%e8%a7%a3&via=s_tajima_tech" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&text=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b&via=s_tajima_tech" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fcve-2018-17082%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fcve-2018-17082%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fcve-2018-17082%2f&title=CVE-2018-17082%e3%81%ab%e3%82%88%e3%82%8bXSS%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e8%a6%8b%e8%a7%a3" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fcve-2018-17082%2f&title=CVE-2018-17082%e3%81%ab%e3%82%88%e3%82%8bXSS%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e8%a6%8b%e8%a7%a3" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fcve-2018-17082%2f&title=CVE-2018-17082%e3%81%ab%e3%82%88%e3%82%8bXSS%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e8%a6%8b%e8%a7%a3" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fcve-2018-17082%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -656,6 +612,20 @@ Connection: close
                     <li>
                         <article>
                             <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2018/intro-peke-envs/">ptraceを使ってプロセスの *現在の* 環境変数を確認する</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2018-10-15'>
+                                    October 15, 2018</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
                                 <h3><a href="https://blog.s-tajima.work/post/2018/cve-2018-17082/">CVE-2018-17082によるXSSに関する見解</a></h3>
                                 
                                     
@@ -709,20 +679,6 @@ Connection: close
                         </article>
                     </li>
                 
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2017/intro-tshark/">tsharkを用いたネットワークトラフィックの内訳の調査</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2017-05-10'>
-                                    May 10, 2017</time>
-                            </header>
-                        </article>
-                    </li>
-                
 
                 
                     <li>
@@ -756,6 +712,15 @@ Connection: close
                     <li>
                         <article>
                             <header>
+                                <a href="/categories//"></a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
                                 <a href="/categories/aws/">aws</a>
                                 <span style="float:right;">1</span>
                             </header>
@@ -775,7 +740,7 @@ Connection: close
                         <article>
                             <header>
                                 <a href="/categories/ja/">ja</a>
-                                <span style="float:right;">6</span>
+                                <span style="float:right;">7</span>
                             </header>
                         </article>
                     </li>

@@ -21,8 +21,15 @@ header p {
 
 
 #content h1 {
-    margin: 1em 0 1em 0;
-    font-size: 1.3em;
+    margin: 1em 0 0.5em 0;
+    font-size: 1.5em;
+	text-decoration: underline;
+}
+
+#content h2 {
+    margin: 1em 0 0.5em 0;
+    font-size: 1.2em;
+	text-decoration: underline;
 }
 
 #content ul, #content ol, #content pre {

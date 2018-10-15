@@ -6,10 +6,19 @@
     <description>Recent content in Ja on s_tajima::TechBlog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Fri, 21 Sep 2018 18:30:25 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 15 Oct 2018 12:00:00 +0900</lastBuildDate>
     
 	<atom:link href="https://blog.s-tajima.work/categories/ja/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ptraceを使ってプロセスの *現在の* 環境変数を確認する</title>
+      <link>https://blog.s-tajima.work/post/2018/intro-peke-envs/</link>
+      <pubDate>Mon, 15 Oct 2018 12:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2018/intro-peke-envs/</guid>
+      <description>ptraceを使って特定のプロセスの 現在の 環境変数を参照するためのプログラムを書いてみたのでその紹介です。 背景 Linuxを使っていると、プロ</description>
+    </item>
     
     <item>
       <title>CVE-2018-17082によるXSSに関する見解</title>
