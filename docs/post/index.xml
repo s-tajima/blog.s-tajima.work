@@ -6,10 +6,19 @@
     <description>Recent content in Posts on s_tajima::TechBlog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Mon, 15 Oct 2018 12:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 22 Oct 2018 23:30:00 +0900</lastBuildDate>
     
 	<atom:link href="https://blog.s-tajima.work/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>shell2httpでAWS FargateやSSHレスの運用を少しだけ楽にする</title>
+      <link>https://blog.s-tajima.work/post/2018/shell2http-on-fargate/</link>
+      <pubDate>Mon, 22 Oct 2018 23:30:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2018/shell2http-on-fargate/</guid>
+      <description>はじめに AWS Fargate、便利ですよね。 EC2のコンテナインスタンスの管理が不要になり、コンテナの管理だけを気にすればよくなるため、設定の管</description>
+    </item>
     
     <item>
       <title>ptraceを使ってプロセスの *現在の* 環境変数を参照する</title>
