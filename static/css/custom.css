@@ -39,3 +39,9 @@ header p {
 #content ul ul, #content p {
 	margin: 0 0 0.5em 0;
 }
+
+#content p a, #content ul li a {
+	border-bottom: none;	
+	text-decoration: underline;
+    color: blue;
+}

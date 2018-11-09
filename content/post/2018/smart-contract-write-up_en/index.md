@@ -1,64 +1,54 @@
 +++
 author = "Satoshi Tajima"
-categories = [ "ja", "" ]
-#categories = [ "en", "" ]
-date = "2018-11-08T12:00:00+09:00"
+categories = [ "en", "" ]
+date = "2018-11-08T12:30:00+09:00"
 description = ""
 featured = ""
 featuredalt = ""
 featuredpath = ""
 linktitle = ""
-title = "CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp"
+title = "CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)"
 
 +++
 
+I participated in CODE BLUE 2018 held from Oct 29, 2018, to Nov 02, 2018,   
+and challenged the [Smart Contract Hacking Challenge](https://codeblue.jp/2018/en/contests/detail_03/) presented by [PolySwarm](https://polyswarm.io/).  
+As a result, I solved it in 1st place, so I publish its WriteUp.
 
-2018/10/29 ~ 2018/11/02 に開催された CODE BLUE 2018 に参加し、  
-そこで行われていた [PolySwarm](https://polyswarm.io/) の [Smart Contract Hacking Challenge](https://codeblue.jp/2018/contests/detail_03/) に挑戦してみました。
+# Background
 
-結果、1位で解くことができたのでそのWriteUpを公開します。
+When I started to solve it, I ...
 
-# 前提知識
+* Am interested in Crypto Currency and have traded that on some exchanges.
+* Study Smart Contract as a hobby and understand the overview.
+* Never written code for Smart Contract by myself or used it practically. (If anything, I've only done [CryptoZombies](https://cryptozombies.io/)). 
 
-このコンテストに参加した時点の僕は
+This article was written for a person at around this level.
 
-* 暗号通貨に興味があり、国内外の暗号通貨取引所で取引をしたことがある。
-* Smart contractは趣味で勉強し、概要は理解している。
-* 自分でSmart contractのコードを書いたり、実用的に利用したことはなく、 [CryptoZombies](https://cryptozombies.io/) を一通りやったことがある程度。
+From this level, gradually acquire the necessary tools and knowledge for running and debugging Smart contracts,
+It is a story until it can finally solve the problem.
 
-といった感じです。
-だいたいこのあたりのレベルの人達に向けた記事になってます。  
-このレベルから、Smart contractの実行やデバッグに必要なツールや知識を徐々に手に入れていき、  
-最終的に問題を解くことができるようになるまでの話になります。  
+# Challenge
 
-Smart contractとは?  Solidityとは? といった内容は触れません。  
-逆に、EVMに詳しい方にはもっと効率のよい解き方があれば教えてほしいなと思ってます。
+Going to PolySwarm booth in CODE BLUE, I got a piece of paper.
+These are written on the paper.
 
-# 問題
+* [An Ethereum Address of a Contract.](https://etherscan.io/address/0x64ba926175bc69ba757ef53a6d5ef616889c9999) (Etherscan URL)
+* [An Ethereum EOA Address and private key
 
-CODE BLUE の PolySwarm のブースに行き、  
-Smart Contract Hacking Challenge に参加したい旨を伝えると、1枚の紙がもらえます。
+This Contract is a target for hacking.
 
-紙には
+# Solution
 
-* [Ethereumのコントラクトのアドレス](https://etherscan.io/address/0x64ba926175bc69ba757ef53a6d5ef616889c9999) (EtherscanのURL)
-* EthereumのEOAのアドレス・秘密鍵
+## Checking the Contract.
 
-が記載されています。
+First of all, for checking the contract, view [Code Tab](https://etherscan.io/address/0x64ba926175bc69ba757ef53a6d5ef616889c9999#code) of Etherscan.
 
-このコントラクトがハックすべき対象です。
+![image](/post/2018/smart-contract-write-up_en/64ba92.png)
 
-# 解き方
-
-## コントラクトの確認
-
-コントラクトの内容を確認するため、まずは Etherscan の [Codeタブ](https://etherscan.io/address/0x64ba926175bc69ba757ef53a6d5ef616889c9999#code) を見ます。
-
-![image](/post/2018/smart-contract-write-up/64ba92.png)
-
-ここで不思議だったのが、Human Readableなソースコードが表示されている点です。  
-Ethereumのブロックチェーンには、コントラクトはバイトコードとして書き込まれているはずなので、  
-このような形でソースコードが確認できるのはおかしいと思いました。  
+I was wondering why human readable code is there.  
+In Ethereum block chain, contracts should be written as bytecode,  
+I thought it was strange that source code could be shown in this way.
 
 調べてみると、 Etherscan には、 [Verify Contract Code](https://etherscan.io/verifyContract2) という仕組みがあり、  
 あるアドレスを指定してコントラクトのソースコードをアップロードし、  
@@ -122,7 +112,7 @@ https://etherscan.io/tx/0xc7315ef6469d22c7c55d20c86bc80a59b8145d39ba74f24df96fc9
 次の手を考える上で、コントラクトがどのように実行されているのかを知りたくなりました。  
 [Remix](https://remix.ethereum.org/) という、SolidityのIDEがあるのを知っていたので、試しにそれを使ってみました。
 
-![image](/post/2018/smart-contract-write-up/remix_01.png)
+![image](/post/2018/smart-contract-write-up_en/remix_01.png)
 
 Etherscanで手に入れたソースコードを貼り付け、コントラクトのアドレスを指定すると、  
 Remixからコントラクトを呼び出せるようになります。
@@ -135,7 +125,7 @@ Remixからコントラクトを呼び出せるようになります。
 Debuggerを利用し、正解の番号と予想した番号を比較している処理を確認すると、  
 正解の番号(current)がなぜか `42` になっているのがわかりました。
 
-![image](/post/2018/smart-contract-write-up/remix_02.png)
+![image](/post/2018/smart-contract-write-up_en/remix_02.png)
 
 前述した current の設定方法(ある値を11で割った余り)では、ここが `42` になることはなさそうで、  
 また、予想した番号が `10` より大きい値だとエラーになるようなコードもあったので、なにかがおかしいです。
@@ -197,7 +187,7 @@ winnerLog = WinnerLog(winnerLog_);
 では、0x2e4d2a... のコントラクトを確認してみましょう。  
 https://etherscan.io/address/0x2e4d2a597a2fcbdf6cc55eb5c973e76aa19ac410#code
 
-![image](/post/2018/smart-contract-write-up/2e4d2a.png)
+![image](/post/2018/smart-contract-write-up_en/2e4d2a.png)
 
 残念ながらこちらはソースコードが確認できません。  
 そうです。このバイトコード or アセンブリ を読み解く必要があるのです。  
@@ -208,7 +198,7 @@ https://etherscan.io/address/0x2e4d2a597a2fcbdf6cc55eb5c973e76aa19ac410#code
 デコンパイルした結果がこちら。  
 https://ethervm.io/decompile?address=0x2E4d2a597A2fcBdF6CC55eb5c973E76Aa19Ac410&network=
 
-![image](/post/2018/smart-contract-write-up/decompilation.png)
+![image](/post/2018/smart-contract-write-up_en/decompilation.png)
 
 少しはマシになりました。しかし、まだ読み解くのは難しいです。  
 また、このコードはSolidityとしてValidなものではないので、これをデプロイして動作を確認してみることもできません。
@@ -232,7 +222,7 @@ CashMoneyコントラクトからWinnerLogコントラクトをCallした後も�
 表示されているオペコードと、スタックやメモリの変更内容がどうも食い違うのでおかしいなと気付きました。(おそらくバグ。)   
 仕方ないので、WinnerLogのアセンブリは先述のデコンパイラで一緒に出てくる Disassembly を見ながら進めました。  
 
-![image](/post/2018/smart-contract-write-up/disassembly.png)
+![image](/post/2018/smart-contract-write-up_en/disassembly.png)
 
 結果として、logWinner関数の第2引数、つまり players[msg.sender].name を、
 
