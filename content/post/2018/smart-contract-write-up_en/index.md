@@ -1,7 +1,7 @@
 +++
 author = "Satoshi Tajima"
 categories = [ "en", "" ]
-date = "2018-11-08T12:30:00+09:00"
+#date = "2018-11-08T12:30:00+09:00"
 description = ""
 featured = ""
 featuredalt = ""
@@ -127,8 +127,8 @@ I noticed that the current correct answer number  is somehow `42`.
 
 ![image](/post/2018/smart-contract-write-up_en/remix_02.png)
 
-前述した current の設定方法(ある値を11で割った余り)では、ここが `42` になることはなさそうで、  
-また、予想した番号が `10` より大きい値だとエラーになるようなコードもあったので、なにかがおかしいです。
+It is unlikely that this will be `42` in the current setting method described above (the remainder of dividing a certain value by 11).  
+Also, some code that caused an error if the guessed number is larger than `10`, so something is strange.
 
 処理を追っていくと、正しく設定されたcurrentの値(このときは4でした)が以下の処理のタイミングで書き換えられていることがわかりました。
 
