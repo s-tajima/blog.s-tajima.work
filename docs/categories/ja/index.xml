@@ -6,10 +6,19 @@
     <description>Recent content in Ja on s_tajima::TechBlog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Mon, 22 Oct 2018 23:30:00 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 08 Nov 2018 12:00:00 +0900</lastBuildDate>
     
 	<atom:link href="https://blog.s-tajima.work/categories/ja/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp</title>
+      <link>https://blog.s-tajima.work/post/2018/smart-contract-write-up/</link>
+      <pubDate>Thu, 08 Nov 2018 12:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2018/smart-contract-write-up/</guid>
+      <description>2018/10/29 ~ 2018/11/02 に開催された CODE BLUE 2018 に参加し、 そこで行われていた PolySwarm の Smart Contract Hacking Challenge に挑戦してみました。 結果、1位で解くことができたのでそのWriteUpを公開</description>
+    </item>
     
     <item>
       <title>shell2httpでAWS FargateやSSHレスの運用を少しだけ楽にする</title>
