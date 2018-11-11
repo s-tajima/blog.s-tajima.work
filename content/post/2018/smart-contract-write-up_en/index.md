@@ -47,40 +47,40 @@ First of all, for checking the contract, view [Code Tab](https://etherscan.io/ad
 ![image](/post/2018/smart-contract-write-up_en/64ba92.png)
 
 I was wondering why human readable code is there.  
-In Ethereum block chain, contracts should be written as bytecode,  
+In the Ethereum blockchain, contracts should be written as bytecode,  
 I thought it was strange that source code could be shown in this way.
 
-調べてみると、 Etherscan には、 [Verify Contract Code](https://etherscan.io/verifyContract2) という仕組みがあり、  
-あるアドレスを指定してコントラクトのソースコードをアップロードし、  
-コンパイルされた結果がブロックチェーン上のものと一致すればこのように表示することができる仕組みがあるようです。
+After googling it, I knew Etherscan has a feature that named [Verify Contract Code](https://etherscan.io/verifyContract2).  
+So someone who has the source code of a Contract can upload it,   
+and be shown it if the compiled bytecode was identical to the one on the blockchain.
 
-ということで、ここに表示されたソースコードを読んでいきます。  
-173行なのでそれほど読むのは大変ではなく、コントラクトの概要は、
+Now let's look at the code shown here.  
+It's only 173 lines of code, it's not so hard to read.  
+the Contract is ...
 
-* CashMoney という数当てゲーム。
-* 数字を予想する際にはコントラクトにに 0.001 ETH 以上を送金する必要がある。
-* 数が当たると、送金した金額に加えて先着順でボーナスの ETH が返金される。
-* 数が外れると、送金した ETH はコントラクトが没収。
+* Number guessing game named CashMoney.
+* Need to send more than 0.001 ETH to the Contract for guessing a number.
+* If the guess was correct, bonus ETH is refunded on a first-come-first-served basis in addition to the remitted amount.
+* If the guess was incorrect, the Contract confiscates ETH.
 
-というものでした。
-もう少し詳しい仕様として、
+and, in more details...
 
-* 予測する数字の範囲は 0 ~ 10。
-* チャレンジできるのは、予めコントラクト作成者がプレイヤーとして指定したアドレス(冒頭の紙に書かれていたもの)からのみ。
-* プレイヤーの情報 (プレイヤーNo. と 名前) を設定することができる。
-* 同じアドレスが複数回ボーナスを獲得できないように、WinnerLogという別のコントラクトにログが記録される。
+* The range of a guess is from 0 to 10.
+* The only address that the contract creator previously designated as a player can challenge.
+* You can set player number and name as player information.
+* For preventing an address from getting bonus multiple times, a log is recorded to the other Contract that named WinnerLog.
 
-といったものであることもわかりました。
 
-## 最初のトライ
+## First try.
 
-正解の数字がどのように決められているのかを確認します。
+Next, I confirmed how the correct number is decided.
 
-すると、正解の数字は
+Then, the correct number is defined as below.
 ```
 uint256 private current;
 ```
-として定義され、
+
+and set in this function.
 
 ```
 function every_day_im_shufflin() internal {
@@ -88,42 +88,42 @@ function every_day_im_shufflin() internal {
     current = uint8(keccak256(abi.encodePacked(blockhash(block.number-2)))) % 11;
 }
 ```
-という関数で設定されているのがわかります。  
-また、この every_day_im_shufflin() は、コントラクト作成時と、誰かが数字を当てた時によびだされているようです。
 
-予想する数字が 0 ~ 10 であり、正解がシャッフルされるのが誰かが数字を当てたときだけなのであれば、  
-総当たりで正解できてしまうのでは? と思って試してみることにしました。
+This every_day_im_shufflin () seems to be called when creating a contract and when someone hits a number.
 
-このときは、Node.jsのweb3.jsを使ってこんなコードを書き、コントラクトを実行していました。  
+The correct number is from 0 to 10, and it is shuffled only when someone hits,   
+so I thought I could use bruteforce and try that.
+
+
+At this time, I've wrote code like this and execute the Contract by using web3.js of Node.js.  
 https://gist.github.com/s-tajima/970901318960c038291ff90f4404fe35
 
-ここから  
+From here ...  
 https://etherscan.io/tx/0xc9e32cf91c122a62c001e6a34b05e970e4c27eb0e807301b20953bc03601f0b8
 
-ここまであたりがそのトライです。  
+to here is this try.  
 https://etherscan.io/tx/0xc7315ef6469d22c7c55d20c86bc80a59b8145d39ba74f24df96fc93782521660
 
-結果としては、当然そんな簡単に解けてしまう問題であるわけはなく、  
-0 ~ 10のすべての数字でトランザクションがRevertされてしまいます。
+As a result, of course, it is not a problem that can be solved so easily,  
+Transactions are reverted with all numbers from 0 to 10.
 
+## Debugging with Remix.
 
-## Remix によるデバッグ
-
-次の手を考える上で、コントラクトがどのように実行されているのかを知りたくなりました。  
-[Remix](https://remix.ethereum.org/) という、SolidityのIDEがあるのを知っていたので、試しにそれを使ってみました。
+To think about the next try, I'd now like to know how contracts are executed.  
+I knew there was a Solidity IDE called [Remix](https://remix.ethereum.org/), so I tried using it for testing.
 
 ![image](/post/2018/smart-contract-write-up_en/remix_01.png)
 
-Etherscanで手に入れたソースコードを貼り付け、コントラクトのアドレスを指定すると、  
-Remixからコントラクトを呼び出せるようになります。
+Paste the source code you got from Etherscan and specify the address of the contract,  
+and you will be able to call contracts from Remix.
 
-また、Debuggerの機能を使うと、呼び出したコントラクトの実行状況を確認することができます。  
-このデバッグ機能を使うと、Solidity上でprivateとして定義した変数も参照できます。
+Also, you can use the Debugger function to check the execution status of the called contract.  
+With this debugging function, you can also refer to variables defined as private on Solidity.
 
-(privateという修飾子は、単なるスコープの定義であって、誰からも見えないようにするという設定ではないので、自分でコントラクトのコードを書くときには注意しましょう。)
+(The private modifier is merely the definition of the scope, not the modifier to make it invisible to anyone, so be careful when writing the contract code yourself.)
 
-Debuggerを利用し、正解の番号と予想した番号を比較している処理を確認すると、  
-正解の番号(current)がなぜか `42` になっているのがわかりました。
+By using Debugger and confirming the process which compares the correct answer number with the expected number,
+I noticed that the current correct answer number  is somehow `42`.
 
 ![image](/post/2018/smart-contract-write-up_en/remix_02.png)
 
