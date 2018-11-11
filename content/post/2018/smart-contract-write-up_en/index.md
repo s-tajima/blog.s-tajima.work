@@ -1,13 +1,13 @@
 +++
 author = "Satoshi Tajima"
-categories = [ "en", "" ]
+#categories = [ "en", "" ]
 #date = "2018-11-08T12:30:00+09:00"
 description = ""
 featured = ""
 featuredalt = ""
 featuredpath = ""
 linktitle = ""
-title = "CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)"
+#title = "CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)"
 
 +++
 
