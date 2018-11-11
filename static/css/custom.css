@@ -45,3 +45,7 @@ header p {
 	text-decoration: underline;
     color: blue;
 }
+
+code {
+    padding: 0.1em 0.3em;
+}
