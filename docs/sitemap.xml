@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/</loc>
+    <lastmod>2018-11-25T12:30:00+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://blog.s-tajima.work/post/2018/smart-contract-write-up/</loc>
     <lastmod>2018-11-08T12:00:00+09:00</lastmod>
   </url>
@@ -64,12 +69,8 @@
   
   <url>
     <loc>https://blog.s-tajima.work/categories/</loc>
-    <lastmod>2018-11-08T12:00:00+09:00</lastmod>
+    <lastmod>2018-11-25T12:30:00+09:00</lastmod>
     <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/</loc>
   </url>
   
   <url>
@@ -80,13 +81,13 @@
   
   <url>
     <loc>https://blog.s-tajima.work/categories/</loc>
-    <lastmod>2018-11-08T12:00:00+09:00</lastmod>
+    <lastmod>2018-11-25T12:30:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://blog.s-tajima.work/categories/en/</loc>
-    <lastmod>2017-05-11T00:00:00+09:00</lastmod>
+    <lastmod>2018-11-25T12:30:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -104,7 +105,7 @@
   
   <url>
     <loc>https://blog.s-tajima.work/post/</loc>
-    <lastmod>2018-11-08T12:00:00+09:00</lastmod>
+    <lastmod>2018-11-25T12:30:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -127,7 +128,7 @@
   
   <url>
     <loc>https://blog.s-tajima.work/</loc>
-    <lastmod>2018-11-08T12:00:00+09:00</lastmod>
+    <lastmod>2018-11-25T12:30:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
