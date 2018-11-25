@@ -1,13 +1,13 @@
 +++
 author = "Satoshi Tajima"
-#categories = [ "en", "" ]
-#date = "2018-11-08T12:30:00+09:00"
+categories = [ "en", "" ]
+date = "2018-11-25T12:30:00+09:00"
 description = ""
 featured = ""
 featuredalt = ""
 featuredpath = ""
 linktitle = ""
-#title = "CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)"
+title = "CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)"
 
 +++
 
@@ -46,7 +46,7 @@ First of all, for checking the contract, view [Code Tab](https://etherscan.io/ad
 
 ![image](/post/2018/smart-contract-write-up_en/64ba92.png)
 
-I was wondering why human readable code is there.  
+I was wondering why a human-readable code is there.  
 In the Ethereum blockchain, contracts should be written as bytecode,  
 I thought it was strange that source code could be shown in this way.
 
@@ -95,7 +95,7 @@ The correct number is from 0 to 10, and it is shuffled only when someone hits,
 so I thought I could use bruteforce and try that.
 
 
-At this time, I've wrote code like this and execute the Contract by using web3.js of Node.js.  
+At this time, I've written code like this and execute the Contract by using web3.js of Node.js.  
 https://gist.github.com/s-tajima/970901318960c038291ff90f4404fe35
 
 From here ...  
@@ -130,39 +130,38 @@ I noticed that the current correct answer number  is somehow `42`.
 It is unlikely that this will be `42` in the current setting method described above (the remainder of dividing a certain value by 11).  
 Also, some code that caused an error if the guessed number is larger than `10`, so something is strange.
 
-処理を追っていくと、正しく設定されたcurrentの値(このときは4でした)が以下の処理のタイミングで書き換えられていることがわかりました。
+As I track down the process, I found that the current correct number (which was 4 in this case) was rewritten at the timing of the following code.
 
 ```
 Guess storage guess;
-guess.playerNo = players[msg.sender].playerNo; // ここでなぜかcurrentの値が変更される
+guess.playerNo = players[msg.sender].playerNo;
 ```
 
-調べてみると、guessが正しく初期化されていないことが問題になっていることがわかりました。  
-Solidityの仕様として、この正しく初期化されていない guess.playerNo に対しての値の操作は slot 0 に対する操作ということになるようです。   
-**つまり current が players[msg.sender].playerNo の値に書き換えられます。**
+As a result of investigating, it turned out that it was a problem that guess was not initialized correctly.  
+As Solidity's specification, manipulating the value for this incorrectly initialized guess.playerNo is an operation for slot 0.  
+**In short, current is rewritten to the value of players [msg.sender].playerNo.**
 
-このとき、playerNoの値は 42 (渡された紙に書いてありました) にしてあったので、その値が設定されたようです。
+At this time, since the value of playerNo was set to 42 (written on the paper passed on), that value was set.
 
-ここまでわかればあとは簡単です。
-players[msg.sender].playerNo を 10以下の値にして、  
+OK then, set the value of players[msg.sender].playerNo to 10 or less.  
 https://etherscan.io/tx/0x1b9a902a3faf65aaa8033435d3118ae844887a1861e4e8095530b3eaf1ced1eb#decodetab
 
-かつそれを予想した番号としてコントラクトを呼び出せばよいのです。  
+And call the contract with it as the guessed number.  
 https://etherscan.io/tx/0xd27020cbbab206982d6a66f67ea3c5c1c983806f2199ae330ae8785bdfb124c3
 
-しかし、残念ながらこれでもまだ ETH を獲得することはできませんでした。
+However, unfortunately, I still could not earn ETH.
 
 
-## WinnerLog のデコンパイル
+## Decompiling WinnerLog
 
-再度 Remixで実行状況を確認すると、正解の番号と予想した番号の比較の部分は無事に通過していました。
+I rechecked the execution status with Remix, and I confirmed that the comparison part of the correct number and the guessed number had passed.  
+And I found that it finished at the line that calling external WinnerLog contract.
 
-しかしその後、以下の外部コントラクト(WinnerLog)の呼び出しのところで処理が終わっていることがわかりました。
 ```
 winnerLog.logWinner(msg.sender, players[msg.sender].playerNo, players[msg.sender].name);
 ```
 
-現在実行しているコントラクト(0x64ba92...) には、WinnerLogコントラクトのソースコードも記載されていて、それによると logWinner は以下のような定義になっています。
+The contract currently being executed (0x64ba92 ...) also contains the source code of the WinnerLog contract, according to which the logWinner is defined as follows.
 
 ```
 function logWinner(address addr, uint256 playerNo, bytes name) public onlyPlayer { 
@@ -173,76 +172,67 @@ function logWinner(address addr, uint256 playerNo, bytes name) public onlyPlayer
 }
 ```
 
-これだけ見ると、特にエラーになるような要因もなさそうです。
-が、ここに次の罠があります。
+At first glance, there seems to be no factor causing an error.  
+But here is the next trap.
 
-winnerLog は、CashMoneyコントラクトのconstructorで以下のように作成されています。
+winnerLog is created in the constructor of the CashMoney contract as follows.
+
 ```
 winnerLog = WinnerLog(winnerLog_);
 ```
-このとき `winnerLog_` の値は、とある別のコントラクトのアドレス(0x2e4d2a...) が指定されています。  
-**つまり、`logWinner` は必ずしも上記のソースコードの通りに実行されているとは限らず、  
-それどころか 0x2e4d2a... のコントラクトでは全く別の処理をしている可能性があります。**
 
-では、0x2e4d2a... のコントラクトを確認してみましょう。  
+At this time, the value of winnerLog_ is the address of another contract (0x2e4d2a ...).
+
+
+**In other words, `logWinner` is not necessarily executed as per the above source code.
+On the contrary, there is a possibility that the contract of 0x2e4d2a ... performs completely different processing.**
+
+Let's check the contract of 0x2e4d2a ...  
 https://etherscan.io/address/0x2e4d2a597a2fcbdf6cc55eb5c973e76aa19ac410#code
 
 ![image](/post/2018/smart-contract-write-up_en/2e4d2a.png)
 
-残念ながらこちらはソースコードが確認できません。  
-そうです。このバイトコード or アセンブリ を読み解く必要があるのです。  
-この手の解析は今までそんなに経験があるわけでもなくなかなかしんどそうだったので、  
-デコンパイラを探してみました。
+Unfortunately, at this side, there is no source code I can see.  
+That's right. We need to decipher this bytecode or assembly.  
+Since this kind of analysis has not been experienced so far, it seems to be quite seeming, so I searched for a decompiler.
 
-すると、 [Online Solidity Decompiler](https://ethervm.io/decompile) というのを見つけたのでこれを使ってみました。  
-デコンパイルした結果がこちら。  
+Then, I found Online Solidity Decompiler, so I tried using it.  
+The result of decompiling is here.  
 https://ethervm.io/decompile?address=0x2E4d2a597A2fcBdF6CC55eb5c973E76Aa19Ac410&network=
 
 ![image](/post/2018/smart-contract-write-up_en/decompilation.png)
 
-少しはマシになりました。しかし、まだ読み解くのは難しいです。  
-また、このコードはSolidityとしてValidなものではないので、これをデプロイして動作を確認してみることもできません。
+It became a little better. However, it is still difficult to read.  
+Also, since this code is not valid as Solidity, I can't deploy this and check its operation.
 
 
-## アセンブリのデバッグ
+## Debugging assembly
 
-仕方なく、アセンブリのままでデバッグを進めることにしました。  
-EVMのオペコードは [ethervm.ioのもの](https://ethervm.io/) を参考にしました。
+I had no choice but to continue debugging as it is assembly.  
+I referred to the ethervm.io for EVM's opcode and debugged using the Debugger function of Remix.
 
-デバッグは、RemixのDebugger機能を使いました。  
-いろいろと試行錯誤しながら進めたのですが、  
+Continued various trial and error, and did such a thing.
 
-* アセンブリの処理を最後から遡りながら見ていく。
-* JUMPI (条件分岐) の部分に注目し、どんな条件の分岐なのか、条件に使われた値はどこからきているのか。反対の分岐に進むためにはどこでどんな入力をすればいいのかを確認する。
+* I checked the process of assembly  from end to beginning.
+* Paying attention to the JUMPI (conditional branch) part, what kind of conditions are branching, where is the value used for the condition? In order to proceed to the opposite branch, check what kind of input should be done and where.
 
-というのをがんばりました。
+The point to be careful when doing Debug by Remix,  
+Even after you call the WinnerLog contract from the CashMoney contract, the display of the assembly is still a CashMoney contract.  
+I noticed that the opcode being displayed and the change contents of the stack and memory are inseparably different from each other, so it is strange. (Probably a bug.)  
 
-ハマりどころとしては、RemixによるDebugをする際、  
-CashMoneyコントラクトからWinnerLogコントラクトをCallした後も、アセンブリの部分はCashMoneyコントラクトのままなところです。  
-表示されているオペコードと、スタックやメモリの変更内容がどうも食い違うのでおかしいなと気付きました。(おそらくバグ。)   
-仕方ないので、WinnerLogのアセンブリは先述のデコンパイラで一緒に出てくる Disassembly を見ながら進めました。  
+Since it can not be helped, I advanced understanding the assembly of WinnerLog with Disassembly appearing in the above decompiler.
 
 ![image](/post/2018/smart-contract-write-up_en/disassembly.png)
 
-結果として、logWinner関数の第2引数、つまり players[msg.sender].name を、
+As a result, I found that the second argument of the logWinner function: In short, It is `players [msg.sender] .name`. needs to be as follows.
 
-* 128byte にすること。
-* 後半の64byteと `262d2527212d2b2c362d362a451acdc070148815b4ba154481c9c2983d8370d6` をXORした文字列が `546861742077617320766572792063617368206d6f6e6579206f6620796f752e`(ASCII に変換すると `That was very cash money of you.` になります。) になるようにすること。
+* Must be 128 bytes.
+* The character string that XORed the second half of 64 bytes and `262d2527212d2b2c362d362a451acdc070148815b4ba154481c9c2983d8370d6` becomes `546861742077617320766572792063617368206d6f6e6579206f6620796f752e` (It will become "That was very cash money of you." When converting to ASCII).
 
-が必要であることがわかりました。
-(あっさり書いてますがかなり頑張りました。)
-
-そんな条件を満たした値をセットしたトランザクションがこちら。  
+Here is a transaction that sets a value that satisfies such a condition.
 https://etherscan.io/tx/0x8a6bef803e7f9d1ad1e1724440bcec6a6d9e996f0a129485fc36c327bee0f559
 
-この状態で、番号を予想すると...  
+In this state, when guessing numbers ...
 https://etherscan.io/tx/0x7775c55ef8fa67c1f3bc9363d6b2130cb6c9957f6da08099594ffa5a9df7c29f
 
-見事に賞金の 5ETH が送金されてきます。(トランザクションIDが 777 で始まっていて縁起がいいですね。)
-
-# 最後に
-
-以上、Smart Contract Hacking ChallengeのWriteUpでした。  
-PolySwarm の皆さん、とてもよいChallengeをありがとうございました。  
-せっかくなので、今度は自分でSmart Contractでも書いてみようかなと思います。
-
+The prize money of 5 ETH was sent to me.
