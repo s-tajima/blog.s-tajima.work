@@ -6,10 +6,23 @@
     <description>Recent content on s_tajima::TechBlog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Thu, 08 Nov 2018 12:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 25 Nov 2018 12:30:00 +0900</lastBuildDate>
     
 	<atom:link href="https://blog.s-tajima.work/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</title>
+      <link>https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/</link>
+      <pubDate>Sun, 25 Nov 2018 12:30:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/</guid>
+      <description>I participated in CODE BLUE 2018 held from Oct 29, 2018, to Nov 02, 2018,
+and challenged the Smart Contract Hacking Challenge presented by PolySwarm.
+As a result, I solved it in 1st place, so I publish its WriteUp.
+Background When I started to solve it, I &amp;hellip;
+ Am interested in Crypto Currency and have traded that on some exchanges. Study Smart Contract as a hobby and understand the overview.</description>
+    </item>
     
     <item>
       <title>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp</title>
@@ -122,15 +135,6 @@ This article was written with Tshark 1.</description>
       
       <guid>https://blog.s-tajima.work/post/2016/intro-github-dice/</guid>
       <description>ブログ移転のテストです。 元の記事はこちら。 http://s-tajima.hateblo.jp/entry/2016/12/19/131319 こんにちは、今回はGitHubのPull Requestへのアサインを自動化するツール 「githu</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/</guid>
-      <description>I participated in CODE BLUE 2018 held from Oct 29, 2018, to Nov 02, 2018, and challenged the Smart Contract Hacking Challenge presented by PolySwarm. As a result, I solved it in 1st place, so I publish its WriteUp. Background When I started to solve it, I &amp;hellip; Am interested in Crypto Currency and have traded that on some exchanges. Study Smart Contract as a hobby and understand the overview.</description>
     </item>
     
   </channel>

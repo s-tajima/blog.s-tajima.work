@@ -29,7 +29,7 @@
 
 
 
-<meta property="og:updated_time" content="2018-11-08T12:00:00&#43;09:00"/>
+<meta property="og:updated_time" content="2018-11-25T12:30:00&#43;09:00"/>
 
 
 
@@ -175,6 +175,10 @@ ga('send', 'pageview');
 
                 
                     <li>
+                        <a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/"><p>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</p></a>
+                    </li>
+                
+                    <li>
                         <a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up/"><p>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp</p></a>
                     </li>
                 
@@ -188,10 +192,6 @@ ga('send', 'pageview');
                 
                     <li>
                         <a href="https://blog.s-tajima.work/post/2018/cve-2018-17082/"><p>CVE-2018-17082によるXSSに関する見解</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="https://blog.s-tajima.work/post/2017/use-slapd-with-auditlog/"><p>CentOSでslapdのauditlogを有効にする</p></a>
                     </li>
                 
             </ul>
@@ -208,7 +208,7 @@ ga('send', 'pageview');
     <header>
     <div class="title">
         
-            <h2><a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up/">CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp</a></h2>
+            <h2><a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/">CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</a></h2>
         
         
     </div>
@@ -218,8 +218,8 @@ ga('send', 'pageview');
         
 
         <time class="published"
-            datetime='2018-11-08'>
-            November 8, 2018</time>
+            datetime='2018-11-25'>
+            November 25, 2018</time>
         <span class="author">Satoshi Tajima</span>
         
         
@@ -232,93 +232,83 @@ ga('send', 'pageview');
     <div id="content">
         
 
-<p>2018/10/29 ~ 2018/11/02 に開催された CODE BLUE 2018 に参加し、<br />
-そこで行われていた <a href="https://polyswarm.io/">PolySwarm</a> の <a href="https://codeblue.jp/2018/contests/detail_03/">Smart Contract Hacking Challenge</a> に挑戦してみました。</p>
+<p>I participated in CODE BLUE 2018 held from Oct 29, 2018, to Nov 02, 2018,<br />
+and challenged the <a href="https://codeblue.jp/2018/en/contests/detail_03/">Smart Contract Hacking Challenge</a> presented by <a href="https://polyswarm.io/">PolySwarm</a>.<br />
+As a result, I solved it in 1st place, so I publish its WriteUp.</p>
 
-<p>結果、1位で解くことができたのでそのWriteUpを公開します。</p>
+<h1 id="background">Background</h1>
 
-<h1 id="前提知識">前提知識</h1>
-
-<p>このコンテストに参加した時点の僕は</p>
-
-<ul>
-<li>暗号通貨に興味があり、国内外の暗号通貨取引所で取引をしたことがある。</li>
-<li>Smart contractは趣味で勉強し、概要は理解している。</li>
-<li>自分でSmart contractのコードを書いたり、実用的に利用したことはなく、 <a href="https://cryptozombies.io/">CryptoZombies</a> を一通りやったことがある程度。</li>
-</ul>
-
-<p>といった感じです。
-だいたいこのあたりのレベルの人達に向けた記事になってます。<br />
-このレベルから、Smart contractの実行やデバッグに必要なツールや知識を徐々に手に入れていき、<br />
-最終的に問題を解くことができるようになるまでの話になります。</p>
-
-<p>Smart contractとは?  Solidityとは? といった内容は触れません。<br />
-逆に、EVMに詳しい方にはもっと効率のよい解き方があれば教えてほしいなと思ってます。</p>
-
-<h1 id="問題">問題</h1>
-
-<p>CODE BLUE の PolySwarm のブースに行き、<br />
-Smart Contract Hacking Challenge に参加したい旨を伝えると、1枚の紙がもらえます。</p>
-
-<p>紙には</p>
+<p>When I started to solve it, I &hellip;</p>
 
 <ul>
-<li><a href="https://etherscan.io/address/0x64ba926175bc69ba757ef53a6d5ef616889c9999">Ethereumのコントラクトのアドレス</a> (EtherscanのURL)</li>
-<li>EthereumのEOAのアドレス・秘密鍵</li>
+<li>Am interested in Crypto Currency and have traded that on some exchanges.</li>
+<li>Study Smart Contract as a hobby and understand the overview.</li>
+<li>Never written code for Smart Contract by myself or used it practically. (If anything, I&rsquo;ve only done <a href="https://cryptozombies.io/">CryptoZombies</a>).</li>
 </ul>
 
-<p>が記載されています。</p>
+<p>This article was written for a person at around this level.</p>
 
-<p>このコントラクトがハックすべき対象です。</p>
+<p>From this level, gradually acquire the necessary tools and knowledge for running and debugging Smart contracts,
+It is a story until it can finally solve the problem.</p>
 
-<h1 id="解き方">解き方</h1>
+<h1 id="challenge">Challenge</h1>
 
-<h2 id="コントラクトの確認">コントラクトの確認</h2>
-
-<p>コントラクトの内容を確認するため、まずは Etherscan の <a href="https://etherscan.io/address/0x64ba926175bc69ba757ef53a6d5ef616889c9999#code">Codeタブ</a> を見ます。</p>
-
-<p><img src="/post/2018/smart-contract-write-up/64ba92.png" alt="image" /></p>
-
-<p>ここで不思議だったのが、Human Readableなソースコードが表示されている点です。<br />
-Ethereumのブロックチェーンには、コントラクトはバイトコードとして書き込まれているはずなので、<br />
-このような形でソースコードが確認できるのはおかしいと思いました。</p>
-
-<p>調べてみると、 Etherscan には、 <a href="https://etherscan.io/verifyContract2">Verify Contract Code</a> という仕組みがあり、<br />
-あるアドレスを指定してコントラクトのソースコードをアップロードし、<br />
-コンパイルされた結果がブロックチェーン上のものと一致すればこのように表示することができる仕組みがあるようです。</p>
-
-<p>ということで、ここに表示されたソースコードを読んでいきます。<br />
-173行なのでそれほど読むのは大変ではなく、コントラクトの概要は、</p>
+<p>Going to PolySwarm booth in CODE BLUE, I got a piece of paper.
+These are written on the paper.</p>
 
 <ul>
-<li>CashMoney という数当てゲーム。</li>
-<li>数字を予想する際にはコントラクトに 0.001 ETH 以上を送金する必要がある。</li>
-<li>数が当たると、送金した金額に加えて先着順でボーナスの ETH が返金される。</li>
-<li>数が外れると、送金したETH はコントラクトが没収。</li>
+<li><a href="https://etherscan.io/address/0x64ba926175bc69ba757ef53a6d5ef616889c9999">An Ethereum Address of a Contract.</a> (Etherscan URL)</li>
+<li>[An Ethereum EOA Address and private key</li>
 </ul>
 
-<p>というものでした。
-もう少し詳しい仕様として、</p>
+<p>This Contract is a target for hacking.</p>
+
+<h1 id="solution">Solution</h1>
+
+<h2 id="checking-the-contract">Checking the Contract.</h2>
+
+<p>First of all, for checking the contract, view <a href="https://etherscan.io/address/0x64ba926175bc69ba757ef53a6d5ef616889c9999#code">Code Tab</a> of Etherscan.</p>
+
+<p><img src="/post/2018/smart-contract-write-up_en/64ba92.png" alt="image" /></p>
+
+<p>I was wondering why a human-readable code is there.<br />
+In the Ethereum blockchain, contracts should be written as bytecode,<br />
+I thought it was strange that source code could be shown in this way.</p>
+
+<p>After googling it, I knew Etherscan has a feature that named <a href="https://etherscan.io/verifyContract2">Verify Contract Code</a>.<br />
+So someone who has the source code of a Contract can upload it,<br />
+and be shown it if the compiled bytecode was identical to the one on the blockchain.</p>
+
+<p>Now let&rsquo;s look at the code shown here.<br />
+It&rsquo;s only 173 lines of code, it&rsquo;s not so hard to read.<br />
+the Contract is &hellip;</p>
 
 <ul>
-<li>予測する数字の範囲は 0 ~ 10。</li>
-<li>チャレンジできるのは、予めコントラクト作成者がプレイヤーとして指定したアドレス(冒頭の紙に書かれていたもの)からのみ。</li>
-<li>プレイヤーの情報 (プレイヤーNo. と 名前) を設定することができる。</li>
-<li>同じアドレスが複数回ボーナスを獲得できないように、WinnerLogという別のコントラクトにログが記録される。</li>
+<li>Number guessing game named CashMoney.</li>
+<li>Need to send more than 0.001 ETH to the Contract for guessing a number.</li>
+<li>If the guess was correct, bonus ETH is refunded on a first-come-first-served basis in addition to the remitted amount.</li>
+<li>If the guess was incorrect, the Contract confiscates ETH.</li>
 </ul>
 
-<p>といったものであることもわかりました。</p>
+<p>and, in more details&hellip;</p>
 
-<h2 id="最初のトライ">最初のトライ</h2>
+<ul>
+<li>The range of a guess is from 0 to 10.</li>
+<li>The only address that the contract creator previously designated as a player can challenge.</li>
+<li>You can set player number and name as player information.</li>
+<li>For preventing an address from getting bonus multiple times, a log is recorded to the other Contract that named WinnerLog.</li>
+</ul>
 
-<p>正解の数字がどのように決められているのかを確認します。</p>
+<h2 id="first-try">First try.</h2>
 
-<p>すると、正解の数字は</p>
+<p>Next, I confirmed how the correct number is decided.</p>
+
+<p>Then, the correct number is defined as below.</p>
 
 <pre><code>uint256 private current;
 </code></pre>
 
-<p>として定義され、</p>
+<p>and set in this function.</p>
 
 <pre><code>function every_day_im_shufflin() internal {
     // EVERY DAY IM SHUFFLIN
@@ -326,78 +316,75 @@ Ethereumのブロックチェーンには、コントラクトはバイトコー
 }
 </code></pre>
 
-<p>という関数で設定されているのがわかります。<br />
-また、この every_day_im_shufflin() は、コントラクト作成時と、誰かが数字を当てた時によびだされているようです。</p>
+<p>This every_day_im_shufflin () seems to be called when creating a contract and when someone hits a number.</p>
 
-<p>予想する数字が 0 ~ 10 であり、正解がシャッフルされるのが誰かが数字を当てたときだけなのであれば、<br />
-総当たりで正解できてしまうのでは? と思って試してみることにしました。</p>
+<p>The correct number is from 0 to 10, and it is shuffled only when someone hits,<br />
+so I thought I could use bruteforce and try that.</p>
 
-<p>このときは、Node.jsのweb3.jsを使ってこんなコードを書き、コントラクトを実行していました。<br />
+<p>At this time, I&rsquo;ve written code like this and execute the Contract by using web3.js of Node.js.<br />
 <a href="https://gist.github.com/s-tajima/970901318960c038291ff90f4404fe35">https://gist.github.com/s-tajima/970901318960c038291ff90f4404fe35</a></p>
 
-<p>ここから<br />
+<p>From here &hellip;<br />
 <a href="https://etherscan.io/tx/0xc9e32cf91c122a62c001e6a34b05e970e4c27eb0e807301b20953bc03601f0b8">https://etherscan.io/tx/0xc9e32cf91c122a62c001e6a34b05e970e4c27eb0e807301b20953bc03601f0b8</a></p>
 
-<p>ここまであたりがそのトライです。<br />
+<p>to here is this try.<br />
 <a href="https://etherscan.io/tx/0xc7315ef6469d22c7c55d20c86bc80a59b8145d39ba74f24df96fc93782521660">https://etherscan.io/tx/0xc7315ef6469d22c7c55d20c86bc80a59b8145d39ba74f24df96fc93782521660</a></p>
 
-<p>結果としては、当然そんな簡単に解けてしまう問題であるわけはなく、<br />
-0 ~ 10のすべての数字でトランザクションがRevertされてしまいます。</p>
+<p>As a result, of course, it is not a problem that can be solved so easily,<br />
+Transactions are reverted with all numbers from 0 to 10.</p>
 
-<h2 id="remix-によるデバッグ">Remix によるデバッグ</h2>
+<h2 id="debugging-with-remix">Debugging with Remix.</h2>
 
-<p>次の手を考える上で、コントラクトがどのように実行されているのかを知りたくなりました。<br />
-<a href="https://remix.ethereum.org/">Remix</a> という、SolidityのIDEがあるのを知っていたので、試しにそれを使ってみました。</p>
+<p>To think about the next try, I&rsquo;d now like to know how contracts are executed.<br />
+I knew there was a Solidity IDE called <a href="https://remix.ethereum.org/">Remix</a>, so I tried using it for testing.</p>
 
-<p><img src="/post/2018/smart-contract-write-up/remix_01.png" alt="image" /></p>
+<p><img src="/post/2018/smart-contract-write-up_en/remix_01.png" alt="image" /></p>
 
-<p>Etherscanで手に入れたソースコードを貼り付け、コントラクトのアドレスを指定すると、<br />
-Remixからコントラクトを呼び出せるようになります。</p>
+<p>Paste the source code you got from Etherscan and specify the address of the contract,<br />
+and you will be able to call contracts from Remix.</p>
 
-<p>また、Debuggerの機能を使うと、呼び出したコントラクトの実行状況を確認することができます。<br />
-このデバッグ機能を使うと、Solidity上でprivateとして定義した変数も参照できます。</p>
+<p>Also, you can use the Debugger function to check the execution status of the called contract.<br />
+With this debugging function, you can also refer to variables defined as private on Solidity.</p>
 
-<p>(privateという修飾子は、単なるスコープの定義であって、誰からも見えないようにするという設定ではないので、自分でコントラクトのコードを書くときには注意しましょう。)</p>
+<p>(The private modifier is merely the definition of the scope, not the modifier to make it invisible to anyone, so be careful when writing the contract code yourself.)</p>
 
-<p>Debuggerを利用し、正解の番号と予想した番号を比較している処理を確認すると、<br />
-正解の番号(current)がなぜか <code>42</code> になっているのがわかりました。</p>
+<p>By using Debugger and confirming the process which compares the correct answer number with the expected number,
+I noticed that the current correct answer number  is somehow <code>42</code>.</p>
 
-<p><img src="/post/2018/smart-contract-write-up/remix_02.png" alt="image" /></p>
+<p><img src="/post/2018/smart-contract-write-up_en/remix_02.png" alt="image" /></p>
 
-<p>前述した current の設定方法(ある値を11で割った余り)では、ここが <code>42</code> になることはなさそうで、<br />
-また、予想した番号が <code>10</code> より大きい値だとエラーになるようなコードもあったので、なにかがおかしいです。</p>
+<p>It is unlikely that this will be <code>42</code> in the current setting method described above (the remainder of dividing a certain value by 11).<br />
+Also, some code that caused an error if the guessed number is larger than <code>10</code>, so something is strange.</p>
 
-<p>処理を追っていくと、正しく設定されたcurrentの値(このときは4でした)が以下の処理のタイミングで書き換えられていることがわかりました。</p>
+<p>As I track down the process, I found that the current correct number (which was 4 in this case) was rewritten at the timing of the following code.</p>
 
 <pre><code>Guess storage guess;
-guess.playerNo = players[msg.sender].playerNo; // ここでなぜかcurrentの値が変更される
+guess.playerNo = players[msg.sender].playerNo;
 </code></pre>
 
-<p>調べてみると、guessが正しく初期化されていないことが問題になっていることがわかりました。<br />
-Solidityの仕様として、この正しく初期化されていない guess.playerNo に対しての値の操作は slot 0 に対する操作ということになるようです。<br />
-<strong>つまり current が players[msg.sender].playerNo の値に書き換えられます。</strong></p>
+<p>As a result of investigating, it turned out that it was a problem that guess was not initialized correctly.<br />
+As Solidity&rsquo;s specification, manipulating the value for this incorrectly initialized guess.playerNo is an operation for slot 0.<br />
+<strong>In short, current is rewritten to the value of players [msg.sender].playerNo.</strong></p>
 
-<p>このとき、playerNoの値は 42 (渡された紙に書いてありました) にしてあったので、その値が設定されたようです。</p>
+<p>At this time, since the value of playerNo was set to 42 (written on the paper passed on), that value was set.</p>
 
-<p>ここまでわかればあとは簡単です。
-players[msg.sender].playerNo を 10以下の値にして、<br />
+<p>OK then, set the value of players[msg.sender].playerNo to 10 or less.<br />
 <a href="https://etherscan.io/tx/0x1b9a902a3faf65aaa8033435d3118ae844887a1861e4e8095530b3eaf1ced1eb#decodetab">https://etherscan.io/tx/0x1b9a902a3faf65aaa8033435d3118ae844887a1861e4e8095530b3eaf1ced1eb#decodetab</a></p>
 
-<p>かつそれを予想した番号としてコントラクトを呼び出せばよいのです。<br />
+<p>And call the contract with it as the guessed number.<br />
 <a href="https://etherscan.io/tx/0xd27020cbbab206982d6a66f67ea3c5c1c983806f2199ae330ae8785bdfb124c3">https://etherscan.io/tx/0xd27020cbbab206982d6a66f67ea3c5c1c983806f2199ae330ae8785bdfb124c3</a></p>
 
-<p>しかし、残念ながらこれでもまだ ETH を獲得することはできませんでした。</p>
+<p>However, unfortunately, I still could not earn ETH.</p>
 
-<h2 id="winnerlog-のデコンパイル">WinnerLog のデコンパイル</h2>
+<h2 id="decompiling-winnerlog">Decompiling WinnerLog</h2>
 
-<p>再度 Remixで実行状況を確認すると、正解の番号と予想した番号の比較の部分は無事に通過していました。</p>
-
-<p>しかしその後、以下の外部コントラクト(WinnerLog)の呼び出しのところで処理が終わっていることがわかりました。</p>
+<p>I rechecked the execution status with Remix, and I confirmed that the comparison part of the correct number and the guessed number had passed.<br />
+And I found that it finished at the line that calling external WinnerLog contract.</p>
 
 <pre><code>winnerLog.logWinner(msg.sender, players[msg.sender].playerNo, players[msg.sender].name);
 </code></pre>
 
-<p>現在実行しているコントラクト(0x64ba92&hellip;) には、WinnerLogコントラクトのソースコードも記載されていて、それによると logWinner は以下のような定義になっています。</p>
+<p>The contract currently being executed (0x64ba92 &hellip;) also contains the source code of the WinnerLog contract, according to which the logWinner is defined as follows.</p>
 
 <pre><code>function logWinner(address addr, uint256 playerNo, bytes name) public onlyPlayer { 
         winners[addr] = true;
@@ -407,82 +394,71 @@ players[msg.sender].playerNo を 10以下の値にして、<br />
 }
 </code></pre>
 
-<p>これだけ見ると、特にエラーになるような要因もなさそうです。
-が、ここに次の罠があります。</p>
+<p>At first glance, there seems to be no factor causing an error.<br />
+But here is the next trap.</p>
 
-<p>winnerLog は、CashMoneyコントラクトのconstructorで以下のように作成されています。</p>
+<p>winnerLog is created in the constructor of the CashMoney contract as follows.</p>
 
 <pre><code>winnerLog = WinnerLog(winnerLog_);
 </code></pre>
 
-<p>このとき <code>winnerLog_</code> の値は、とある別のコントラクトのアドレス(0x2e4d2a&hellip;) が指定されています。<br />
-<strong>つまり、<code>logWinner</code> は必ずしも上記のソースコードの通りに実行されているとは限らず、<br />
-それどころか 0x2e4d2a&hellip; のコントラクトでは全く別の処理をしている可能性があります。</strong></p>
+<p>At this time, the value of winnerLog_ is the address of another contract (0x2e4d2a &hellip;).</p>
 
-<p>では、0x2e4d2a&hellip; のコントラクトを確認してみましょう。<br />
+<p><strong>In other words, <code>logWinner</code> is not necessarily executed as per the above source code.
+On the contrary, there is a possibility that the contract of 0x2e4d2a &hellip; performs completely different processing.</strong></p>
+
+<p>Let&rsquo;s check the contract of 0x2e4d2a &hellip;<br />
 <a href="https://etherscan.io/address/0x2e4d2a597a2fcbdf6cc55eb5c973e76aa19ac410#code">https://etherscan.io/address/0x2e4d2a597a2fcbdf6cc55eb5c973e76aa19ac410#code</a></p>
 
-<p><img src="/post/2018/smart-contract-write-up/2e4d2a.png" alt="image" /></p>
+<p><img src="/post/2018/smart-contract-write-up_en/2e4d2a.png" alt="image" /></p>
 
-<p>残念ながらこちらはソースコードが確認できません。<br />
-そうです。このバイトコード or アセンブリ を読み解く必要があるのです。<br />
-この手の解析は今までそんなに経験があるわけでもなくなかなかしんどそうだったので、<br />
-デコンパイラを探してみました。</p>
+<p>Unfortunately, at this side, there is no source code I can see.<br />
+That&rsquo;s right. We need to decipher this bytecode or assembly.<br />
+Since this kind of analysis has not been experienced so far, it seems to be quite seeming, so I searched for a decompiler.</p>
 
-<p>すると、 <a href="https://ethervm.io/decompile">Online Solidity Decompiler</a> というのを見つけたのでこれを使ってみました。<br />
-デコンパイルした結果がこちら。<br />
+<p>Then, I found Online Solidity Decompiler, so I tried using it.<br />
+The result of decompiling is here.<br />
 <a href="https://ethervm.io/decompile?address=0x2E4d2a597A2fcBdF6CC55eb5c973E76Aa19Ac410&amp;network=">https://ethervm.io/decompile?address=0x2E4d2a597A2fcBdF6CC55eb5c973E76Aa19Ac410&amp;network=</a></p>
 
-<p><img src="/post/2018/smart-contract-write-up/decompilation.png" alt="image" /></p>
+<p><img src="/post/2018/smart-contract-write-up_en/decompilation.png" alt="image" /></p>
 
-<p>少しはマシになりました。しかし、まだ読み解くのは難しいです。<br />
-また、このコードはSolidityとしてValidなものではないので、これをデプロイして動作を確認してみることもできません。</p>
+<p>It became a little better. However, it is still difficult to read.<br />
+Also, since this code is not valid as Solidity, I can&rsquo;t deploy this and check its operation.</p>
 
-<h2 id="アセンブリのデバッグ">アセンブリのデバッグ</h2>
+<h2 id="debugging-assembly">Debugging assembly</h2>
 
-<p>仕方なく、アセンブリのままでデバッグを進めることにしました。<br />
-EVMのオペコードは <a href="https://ethervm.io/">ethervm.ioのもの</a> を参考にしました。</p>
+<p>I had no choice but to continue debugging as it is assembly.<br />
+I referred to the ethervm.io for EVM&rsquo;s opcode and debugged using the Debugger function of Remix.</p>
 
-<p>デバッグは、RemixのDebugger機能を使いました。<br />
-いろいろと試行錯誤しながら進めたのですが、</p>
-
-<ul>
-<li>アセンブリの処理を最後から遡りながら見ていく。</li>
-<li>JUMPI (条件分岐) の部分に注目し、どんな条件の分岐なのか、条件に使われた値はどこからきているのか。反対の分岐に進むためにはどこでどんな入力をすればいいのかを確認する。</li>
-</ul>
-
-<p>というのをがんばりました。</p>
-
-<p>ハマりどころとしては、RemixによるDebugをする際、<br />
-CashMoneyコントラクトからWinnerLogコントラクトをCallした後も、アセンブリの部分はCashMoneyコントラクトのままなところです。<br />
-表示されているオペコードと、スタックやメモリの変更内容がどうも食い違うのでおかしいなと気付きました。(おそらくバグ。)<br />
-仕方ないので、WinnerLogのアセンブリは先述のデコンパイラで一緒に出てくる Disassembly を見ながら進めました。</p>
-
-<p><img src="/post/2018/smart-contract-write-up/disassembly.png" alt="image" /></p>
-
-<p>結果として、logWinner関数の第2引数、つまり players[msg.sender].name を、</p>
+<p>Continued various trial and error, and did such a thing.</p>
 
 <ul>
-<li>128byte にすること。</li>
-<li>後半の64byteと <code>262d2527212d2b2c362d362a451acdc070148815b4ba154481c9c2983d8370d6</code> をXORした文字列が <code>546861742077617320766572792063617368206d6f6e6579206f6620796f752e</code>(ASCII に変換すると <code>That was very cash money of you.</code> になります。) になるようにすること。</li>
+<li>I checked the process of assembly  from end to beginning.</li>
+<li>Paying attention to the JUMPI (conditional branch) part, what kind of conditions are branching, where is the value used for the condition? In order to proceed to the opposite branch, check what kind of input should be done and where.</li>
 </ul>
 
-<p>が必要であることがわかりました。
-(あっさり書いてますがかなり頑張りました。)</p>
+<p>The point to be careful when doing Debug by Remix,<br />
+Even after you call the WinnerLog contract from the CashMoney contract, the display of the assembly is still a CashMoney contract.<br />
+I noticed that the opcode being displayed and the change contents of the stack and memory are inseparably different from each other, so it is strange. (Probably a bug.)</p>
 
-<p>そんな条件を満たした値をセットしたトランザクションがこちら。<br />
+<p>Since it can not be helped, I advanced understanding the assembly of WinnerLog with Disassembly appearing in the above decompiler.</p>
+
+<p><img src="/post/2018/smart-contract-write-up_en/disassembly.png" alt="image" /></p>
+
+<p>As a result, I found that the second argument of the logWinner function: In short, It is <code>players [msg.sender] .name</code>. needs to be as follows.</p>
+
+<ul>
+<li>Must be 128 bytes.</li>
+<li>The character string that XORed the second half of 64 bytes and <code>262d2527212d2b2c362d362a451acdc070148815b4ba154481c9c2983d8370d6</code> becomes <code>546861742077617320766572792063617368206d6f6e6579206f6620796f752e</code> (It will become &ldquo;That was very cash money of you.&rdquo; When converting to ASCII).</li>
+</ul>
+
+<p>Here is a transaction that sets a value that satisfies such a condition.
 <a href="https://etherscan.io/tx/0x8a6bef803e7f9d1ad1e1724440bcec6a6d9e996f0a129485fc36c327bee0f559">https://etherscan.io/tx/0x8a6bef803e7f9d1ad1e1724440bcec6a6d9e996f0a129485fc36c327bee0f559</a></p>
 
-<p>この状態で、番号を予想すると&hellip;<br />
+<p>In this state, when guessing numbers &hellip;
 <a href="https://etherscan.io/tx/0x7775c55ef8fa67c1f3bc9363d6b2130cb6c9957f6da08099594ffa5a9df7c29f">https://etherscan.io/tx/0x7775c55ef8fa67c1f3bc9363d6b2130cb6c9957f6da08099594ffa5a9df7c29f</a></p>
 
-<p>見事に賞金の 5ETH が送金されてきます。(トランザクションIDが 777 で始まっていて縁起がいいですね。)</p>
-
-<h1 id="最後に">最後に</h1>
-
-<p>以上、Smart Contract Hacking ChallengeのWriteUpでした。<br />
-PolySwarm の皆さん、とてもよいChallengeをありがとうございました。<br />
-せっかくなので、今度は自分でSmart Contractでも書いてみようかなと思います。</p>
+<p>The prize money of 5 ETH was sent to me.</p>
 
     </div>
 
@@ -508,7 +484,7 @@ PolySwarm の皆さん、とてもよいChallengeをありがとうございま�
 
     
     
-        <li><a href='/categories/ja'>ja</a></li>
+        <li><a href='/categories/en'>en</a></li>
     
         <li><a href='/categories/'></a></li>
     
@@ -521,43 +497,43 @@ PolySwarm の皆さん、とてもよいChallengeをありがとうございま�
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up%2f&text=CODE%20BLUE%202018%20Smart%20Contract%20Hacking%20Challenge%20WriteUp&via=s_tajima_tech" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up_en%2f&text=CODE%20BLUE%202018%20Smart%20Contract%20Hacking%20Challenge%20WriteUp%20%28en%29&via=s_tajima_tech" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up_en%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up_en%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up%2f&title=CODE%20BLUE%202018%20Smart%20Contract%20Hacking%20Challenge%20WriteUp" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up_en%2f&title=CODE%20BLUE%202018%20Smart%20Contract%20Hacking%20Challenge%20WriteUp%20%28en%29" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up%2f&title=CODE%20BLUE%202018%20Smart%20Contract%20Hacking%20Challenge%20WriteUp" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up_en%2f&title=CODE%20BLUE%202018%20Smart%20Contract%20Hacking%20Challenge%20WriteUp%20%28en%29" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up%2f&title=CODE%20BLUE%202018%20Smart%20Contract%20Hacking%20Challenge%20WriteUp" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up_en%2f&title=CODE%20BLUE%202018%20Smart%20Contract%20Hacking%20Challenge%20WriteUp%20%28en%29" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up_en%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -567,8 +543,8 @@ PolySwarm の皆さん、とてもよいChallengeをありがとうございま�
 </article>
 <ul class="actions pagination">
     
-        <li><a href="https://blog.s-tajima.work/post/2018/shell2http-on-fargate/"
-                class="button big previous">shell2httpでAWS FargateやSSHレスの運用を少しだけ楽にする</a></li>
+        <li><a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up/"
+                class="button big previous">CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp</a></li>
     
 
     
@@ -587,43 +563,43 @@ PolySwarm の皆さん、とてもよいChallengeをありがとうございま�
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up%2f&text=CODE%20BLUE%202018%20Smart%20Contract%20Hacking%20Challenge%20WriteUp&via=s_tajima_tech" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up_en%2f&text=CODE%20BLUE%202018%20Smart%20Contract%20Hacking%20Challenge%20WriteUp%20%28en%29&via=s_tajima_tech" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up_en%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up_en%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up%2f&title=CODE%20BLUE%202018%20Smart%20Contract%20Hacking%20Challenge%20WriteUp" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up_en%2f&title=CODE%20BLUE%202018%20Smart%20Contract%20Hacking%20Challenge%20WriteUp%20%28en%29" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up%2f&title=CODE%20BLUE%202018%20Smart%20Contract%20Hacking%20Challenge%20WriteUp" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up_en%2f&title=CODE%20BLUE%202018%20Smart%20Contract%20Hacking%20Challenge%20WriteUp%20%28en%29" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up%2f&title=CODE%20BLUE%202018%20Smart%20Contract%20Hacking%20Challenge%20WriteUp" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up_en%2f&title=CODE%20BLUE%202018%20Smart%20Contract%20Hacking%20Challenge%20WriteUp%20%28en%29" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fsmart-contract-write-up_en%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -731,6 +707,20 @@ PolySwarm の皆さん、とてもよいChallengeをありがとうございま�
                     <li>
                         <article>
                             <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/">CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2018-11-25'>
+                                    November 25, 2018</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
                                 <h3><a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up/">CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp</a></h3>
                                 
                                     
@@ -784,20 +774,6 @@ PolySwarm の皆さん、とてもよいChallengeをありがとうございま�
                         </article>
                     </li>
                 
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2017/use-slapd-with-auditlog/">CentOSでslapdのauditlogを有効にする</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2017-07-20'>
-                                    July 20, 2017</time>
-                            </header>
-                        </article>
-                    </li>
-                
 
                 
                     <li>
@@ -832,7 +808,7 @@ PolySwarm の皆さん、とてもよいChallengeをありがとうございま�
                         <article>
                             <header>
                                 <a href="/categories//"></a>
-                                <span style="float:right;">2</span>
+                                <span style="float:right;">3</span>
                             </header>
                         </article>
                     </li>
@@ -850,7 +826,7 @@ PolySwarm の皆さん、とてもよいChallengeをありがとうございま�
                         <article>
                             <header>
                                 <a href="/categories/en/">en</a>
-                                <span style="float:right;">1</span>
+                                <span style="float:right;">2</span>
                             </header>
                         </article>
                     </li>
