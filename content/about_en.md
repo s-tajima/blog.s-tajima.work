@@ -16,7 +16,7 @@ title = "about"
 # me
 
 Satoshi Tajima (@s_tajima)  
-Infrastructure engineer, work in Shibuya.  
+Infrastructure/Security engineer, work in Kojimachi.  
 I'm in charge of Linux servers and Cloud Service (such as AWS) management.  
 And I can use Ruby, Go and some languages.  
   
