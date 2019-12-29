@@ -16,11 +16,9 @@ title = "about"
 # me
 
 Satoshi Tajima (@s_tajima)  
-Infrastructure/Security engineer, work in Kojimachi.  
-I'm in charge of Linux servers and Cloud Service (such as AWS) management.  
+Infrastructure/Security engineer, work in Chiyoda-Ku.  
+I'm used to manage Linux servers, Containers (such as Docker) and Cloud Service (such as AWS).  
 And I can use Ruby, Go and some languages.  
-  
-Recently, I'm interested in Machine Learning, Fintech (especially CryptoCurrency).  
 
 Email: tajima1989 ~at~ gmail.com
 
