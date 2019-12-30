@@ -15,8 +15,8 @@ googleAnalytics = "UA-22927498-5"
     customcss            = ["default", "/css/custom.css"]
 
 [params.intro]
-    paragraph = "Tech blog, written by infrastructure/security engineer work in Kojimchi."
-    about     = "Written by Satoshi Tajima. I'm a infrastructure/security engineer, work in Kojimachi."
+    paragraph = "Tech blog, written by infrastructure/security engineer work in Chiyoda-Ku."
+    about     = "Written by Satoshi Tajima. I'm a infrastructure/security engineer, work in Chiyoda-Ku."
 
 [[menu.main]]
     name = "About"
