@@ -4,7 +4,7 @@
     <head>
         
             
-                <title>ptraceを使ってプロセスの *現在の* 環境変数を参照する</title>
+                <title>2019年のインプット・アウトプットまとめ</title>
             
         
 
@@ -29,20 +29,20 @@
 
 
 
-<meta name="twitter:text:title" content="ptraceを使ってプロセスの *現在の* 環境変数を参照する"/>
-<meta name="twitter:title" content="ptraceを使ってプロセスの *現在の* 環境変数を参照する"/>
-<meta name="twitter:description" content="ptraceを使って特定のプロセスの 現在の 環境変数を参照するためのプログラムを書いてみたのでその紹介です。 背景 Linuxを使っていると、プロ"/>
+<meta name="twitter:text:title" content="2019年のインプット・アウトプットまとめ"/>
+<meta name="twitter:title" content="2019年のインプット・アウトプットまとめ"/>
+<meta name="twitter:description" content="残念ながら今年はこのブログをあんまり更新できなかったので、せめてこれくらいはということで2019年のインプットとアウトプットについてまとめて"/>
 <meta name="twitter:site" content="@s_tajima"/>
 
-        <meta property="og:title" content="ptraceを使ってプロセスの *現在の* 環境変数を参照する" />
-<meta property="og:description" content="ptraceを使って特定のプロセスの 現在の 環境変数を参照するためのプログラムを書いてみたのでその紹介です。 背景 Linuxを使っていると、プロ" />
+        <meta property="og:title" content="2019年のインプット・アウトプットまとめ" />
+<meta property="og:description" content="残念ながら今年はこのブログをあんまり更新できなかったので、せめてこれくらいはということで2019年のインプットとアウトプットについてまとめて" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.s-tajima.work/post/2018/intro-peke-envs/" />
+<meta property="og:url" content="https://blog.s-tajima.work/post/2019/input-output/" />
 
 
 
-<meta property="article:published_time" content="2018-10-15T12:00:00&#43;09:00"/>
-<meta property="article:modified_time" content="2018-10-15T12:00:00&#43;09:00"/>
+<meta property="article:published_time" content="2019-12-30T09:00:00&#43;09:00"/>
+<meta property="article:modified_time" content="2019-12-30T09:00:00&#43;09:00"/>
 
 
 
@@ -55,12 +55,12 @@
 
 
         
-<meta itemprop="name" content="ptraceを使ってプロセスの *現在の* 環境変数を参照する">
-<meta itemprop="description" content="ptraceを使って特定のプロセスの 現在の 環境変数を参照するためのプログラムを書いてみたのでその紹介です。 背景 Linuxを使っていると、プロ">
+<meta itemprop="name" content="2019年のインプット・アウトプットまとめ">
+<meta itemprop="description" content="残念ながら今年はこのブログをあんまり更新できなかったので、せめてこれくらいはということで2019年のインプットとアウトプットについてまとめて">
 
 
-<meta itemprop="dateModified" content="2018-10-15T12:00:00&#43;09:00" />
-<meta itemprop="wordCount" content="2280">
+<meta itemprop="dateModified" content="2019-12-30T09:00:00&#43;09:00" />
+<meta itemprop="wordCount" content="1568">
 
 
 
@@ -231,43 +231,43 @@ ga('send', 'pageview');
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&text=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e5%8f%82%e7%85%a7%e3%81%99%e3%82%8b&via=s_tajima" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&text=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81&via=s_tajima" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e5%8f%82%e7%85%a7%e3%81%99%e3%82%8b" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&title=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e5%8f%82%e7%85%a7%e3%81%99%e3%82%8b" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&title=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e5%8f%82%e7%85%a7%e3%81%99%e3%82%8b" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&title=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -284,7 +284,7 @@ ga('send', 'pageview');
     <header>
     <div class="title">
         
-            <h1><a href="https://blog.s-tajima.work/post/2018/intro-peke-envs/">ptraceを使ってプロセスの *現在の* 環境変数を参照する</a></h1>
+            <h1><a href="https://blog.s-tajima.work/post/2019/input-output/">2019年のインプット・アウトプットまとめ</a></h1>
             
         
         
@@ -295,8 +295,8 @@ ga('send', 'pageview');
         
 
         <time class="published"
-            datetime='2018-10-15'>
-            October 15, 2018</time>
+            datetime='2019-12-30'>
+            December 30, 2019</time>
         <span class="author">Satoshi Tajima</span>
         
         
@@ -309,138 +309,117 @@ ga('send', 'pageview');
     <div id="content">
         
 
-<p>ptraceを使って特定のプロセスの <strong>現在の</strong> 環境変数を参照するためのプログラムを書いてみたのでその紹介です。</p>
+<p>残念ながら今年はこのブログをあんまり更新できなかったので、せめてこれくらいはということで2019年のインプットとアウトプットについてまとめておく。 ( なお、会社の業務としてやったことはパブリックにしたもの以外は割愛。)</p>
 
-<h2 id="背景">背景</h2>
+<h1 id="インプット">インプット</h1>
 
-<p>Linuxを使っていると、プロセスの環境変数を参照したいと思うことってありますよね。<br />
-そんなとき、僕はよく <code>/proc/[PID]/environ</code> を参照します。</p>
+<h2 id="本">本</h2>
 
-<pre><code>$ strings /proc/1234/environ
-LANG=ja_JP.UTF-8
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
-.. snip ..
-</code></pre>
-
-<p>(権限がないプロセスを対象にする場合はroot権限が必要です。)</p>
-
-<p>しかし、 <code>/proc/[PID]/environ</code> で参照できるのはあくまで <strong>プロセス実行時の</strong> 環境変数のみであり、<br />
-実行後に追加/変更されたものを参照することができません。</p>
-
-<p>つまり、このようにDotenv等によって追加された変数を参照することはできないということです。</p>
+<p>今年から通勤時の電車移動の時間が少し増えたのと、<a href="https://finatext.com/ja/career/support">会社の学習支援の制度</a> の活用のために、例年より多くの本を読んだ。エンジニアなので技術書を読むのはあたりまえとして、最近は組織論とかマネジメント論についてもう少し体系だって考えたり語ったりできるようににならないとだめだなと感じることが増えたので、その手の本も読んだ。<br />
+読んだ本の一覧はこちら。</p>
 
 <ul>
-<li>起動時にシェルから / 起動後にDotenvで 追加した環境変数を表示するスクリプト(env.rb)を実行。</li>
+<li><a href="https://amzn.to/2MH1xdE">サイバーセキュリティテスト完全ガイド　Kali Linuxによるペネトレーションテスト</a></li>
+<li><a href="https://amzn.to/2MBZmI0">サイバーセキュリティ レッドチーム実践ガイド</a></li>
+<li><a href="https://amzn.to/2tWI0iE">OAuth徹底入門 セキュアな認可システムを適用するための原則と実践</a></li>
+<li><a href="https://amzn.to/365gduM">Cloud Native Infrastructure: Patterns for Scalable Infrastructure and Applications in a Dynamic Environment (English Edition)</a></li>
+<li><a href="https://amzn.to/2stuwuk">LeanとDevOpsの科学［Accelerate］ テクノロジーの戦略的活用が組織変革を加速する impress top gearシリーズ</a></li>
+<li><a href="https://amzn.to/39jCUNI">Effective DevOps</a></li>
+<li><a href="https://amzn.to/357gls4">セキュリティのためのログ分析入門 サイバー攻撃の痕跡を見つける技術 Software Design plus</a></li>
+<li><a href="https://amzn.to/355eiFb">Clean Architecture 達人に学ぶソフトウェアの構造と設計</a></li>
+<li><a href="https://amzn.to/2SAnZJ9">エンジニアのためのマネジメントキャリアパス</a></li>
+<li><a href="https://amzn.to/2ZymD2Z">プロダクションレディマイクロサービス</a></li>
+<li><a href="https://amzn.to/2MDz5sR">暗号技術のすべて</a></li>
+<li><a href="https://amzn.to/2SDFb07">ソフトウェア・ファースト</a></li>
+<li><a href="https://amzn.to/37kCuVE">経営者のための情報セキュリティQ&amp;A45</a></li>
+<li><a href="https://amzn.to/2SAGk8R">NO HARD WORK!　無駄ゼロで結果を出すぼくらの働き方</a></li>
+<li><a href="https://amzn.to/3679EIb">THE TEAM 5つの法則</a></li>
+<li><a href="https://amzn.to/39jyaHP">シリコンバレー式 最強の育て方 ―人材マネジメントの新しい常識 1on1ミーティング―</a></li>
+<li><a href="https://amzn.to/39l08D6">デッドライン</a></li>
+<li><a href="https://amzn.to/2F4Wrn4">最軽量のマネジメント</a></li>
+<li><a href="https://amzn.to/2Q9bYJ8">HIGH OUTPUT MANAGEMENT</a></li>
+<li><a href="https://amzn.to/369GSGH">1兆ドルコーチ――シリコンバレーのレジェンド　ビル・キャンベルの成功の教え</a></li>
+<li><a href="https://amzn.to/2tTXpjJ">企業変革力</a></li>
+<li><a href="https://amzn.to/37kXU52">反脆弱性［上］――不確実な世界を生き延びる唯一の考え方</a></li>
+<li><a href="https://amzn.to/39lWqcr">FACTFULNESS（ファクトフルネス）10の思い込みを乗り越え、データを基に世界を正しく見る習慣</a></li>
+<li><a href="https://amzn.to/2F12by7">アントフィナンシャル――1匹のアリがつくる新金融エコシステム</a></li>
+<li><a href="https://amzn.to/2MF3GX3">ジ・エンド・オブ・バンキング 銀行の終わりと金融の未来</a></li>
 </ul>
 
-<pre><code>$ cat env.rb
-require 'dotenv'
-Dotenv.load
-
-puts &quot;pid: #{$$}&quot;
-puts &quot;STARTUP_KEY: #{ENV['STARTUP_KEY']}&quot;
-puts &quot;DOTENV_ADDED_KEY: #{ENV['DOTENV_ADDED_KEY']}&quot;
-sleep 10
-
-$ cat .env
-DOTENV_ADDED_KEY=DOTENV_ADDED_VAL
-
-$ STARTUP_KEY=STARTUP_VAL ruby env.rb
-pid: 7716
-STARTUP_KEY: STARTUP_VAL
-DOTENV_ADDED_KEY: DOTENV_ADDED_VAL
-# .. sleeping ..
-</code></pre>
+<p>また、これらの本を積読中。年末年始に読みたい。</p>
 
 <ul>
-<li>別のシェルから <code>/proc/[PID]/environ</code> を確認。</li>
+<li><a href="https://amzn.to/2rCk0k5">チャイナ・ウェイ――中国ビジネスリーダーの経営スタイル</a></li>
+<li><a href="https://amzn.to/2thrQzZ">世界で闘うプログラミング力を鍛える本 コーディング面接189問とその解法</a></li>
+<li><a href="https://amzn.to/358Mv6y">レガシーコードからの脱却</a></li>
+<li><a href="https://amzn.to/2QrEsws">Design It!</a></li>
+<li><a href="https://amzn.to/2QpiM48">WTF経済</a></li>
 </ul>
 
-<pre><code>$ strings /proc/7716/environ | grep _KEY=
-STARTUP_KEY=STARTUP_VAL
-</code></pre>
+<h2 id="podcast">Podcast</h2>
 
-<p>今開いているシェルのプロセスに限って言えば、 <code>env</code> コマンドを使うことができます。<br />
-<code>env</code> コマンドであれば、プロセス(シェル)起動後に追加された環境変数も参照できます。</p>
+<p>主に英語のリスニング力のアップのために聞いている。
+タイミングとしては通勤の電車の中か、ジムにいるとき。</p>
 
-<pre><code>$ env | grep ADDED_KEY
-$ export ADDED_KEY=ADDED_VALUE
-$ env | grep ADDED_KEY
-ADDED_KEY=ADDED_VALUE
-</code></pre>
+<ul>
+<li><a href="https://changelog.com/podcast">The Changelog</a></li>
+<li><a href="https://changelog.com/gotime">Go Time</a></li>
+<li><a href="https://www.redhat.com/en/command-line-heroes">COMMAND_LINE HEROES</a></li>
+</ul>
 
-<p>では、それ以外のプロセスの <strong>現在の</strong> 環境変数を参照したい場合はどうすればよいでしょう。<br />
-今回は、それを実現するためのプログラムを書いてみたという話です。</p>
+<p>上記のPodcastは大体のエピソードを聞いてしまったので、来年はこのあたりを聞く予定。</p>
 
-<p>尚、プログラムを書いてみたのはあくまで学習目的であり、<br />
-同様のことを手軽にやるならgdbを使うことをおすすめします。</p>
+<ul>
+<li><a href="https://softwareengineeringdaily.com/category/all-episodes/exclusive-content/Podcast/">Software Engineering Daily</a></li>
+</ul>
 
-<h2 id="peke-envs">peke_envs</h2>
+<h2 id="イベント">イベント</h2>
 
-<p>作成したプログラムはこちら。<br />
-<a href="https://github.com/s-tajima/peke_envs">https://github.com/s-tajima/peke_envs</a></p>
+<p>大きめのカンファレンスへの参加が多かった。</p>
 
-<p>先程の env.rb のプロセスに対して実行すると、このようにDotenvで追加した環境変数も表示されます。</p>
+<ul>
+<li><a href="https://aws.amazon.com/jp/summits/tokyo-2019/">AWS Summit Tokyo 2019</a></li>
+<li><a href="https://www.interop.jp/">Interop Tokyo 2019</a></li>
+<li><a href="https://www.blackhat.com/us-19/">BlackHat USA 2019</a></li>
+<li><a href="https://www.defcon.org/html/defcon-27/dc-27-index.html">DEF CON 27</a></li>
+<li><a href="https://linedevday.linecorp.com/jp/2019/">LINE DEVELOPER DAY 2019</a></li>
+<li><a href="https://cto-a.org/news/2019/11/20/288/">CTO Conference 2019 Winter</a></li>
+</ul>
 
-<pre><code>$ ./peek 7716
-.. snip ..
-STARTUP_KEY=STARTUP_VAL
-DOTENV_ADDED_KEY=DOTENV_ADDED_VAL
-.. snip ..
-</code></pre>
+<p>来年は久しぶりにre:Inventに行きたいなーと思っている。</p>
 
-<p>尚、現時点ではすべてのプロセスを対象にできるわけではなく、<br />
-libcをダイナミックリンクしているプロセスだけを対象にできます。<br />
-理由は次に記載する動作の仕組みによるものです。</p>
+<h1 id="アウトプット">アウトプット</h1>
 
-<p><em>エラーハンドリングの不備により、対象のプロセスが停止状態のままになってしまう(SIGCONTを送れば再開できます) ケースがあるので、重要なプロセスを対象にするのは避けてください。</em></p>
+<h2 id="登壇">登壇</h2>
 
-<h2 id="動作の仕組み">動作の仕組み</h2>
+<p>AWS Summit Tokyoで話をする機会をいただけた。<br />
+準備はなかなか大変だったけど、役に立ったと声をかけてもらえたりもしたのでよかった。</p>
 
-<p><em>もしかしたら認識や表現が誤っている部分があるかもしれないですが、そのときはTwitterなどで教えてください。</em></p>
+<ul>
+<li><a href="https://aws.amazon.com/jp/blogs/startup/summit2019_day2_recap/">AWS Summit Tokyo 2019</a></li>
+</ul>
 
-<p>Linux上で稼働するプロセスは、POSIXに準拠しています。<br />
-環境変数というのは、POSIXで定義されている値で environ というポインタから参照できます。<br />
-現状、多くのプログラムはPOSIXに準拠するためにlibcというライブラリを使っています。</p>
+<h2 id="会社のテックブログ">会社のテックブログ</h2>
 
-<p>よって、対象のプロセスにおいてlibcがマッピングされているアドレスを調べ、  そのlibcにおける environ ポインタのオフセットを調べ、  対象のプロセスにおいてenviron ポインタの値を参照し、  それを辿ることで環境変数の値が参照できます。</p>
+<p>会社のテックブログを立ち上げて、いくつか記事を書いた。</p>
 
-<p>肝となるのは ptrace(2) というシステムコールです。<br />
-<a href="http://man.he.net/?topic=ptrace&amp;section=all">http://man.he.net/?topic=ptrace&amp;section=all</a></p>
+<ul>
+<li><a href="https://medium.com/finatext/blackhat-usa-2019-defcon-27-b6ab7d1fdf00">Black Hat USA 2019 &amp; DEF CON 27 に参加してきました</a></li>
+<li><a href="https://medium.com/finatext/finatext-aws-guardrail-2705cd1e3679">FinatextにおけるAWSのガードレール戦略の紹介</a></li>
+<li><a href="https://medium.com/finatext/unifi-office-network-8421c518a546">UniFiで中規模オフィスネットワークをリーズナブルに構築した話</a></li>
+</ul>
 
-<blockquote>
-<p>The ptrace() system call provides a means by which one process (the &ldquo;tracer&rdquo;) may observe and control the execution of another process (the &ldquo;tracee&rdquo;), and examine and change the tracee&rsquo;s memory and registers.</p>
-</blockquote>
+<p>AWSのガードレール戦略の話はそこそこ多くの人に読んでもらえてよかったなと思う。一方、個人的にはあんまり話題にならずに流れてしまったUniFiでネットワーク構築した話のほうがすごいことをやったつもりなのでぜひこっちも読んだくださいという気持ち。</p>
 
-<p>ドキュメントにある通り、 ptrace を使うと特定のプロセスのメモリ値を参照したり、書き換えたりすることができます。
-操作の内容は、ptraceの第一引数で指定するのですが、 PTRACE_PEEKDATAで値の参照、PTRACE_POKEDATAで値の書き換えができます。これが peke_envsの名前の由来です。</p>
+<h2 id="資格">資格</h2>
 
-<p>この方法であれば、プロセスのメモリ <strong>現在の</strong> 状態を直接参照するので、起動後に追加された環境変数も参照できるのです。</p>
+<p>会社の取引先からのアセスメントシート等で、在籍者の資格保有状況についての確認項目があったりするので、取れそうなものは取ろうかなと思い受験した。(尚アウトプットのくくりにするのが正しいかどうかは微妙。)</p>
 
-<p>straceやgdbも、内部的にはこのptraceを使って動作しています。</p>
+<ul>
+<li><a href="https://aws.amazon.com/jp/certification/certified-security-specialty/">AWS Certified Security - Specialty</a></li>
+</ul>
 
-<h2 id="これから">これから</h2>
-
-<p>peke_envsは勉強のためにRustで書いてみました。<br />
-Rustを書くのは初めてで、まだ慣れないところがあって思うようにかけてないところもありますが、<br />
-少しずつ良くしていこうと思っています。</p>
-
-<p>また、現時点では環境変数を参照するところまでしかできていないのですが、<br />
-変更や追加もできるようにしてみようと思っています。<br />
-今のように環境変数のアドレスに対して直接操作(PEEKDATA/POKEDATA)するのではなく、<br />
-対象のプロセスの <code>putenv()/setenv()</code> を呼び出すというアプローチをとってみようと思っています。</p>
-
-<h2 id="余談">余談</h2>
-
-<p>今回のように稼働中のプロセスの環境変数を操作してみようと思い至ったのは、Webアプリケーションにおけるデータベース等の認証情報の取り扱いについて考えたのがきっかけでした。</p>
-
-<p>AWS Secrets Manager や HashiCorp Vault を使うと、認証情報を定期的に自動的にローテートすることができるようになります。<br />
-問題となるのは、Webアプリケーションからローテート後の認証情報を使えるようにするところなのですが、通常は Secrets ManagerのAPIを呼び出すための <a href="https://aws.amazon.com/jp/tools/">SDK</a> や、Vaultの <a href="https://www.vaultproject.io/api/libraries.html">クライアントライブラリ</a> を使って認証情報を取得する実装を書く必要があります。<br />
-毎回そういった実装をアプリケーションに書いていくのは少し面倒だし、OSSなどでそのあたりを自由にコントロールできないというケースもあります。<br />
-「Secrets ManagerやVaultによる認証情報のローテートを検知して、対象のプロセスの環境変数を自動的に書き換えてくれるような仕組み」が作れると、既存のアプリケーションはあくまで環境変数を読み込むだけでよく、また開発環境のため処理を分岐するといったこともせずに済むので楽なのではと考えました。</p>
-
-<p>結局、こんなやり方をしなくとも、少し雑ですが「認証情報のローテートを検知して、認証情報を環境変数にセットした上で対象のプロセスを再起動する」という仕組みでも十分なのではと考え直したので、peke_envsはあくまで趣味の勉強のためという範疇にとどまるでしょう。<br />
-Rustやptrace(2)の勉強をするいい機会になりました。</p>
+<p>来年はCISSPを取る予定でテキストを買ってある。</p>
 
     </div>
 
@@ -479,43 +458,43 @@ Rustやptrace(2)の勉強をするいい機会になりました。</p>
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&text=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e5%8f%82%e7%85%a7%e3%81%99%e3%82%8b&via=s_tajima" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&text=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81&via=s_tajima" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e5%8f%82%e7%85%a7%e3%81%99%e3%82%8b" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&title=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e5%8f%82%e7%85%a7%e3%81%99%e3%82%8b" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&title=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f&title=ptrace%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%83%97%e3%83%ad%e3%82%bb%e3%82%b9%e3%81%ae%20%2a%e7%8f%be%e5%9c%a8%e3%81%ae%2a%20%e7%92%b0%e5%a2%83%e5%a4%89%e6%95%b0%e3%82%92%e5%8f%82%e7%85%a7%e3%81%99%e3%82%8b" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&title=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2018%2fintro-peke-envs%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -525,13 +504,10 @@ Rustやptrace(2)の勉強をするいい機会になりました。</p>
 </article>
 <ul class="actions pagination">
     
-        <li><a href="https://blog.s-tajima.work/post/2018/cve-2018-17082/"
-                class="button big previous">CVE-2018-17082によるXSSに関する見解</a></li>
+        <li><a href="https://blog.s-tajima.work/post/2019/security-assessment/"
+                class="button big previous">セキュリティ診断で確認する項目</a></li>
     
 
-    
-        <li><a href="https://blog.s-tajima.work/post/2018/shell2http-on-fargate/"
-                class="button big next">shell2httpでAWS FargateやSSHレスの運用を少しだけ楽にする</a></li>
     
 </ul>
 

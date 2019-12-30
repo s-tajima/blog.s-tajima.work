@@ -6,10 +6,19 @@
     <description>Recent content in Posts on s_tajima::TechBlog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Tue, 12 Feb 2019 23:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 30 Dec 2019 09:00:00 +0900</lastBuildDate>
     
 	<atom:link href="https://blog.s-tajima.work/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>2019年のインプット・アウトプットまとめ</title>
+      <link>https://blog.s-tajima.work/post/2019/input-output/</link>
+      <pubDate>Mon, 30 Dec 2019 09:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2019/input-output/</guid>
+      <description>残念ながら今年はこのブログをあんまり更新できなかったので、せめてこれくらいはということで2019年のインプットとアウトプットについてまとめて</description>
+    </item>
     
     <item>
       <title>セキュリティ診断で確認する項目</title>

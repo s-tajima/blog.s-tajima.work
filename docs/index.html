@@ -29,7 +29,7 @@
 
 
 
-<meta property="og:updated_time" content="2019-02-12T23:00:00&#43;09:00"/>
+<meta property="og:updated_time" content="2019-12-30T09:00:00&#43;09:00"/>
 
 
 
@@ -175,6 +175,10 @@ ga('send', 'pageview');
 
                 
                     <li>
+                        <a href="https://blog.s-tajima.work/post/2019/input-output/"><p>2019年のインプット・アウトプットまとめ</p></a>
+                    </li>
+                
+                    <li>
                         <a href="https://blog.s-tajima.work/post/2019/security-assessment/"><p>セキュリティ診断で確認する項目</p></a>
                     </li>
                 
@@ -188,10 +192,6 @@ ga('send', 'pageview');
                 
                     <li>
                         <a href="https://blog.s-tajima.work/post/2018/shell2http-on-fargate/"><p>shell2httpでAWS FargateやSSHレスの運用を少しだけ楽にする</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="https://blog.s-tajima.work/post/2018/intro-peke-envs/"><p>ptraceを使ってプロセスの *現在の* 環境変数を参照する</p></a>
                     </li>
                 
             </ul>
@@ -208,7 +208,7 @@ ga('send', 'pageview');
     <header>
     <div class="title">
         
-            <h2><a href="https://blog.s-tajima.work/post/2019/security-assessment/">セキュリティ診断で確認する項目</a></h2>
+            <h2><a href="https://blog.s-tajima.work/post/2019/input-output/">2019年のインプット・アウトプットまとめ</a></h2>
         
         
     </div>
@@ -218,8 +218,8 @@ ga('send', 'pageview');
         
 
         <time class="published"
-            datetime='2019-02-12'>
-            February 12, 2019</time>
+            datetime='2019-12-30'>
+            December 30, 2019</time>
         <span class="author">Satoshi Tajima</span>
         
         
@@ -232,137 +232,117 @@ ga('send', 'pageview');
     <div id="content">
         
 
-<p>安心してサービスを運用するために、セキュリティ関連の設定や運用に問題がないかをチェックしておくのは重要です。<br />
-最近、そんなチェックする機会が増えてきたので分野ごとによく指摘する・注意して確認する項目をリストにしてみました。</p>
+<p>残念ながら今年はこのブログをあんまり更新できなかったので、せめてこれくらいはということで2019年のインプットとアウトプットについてまとめておく。 ( なお、会社の業務としてやったことはパブリックにしたもの以外は割愛。)</p>
 
-<p>チェックする方法は手動の場合もツールを使って自動化する場合もあるし、参照する情報もソースコードだったり実際にHTTPリクエストをかけてみた挙動だったり、サーバにログインしてみてコマンドを叩いたりと様々です。<br />
-それぞれの項目をどうチェックしてるかは別途個別の記事にしたい(いつか)</p>
+<h1 id="インプット">インプット</h1>
+
+<h2 id="本">本</h2>
+
+<p>今年から通勤時の電車移動の時間が少し増えたのと、<a href="https://finatext.com/ja/career/support">会社の学習支援の制度</a> の活用のために、例年より多くの本を読んだ。エンジニアなので技術書を読むのはあたりまえとして、最近は組織論とかマネジメント論についてもう少し体系だって考えたり語ったりできるようににならないとだめだなと感じることが増えたので、その手の本も読んだ。<br />
+読んだ本の一覧はこちら。</p>
 
 <ul>
-<li>全てに対応しなければならない というリストではありません。サービスや事業の要件次第です。</li>
-<li>逆に、 すべて対応すればセキュリティの問題はなくなる というリストでもありません。</li>
-<li>リストは都度追加・削除・修正していく予定です。</li>
-<li>粒度や抽象度がバラバラですが、より多くの場面で経験したものは抽象的になっている傾向があります。</li>
-<li>順番は思いついた順です。重要度や優先度も要件次第だと思っているのであえて並び替えたりしていません。</li>
-<li>このようなチェックをしてほしいサービス・事業がある方がいましたら<a href="https://blog.s-tajima.work/about/">メール</a>や<a href="https://twitter.com/s_tajima">Twitter</a>等でご相談ください。</li>
+<li><a href="https://amzn.to/2MH1xdE">サイバーセキュリティテスト完全ガイド　Kali Linuxによるペネトレーションテスト</a></li>
+<li><a href="https://amzn.to/2MBZmI0">サイバーセキュリティ レッドチーム実践ガイド</a></li>
+<li><a href="https://amzn.to/2tWI0iE">OAuth徹底入門 セキュアな認可システムを適用するための原則と実践</a></li>
+<li><a href="https://amzn.to/365gduM">Cloud Native Infrastructure: Patterns for Scalable Infrastructure and Applications in a Dynamic Environment (English Edition)</a></li>
+<li><a href="https://amzn.to/2stuwuk">LeanとDevOpsの科学［Accelerate］ テクノロジーの戦略的活用が組織変革を加速する impress top gearシリーズ</a></li>
+<li><a href="https://amzn.to/39jCUNI">Effective DevOps</a></li>
+<li><a href="https://amzn.to/357gls4">セキュリティのためのログ分析入門 サイバー攻撃の痕跡を見つける技術 Software Design plus</a></li>
+<li><a href="https://amzn.to/355eiFb">Clean Architecture 達人に学ぶソフトウェアの構造と設計</a></li>
+<li><a href="https://amzn.to/2SAnZJ9">エンジニアのためのマネジメントキャリアパス</a></li>
+<li><a href="https://amzn.to/2ZymD2Z">プロダクションレディマイクロサービス</a></li>
+<li><a href="https://amzn.to/2MDz5sR">暗号技術のすべて</a></li>
+<li><a href="https://amzn.to/2SDFb07">ソフトウェア・ファースト</a></li>
+<li><a href="https://amzn.to/37kCuVE">経営者のための情報セキュリティQ&amp;A45</a></li>
+<li><a href="https://amzn.to/2SAGk8R">NO HARD WORK!　無駄ゼロで結果を出すぼくらの働き方</a></li>
+<li><a href="https://amzn.to/3679EIb">THE TEAM 5つの法則</a></li>
+<li><a href="https://amzn.to/39jyaHP">シリコンバレー式 最強の育て方 ―人材マネジメントの新しい常識 1on1ミーティング―</a></li>
+<li><a href="https://amzn.to/39l08D6">デッドライン</a></li>
+<li><a href="https://amzn.to/2F4Wrn4">最軽量のマネジメント</a></li>
+<li><a href="https://amzn.to/2Q9bYJ8">HIGH OUTPUT MANAGEMENT</a></li>
+<li><a href="https://amzn.to/369GSGH">1兆ドルコーチ――シリコンバレーのレジェンド　ビル・キャンベルの成功の教え</a></li>
+<li><a href="https://amzn.to/2tTXpjJ">企業変革力</a></li>
+<li><a href="https://amzn.to/37kXU52">反脆弱性［上］――不確実な世界を生き延びる唯一の考え方</a></li>
+<li><a href="https://amzn.to/39lWqcr">FACTFULNESS（ファクトフルネス）10の思い込みを乗り越え、データを基に世界を正しく見る習慣</a></li>
+<li><a href="https://amzn.to/2F12by7">アントフィナンシャル――1匹のアリがつくる新金融エコシステム</a></li>
+<li><a href="https://amzn.to/2MF3GX3">ジ・エンド・オブ・バンキング 銀行の終わりと金融の未来</a></li>
 </ul>
 
-<hr />
+<p>また、これらの本を積読中。年末年始に読みたい。</p>
 
-<h2 id="webアプリケーション">Webアプリケーション</h2>
-
-<ul class="task-list">
-<li><input type="checkbox" disabled class="task-list-item"> XSSの対策がされているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> CSRFの対策がされているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> SQL Injectionの対策がされているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 重要な情報が、(Blindも含む) SQL Injectionだけで盗めてしまわないよう対策されているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> OSコマンドインジェクションが実行できそうな余地がないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> SSRFが実行できそうな余地がないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> ディレクトリトラバーサルが実行できそうな余地がないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 外部からの入力値が適切にバリデーションされているか (アップロードされるファイル等も含む)</li>
-<li><input type="checkbox" disabled class="task-list-item"> セキュリティ関連のレスポンスヘッダが適切に設定されているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> X-Forwarded-For ヘッダの取り扱いが適切か</li>
-<li><input type="checkbox" disabled class="task-list-item"> パスワードが適切な手法でハッシュ化された状態で保存されているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 意図しないHTTPメソッドでリクエストを処理していないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 機微な情報をGETパラメータで送信していないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 機微な情報をログに出力していないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 機微な情報がブラウザやCDNにキャッシュされてしまわないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> ユーザがパスワードを変更する手段が提供されているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> ユーザがパスワードを紛失してしまった場合に再設定する手段が提供されているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> パスワードリセット等からサービス利用者のメールアドレス一覧を作成できてしまわないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 認証・認可を回避して情報の表示や操作ができてしまわないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 一定回数のログイン失敗でアカウントがロックされるようになっているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> ログアウト時にサーバーサイドでもセッション情報が破棄されているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> ログインセッションは適切な時間経過によって失効されるようになっているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> ユーザが既存のログインセッションを無効化する手段が提供されているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 管理者用の画面が、無防備にインターネットに公開されてしまっていないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> メールに適切なSPF, DKIMの設定がされているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> ユーザ固有の情報がキャッシュされ、他のユーザから閲覧されててしまう可能性がないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> (AoSSLの場合) 平文で利用できてしまうエンドポイントはないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 証明書, 中間証明書が適切に設定できているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> SSL/TLSのProtocol, Cipher Suiteが適切に設定されているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> ドメインのWhoisが適切に設定できているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 利用している暗号のアルゴリズム・鍵の強度が適切か</li>
-<li><input type="checkbox" disabled class="task-list-item"> 乱数の生成や、ランダムな選択が適切な手段で行えているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> ディレクトリインデックスが表示される設定になっていないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> ソースマップファイルが公開されていないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> .git/ 等の公開する意図のないファイルにアクセスできてしなわないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> MySQLサーバーとの接続に、 <a href="https://dev.mysql.com/doc/refman/8.0/en/mysql-real-connect.html">CLIENT_MULTI_STATEMENTS</a> が指定されていないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> MySQL等のデータストアへの接続に、不必要に強い権限を持ったユーザを利用していないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> DDoSを受けたときの対応プランがあるか</li>
+<ul>
+<li><a href="https://amzn.to/2rCk0k5">チャイナ・ウェイ――中国ビジネスリーダーの経営スタイル</a></li>
+<li><a href="https://amzn.to/2thrQzZ">世界で闘うプログラミング力を鍛える本 コーディング面接189問とその解法</a></li>
+<li><a href="https://amzn.to/358Mv6y">レガシーコードからの脱却</a></li>
+<li><a href="https://amzn.to/2QrEsws">Design It!</a></li>
+<li><a href="https://amzn.to/2QpiM48">WTF経済</a></li>
 </ul>
 
-<h2 id="スマートフォンアプリ">スマートフォンアプリ</h2>
+<h2 id="podcast">Podcast</h2>
 
-<p>今の所スマートフォンアプリをチェックする機会がそれほど多くないのでここは内容が薄いです&hellip;</p>
+<p>主に英語のリスニング力のアップのために聞いている。
+タイミングとしては通勤の電車の中か、ジムにいるとき。</p>
 
-<ul class="task-list">
-<li><input type="checkbox" disabled class="task-list-item"> サーバーサイドとの通信は暗号化されているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 重要/緊急な情報をユーザに通知する手段があるか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 改ざんされると困る重要なロジックをスマートフォンアプリ側で実行していないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 機微な情報を適切なデータストアに保存しているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> AWSのシークレットアクセスキーのような閲覧されると困る情報をアプリ内にコーディングしていないか</li>
+<ul>
+<li><a href="https://changelog.com/podcast">The Changelog</a></li>
+<li><a href="https://changelog.com/gotime">Go Time</a></li>
+<li><a href="https://www.redhat.com/en/command-line-heroes">COMMAND_LINE HEROES</a></li>
 </ul>
 
-<h2 id="os-ミドルウェア">OS/ミドルウェア</h2>
+<p>上記のPodcastは大体のエピソードを聞いてしまったので、来年はこのあたりを聞く予定。</p>
 
-<ul class="task-list">
-<li><input type="checkbox" disabled class="task-list-item"> サーバー上のオペレーションの内容が保全され、誰の作業か特定できるようになっているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 各種ファイルに適切なオーナー・グループ・パーミッションが設定されているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 不必要に強い権限で起動しているプロセスがいないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 安全でない可能性のあるDocker Imageを利用していないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> Docker Imageの中に機微な情報を埋め込んでしまっていないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> クリティカルな脆弱性の見つかっているカーネル・OS・ミドルウェアを利用していないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> バナー (バージョン情報) の外部公開を無効にしてあるか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 不必要なデーモン/プロセスが起動していないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> ログがサーバーの外部(S3等)に保全されるようになっているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 不必要な野良ルートCA証明書がインストールされていないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 必要に応じて素早くメモリやディスクの情報の保全を行う準備があるか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 必要に応じて新規構築した新環境に切り替えることができるか</li>
+<ul>
+<li><a href="https://softwareengineeringdaily.com/category/all-episodes/exclusive-content/Podcast/">Software Engineering Daily</a></li>
 </ul>
 
-<h2 id="aws">AWS</h2>
+<h2 id="イベント">イベント</h2>
 
-<ul class="task-list">
-<li><input type="checkbox" disabled class="task-list-item"> Trusted Advisorに対応すべき警告がでていないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> CloudTrailが有効になっているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> AWS Configが有効になっているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> VPC FlowLogsが有効になっているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> Guard Dutyが有効になっているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 安全でない可能性のあるAMIを利用していないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> ALB・CloudFront等のアクセスログが有効になっているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> EBS, S3, RDS等のストレージの有効化の設定が有効になっているか</li>
-<li><input type="checkbox" disabled class="task-list-item"> S3に不必要な読み込み・書き込みの権限のついたバケットポリシーが設定されていないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 不必要に権限の強いIAMユーザが存在していないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 意図しない環境からAssume Roleされてしまう可能性のあるIAMロールが存在していないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 不必要に広くポートが開放されているセキュリティグループが存在していないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> RDS/RedshiftのPublic Accessibleが不必要に有効になっていないか</li>
+<p>大きめのカンファレンスへの参加が多かった。</p>
+
+<ul>
+<li><a href="https://aws.amazon.com/jp/summits/tokyo-2019/">AWS Summit Tokyo 2019</a></li>
+<li><a href="https://www.interop.jp/">Interop Tokyo 2019</a></li>
+<li><a href="https://www.blackhat.com/us-19/">BlackHat USA 2019</a></li>
+<li><a href="https://www.defcon.org/html/defcon-27/dc-27-index.html">DEF CON 27</a></li>
+<li><a href="https://linedevday.linecorp.com/jp/2019/">LINE DEVELOPER DAY 2019</a></li>
+<li><a href="https://cto-a.org/news/2019/11/20/288/">CTO Conference 2019 Winter</a></li>
 </ul>
 
-<h2 id="ネットワーク">ネットワーク</h2>
+<p>来年は久しぶりにre:Inventに行きたいなーと思っている。</p>
 
-<ul class="task-list">
-<li><input type="checkbox" disabled class="task-list-item"> 不審な通信に気がつく仕組みがあるか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 不審な通信に気づいた場合にそれを詳しく調査する方法があるか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 不必要に外部公開されてしまっているポートがないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 外部公開されているアプリケーションに既知の脆弱性がないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> SSH/Active Directory/LDAP等の認証に弱い強度のアカウントが存在しないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 重要な通信が平文になっていないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> 無線LANが適切なプロトコル(現在ならWPA2-AES等)で運用されているか</li>
+<h1 id="アウトプット">アウトプット</h1>
+
+<h2 id="登壇">登壇</h2>
+
+<p>AWS Summit Tokyoで話をする機会をいただけた。<br />
+準備はなかなか大変だったけど、役に立ったと声をかけてもらえたりもしたのでよかった。</p>
+
+<ul>
+<li><a href="https://aws.amazon.com/jp/blogs/startup/summit2019_day2_recap/">AWS Summit Tokyo 2019</a></li>
 </ul>
 
-<h2 id="その他">その他</h2>
+<h2 id="会社のテックブログ">会社のテックブログ</h2>
 
-<ul class="task-list">
-<li><input type="checkbox" disabled class="task-list-item"> リポジトリ上に機微な情報が平文でコミットされていないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> TLS通信時に、証明書の検証をスキップしていないか</li>
-<li><input type="checkbox" disabled class="task-list-item"> パスワード・パスフレーズ・シークレットトークンをデフォルト値のままにしていないか</li>
+<p>会社のテックブログを立ち上げて、いくつか記事を書いた。</p>
+
+<ul>
+<li><a href="https://medium.com/finatext/blackhat-usa-2019-defcon-27-b6ab7d1fdf00">Black Hat USA 2019 &amp; DEF CON 27 に参加してきました</a></li>
+<li><a href="https://medium.com/finatext/finatext-aws-guardrail-2705cd1e3679">FinatextにおけるAWSのガードレール戦略の紹介</a></li>
+<li><a href="https://medium.com/finatext/unifi-office-network-8421c518a546">UniFiで中規模オフィスネットワークをリーズナブルに構築した話</a></li>
 </ul>
 
-<hr />
+<p>AWSのガードレール戦略の話はそこそこ多くの人に読んでもらえてよかったなと思う。一方、個人的にはあんまり話題にならずに流れてしまったUniFiでネットワーク構築した話のほうがすごいことをやったつもりなのでぜひこっちも読んだくださいという気持ち。</p>
 
-<p>以上です。<br />
-ここもみておくべきだろうというご意見は歓迎です。 ぜひご連絡ください。</p>
+<h2 id="資格">資格</h2>
+
+<p>会社の取引先からのアセスメントシート等で、在籍者の資格保有状況についての確認項目があったりするので、取れそうなものは取ろうかなと思い受験した。(尚アウトプットのくくりにするのが正しいかどうかは微妙。)</p>
+
+<ul>
+<li><a href="https://aws.amazon.com/jp/certification/certified-security-specialty/">AWS Certified Security - Specialty</a></li>
+</ul>
+
+<p>来年はCISSPを取る予定でテキストを買ってある。</p>
 
     </div>
 
@@ -390,7 +370,7 @@ ga('send', 'pageview');
     
         <li><a href='/categories/ja'>ja</a></li>
     
-        <li><a href='/categories/security'>security</a></li>
+        <li><a href='/categories/'></a></li>
     
 </ul>
 
@@ -401,43 +381,43 @@ ga('send', 'pageview');
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f&text=%e3%82%bb%e3%82%ad%e3%83%a5%e3%83%aa%e3%83%86%e3%82%a3%e8%a8%ba%e6%96%ad%e3%81%a7%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b%e9%a0%85%e7%9b%ae&via=s_tajima" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&text=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81&via=s_tajima" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f&title=%e3%82%bb%e3%82%ad%e3%83%a5%e3%83%aa%e3%83%86%e3%82%a3%e8%a8%ba%e6%96%ad%e3%81%a7%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b%e9%a0%85%e7%9b%ae" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&title=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f&title=%e3%82%bb%e3%82%ad%e3%83%a5%e3%83%aa%e3%83%86%e3%82%a3%e8%a8%ba%e6%96%ad%e3%81%a7%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b%e9%a0%85%e7%9b%ae" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&title=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f&title=%e3%82%bb%e3%82%ad%e3%83%a5%e3%83%aa%e3%83%86%e3%82%a3%e8%a8%ba%e6%96%ad%e3%81%a7%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b%e9%a0%85%e7%9b%ae" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&title=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -447,8 +427,8 @@ ga('send', 'pageview');
 </article>
 <ul class="actions pagination">
     
-        <li><a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/"
-                class="button big previous">CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</a></li>
+        <li><a href="https://blog.s-tajima.work/post/2019/security-assessment/"
+                class="button big previous">セキュリティ診断で確認する項目</a></li>
     
 
     
@@ -467,43 +447,43 @@ ga('send', 'pageview');
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f&text=%e3%82%bb%e3%82%ad%e3%83%a5%e3%83%aa%e3%83%86%e3%82%a3%e8%a8%ba%e6%96%ad%e3%81%a7%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b%e9%a0%85%e7%9b%ae&via=s_tajima" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&text=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81&via=s_tajima" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f&title=%e3%82%bb%e3%82%ad%e3%83%a5%e3%83%aa%e3%83%86%e3%82%a3%e8%a8%ba%e6%96%ad%e3%81%a7%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b%e9%a0%85%e7%9b%ae" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&title=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f&title=%e3%82%bb%e3%82%ad%e3%83%a5%e3%83%aa%e3%83%86%e3%82%a3%e8%a8%ba%e6%96%ad%e3%81%a7%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b%e9%a0%85%e7%9b%ae" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&title=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f&title=%e3%82%bb%e3%82%ad%e3%83%a5%e3%83%aa%e3%83%86%e3%82%a3%e8%a8%ba%e6%96%ad%e3%81%a7%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b%e9%a0%85%e7%9b%ae" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&title=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -611,6 +591,20 @@ ga('send', 'pageview');
                     <li>
                         <article>
                             <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2019/input-output/">2019年のインプット・アウトプットまとめ</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2019-12-30'>
+                                    December 30, 2019</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
                                 <h3><a href="https://blog.s-tajima.work/post/2019/security-assessment/">セキュリティ診断で確認する項目</a></h3>
                                 
                                     
@@ -664,20 +658,6 @@ ga('send', 'pageview');
                         </article>
                     </li>
                 
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2018/intro-peke-envs/">ptraceを使ってプロセスの *現在の* 環境変数を参照する</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2018-10-15'>
-                                    October 15, 2018</time>
-                            </header>
-                        </article>
-                    </li>
-                
 
                 
                     <li>
@@ -712,7 +692,7 @@ ga('send', 'pageview');
                         <article>
                             <header>
                                 <a href="/categories//"></a>
-                                <span style="float:right;">3</span>
+                                <span style="float:right;">4</span>
                             </header>
                         </article>
                     </li>
@@ -739,7 +719,7 @@ ga('send', 'pageview');
                         <article>
                             <header>
                                 <a href="/categories/ja/">ja</a>
-                                <span style="float:right;">10</span>
+                                <span style="float:right;">11</span>
                             </header>
                         </article>
                     </li>
