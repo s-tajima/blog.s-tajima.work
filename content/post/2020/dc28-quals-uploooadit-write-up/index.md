@@ -41,7 +41,7 @@ $ curl -sv https://uploooadit.oooverflow.io/
 ```
 
 今度はエラーになるようなリクエストを投げてみて、HAProxyのバージョンは1.9.10ということがわかります。  
-https://www.haproxy.org/download/1.9/src/CHANGELOG を見ると、2019/08/08のリリースと若干古いのが気になります。。  
+https://www.haproxy.org/download/1.9/src/CHANGELOG を見ると、2019/08/08のリリースと若干古いのが気になります。  
 ```
 $ curl -sv https://uploooadit.oooverflow.io/あ
 < HTTP/1.0 400 Bad request
@@ -56,13 +56,13 @@ Your browser sent an invalid request.
 .. snip ..
 ```
 
-SSRFやHTTP request smuggling的あたりができるのではと疑い、
+SSRFやHTTP request smugglingあたりができるのではと疑い、
 調べてみると HAProxy の HTTP request smuggling というそのまんまの記事が見つかります。
 
 * https://nathandavison.com/blog/haproxy-http-request-smuggling
 * https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn
 
-この時点でこんな仮設をたてました。
+この時点でこんな仮説をたてました。
 
 * フラグが含まれたObjectに対するアクセス、ないしはフラグをアップロードするアクセスが、定常的にリクエストされている。
 * HTTP request smugglingによって、そのアクセスの内容を盗み取る必要がある。

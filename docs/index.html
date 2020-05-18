@@ -265,7 +265,7 @@ welcome-to-dc2020-quals, welcome-video, uploooaditの3問をときました。</
 </code></pre>
 
 <p>今度はエラーになるようなリクエストを投げてみて、HAProxyのバージョンは1.9.10ということがわかります。<br />
-<a href="https://www.haproxy.org/download/1.9/src/CHANGELOG">https://www.haproxy.org/download/1.9/src/CHANGELOG</a> を見ると、2019/08/08のリリースと若干古いのが気になります。。</p>
+<a href="https://www.haproxy.org/download/1.9/src/CHANGELOG">https://www.haproxy.org/download/1.9/src/CHANGELOG</a> を見ると、2019/08/08のリリースと若干古いのが気になります。</p>
 
 <pre><code>$ curl -sv https://uploooadit.oooverflow.io/あ
 &lt; HTTP/1.0 400 Bad request
@@ -280,7 +280,7 @@ Your browser sent an invalid request.
 .. snip ..
 </code></pre>
 
-<p>SSRFやHTTP request smuggling的あたりができるのではと疑い、
+<p>SSRFやHTTP request smugglingあたりができるのではと疑い、
 調べてみると HAProxy の HTTP request smuggling というそのまんまの記事が見つかります。</p>
 
 <ul>
@@ -288,7 +288,7 @@ Your browser sent an invalid request.
 <li><a href="https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn">https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn</a></li>
 </ul>
 
-<p>この時点でこんな仮設をたてました。</p>
+<p>この時点でこんな仮説をたてました。</p>
 
 <ul>
 <li>フラグが含まれたObjectに対するアクセス、ないしはフラグをアップロードするアクセスが、定常的にリクエストされている。</li>
