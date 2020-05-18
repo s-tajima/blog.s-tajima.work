@@ -6,10 +6,19 @@
     <description>Recent content in Posts on s_tajima::TechBlog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Mon, 30 Dec 2019 09:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 18 May 2020 23:00:00 +0900</lastBuildDate>
     
 	<atom:link href="https://blog.s-tajima.work/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>DEF CON CTF Qualifier 2020 uploooadit WriteUp</title>
+      <link>https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/</link>
+      <pubDate>Mon, 18 May 2020 23:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/</guid>
+      <description>2020/05/16 ~ 2020/05/18 に開催されたDEF CON CTF Qualifier 2020に参加して、 welcome-to-dc2020-quals, welcome-video, uploooaditの3問をときました。 最初の2つはチュートリアルなので割愛して、up</description>
+    </item>
     
     <item>
       <title>2019年のインプット・アウトプットまとめ</title>
