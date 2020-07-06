@@ -6,10 +6,19 @@
     <description>Recent content in Ja on s_tajima::TechBlog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Mon, 18 May 2020 23:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 05 Jul 2020 12:00:00 +0900</lastBuildDate>
     
 	<atom:link href="https://blog.s-tajima.work/categories/ja/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>GoでNIST SP 800-63Bに則ったPassword Validatorを作りました</title>
+      <link>https://blog.s-tajima.work/post/2020/nspv/</link>
+      <pubDate>Sun, 05 Jul 2020 12:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2020/nspv/</guid>
+      <description>インターネットのサービスを利用する上で、どんなパスワードを設定するかというのはアカウントを安全に保護する上で重要な要素になります。 日常的にデ</description>
+    </item>
     
     <item>
       <title>DEF CON CTF Qualifier 2020 uploooadit WriteUp</title>
