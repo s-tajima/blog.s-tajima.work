@@ -4,7 +4,7 @@
     <head>
         
             
-                <title>hello</title>
+                <title>GoでNIST SP 800-63Bに則ったPassword Validatorを作りました</title>
             
         
 
@@ -18,7 +18,9 @@
             <meta name="author" content="Satoshi Tajima">
         
         
-            <meta name="description" content="This is a first article.">
+            
+                <meta name="description" content="s_tajima::TechBlog">
+            
         
 
         
@@ -27,20 +29,20 @@
 
 
 
-<meta name="twitter:text:title" content="hello"/>
-<meta name="twitter:title" content="hello"/>
-<meta name="twitter:description" content="This is a first article."/>
+<meta name="twitter:text:title" content="GoでNIST SP 800-63Bに則ったPassword Validatorを作りました"/>
+<meta name="twitter:title" content="GoでNIST SP 800-63Bに則ったPassword Validatorを作りました"/>
+<meta name="twitter:description" content="インターネットのサービスを利用する上で、どんなパスワードを設定するかというのはアカウントを安全に保護する上で重要な要素になります。 日常的にデ"/>
 <meta name="twitter:site" content="@s_tajima"/>
 
-        <meta property="og:title" content="hello" />
-<meta property="og:description" content="This is a first article." />
+        <meta property="og:title" content="GoでNIST SP 800-63Bに則ったPassword Validatorを作りました" />
+<meta property="og:description" content="インターネットのサービスを利用する上で、どんなパスワードを設定するかというのはアカウントを安全に保護する上で重要な要素になります。 日常的にデ" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.s-tajima.work/post/2017/hello/" />
+<meta property="og:url" content="https://blog.s-tajima.work/post/2020/nspv/" />
 
 
 
-<meta property="article:published_time" content="2017-05-05T23:03:50&#43;09:00"/>
-<meta property="article:modified_time" content="2017-05-05T23:03:50&#43;09:00"/>
+<meta property="article:published_time" content="2020-07-05T12:00:00&#43;09:00"/>
+<meta property="article:modified_time" content="2020-07-05T12:00:00&#43;09:00"/>
 
 
 
@@ -53,12 +55,12 @@
 
 
         
-<meta itemprop="name" content="hello">
-<meta itemprop="description" content="This is a first article.">
+<meta itemprop="name" content="GoでNIST SP 800-63Bに則ったPassword Validatorを作りました">
+<meta itemprop="description" content="インターネットのサービスを利用する上で、どんなパスワードを設定するかというのはアカウントを安全に保護する上で重要な要素になります。 日常的にデ">
 
 
-<meta itemprop="dateModified" content="2017-05-05T23:03:50&#43;09:00" />
-<meta itemprop="wordCount" content="82">
+<meta itemprop="dateModified" content="2020-07-05T12:00:00&#43;09:00" />
+<meta itemprop="wordCount" content="1823">
 
 
 
@@ -229,43 +231,43 @@ ga('send', 'pageview');
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fhello%2f&text=hello&via=s_tajima" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&text=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f&via=s_tajima" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fhello%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fhello%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fhello%2f&title=hello" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&title=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fhello%2f&title=hello" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&title=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fhello%2f&title=hello" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&title=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fhello%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -282,11 +284,9 @@ ga('send', 'pageview');
     <header>
     <div class="title">
         
-            <h1><a href="https://blog.s-tajima.work/post/2017/hello/">hello</a></h1>
+            <h1><a href="https://blog.s-tajima.work/post/2020/nspv/">GoでNIST SP 800-63Bに則ったPassword Validatorを作りました</a></h1>
             
         
-        
-            <p>This is a first article.</p>
         
     </div>
     <div class="meta">
@@ -295,8 +295,8 @@ ga('send', 'pageview');
         
 
         <time class="published"
-            datetime='2017-05-05'>
-            May 5, 2017</time>
+            datetime='2020-07-05'>
+            July 5, 2020</time>
         <span class="author">Satoshi Tajima</span>
         
         
@@ -307,20 +307,132 @@ ga('send', 'pageview');
     
 
     <div id="content">
-        <p>Hatena Blogから移転してきました。</p>
+        
 
-<p>本ブログは</p>
+<p>インターネットのサービスを利用する上で、どんなパスワードを設定するかというのはアカウントを安全に保護する上で重要な要素になります。
+日常的にデータ漏洩がおこり、多くのパスワードリストが出回る現代においては、少し頭を捻って考えたくらいのパスワードだと、突破されてしまうリスクは非常に高いでしょう。</p>
+
+<p>いちサービス利用者としては、パスワードマネージャーを使いサイトごとに個別のランダムな文字列をパスワードに設定しておくことで、そのリスクを低減することができます。
+サービスの提供者としては、適切なパスワードのバリデーションルールを設けることで、利用者が危険なパスワードを設定してしまうことを防ぐ事ができます。</p>
+
+<p>しかし、 &ldquo;パスワードのバリデーションルール&rdquo; というのはサービスによってバラバラで、中にはかえって安全なパスワードを設定するのを阻むバリデーションルールも存在しています。</p>
+
+<p>『NIST Special Publication 800-63B Digital Identity Guidelines (NIST SP 800-63B)』というガイドライン(数年前に「パスワードの定期変更は不要」という記述が話題になったあの資料です) には、Memorized Secrets(つまりパスワードのこと)の設定時・変更時において、どのような基準でそれを受け入れるべきかというのが書かれています。このガイドライン自体は、アメリカの政府機関に向けたものなので、日本でサービスを提供する上では何ら強制力はないのですが、非常に参考になるものです。</p>
+
+<p>今回、この NIST SP 800-63B に書かれた推奨事項に則ったGo製のパスワードバリデーターを作成したので紹介します。
+<a href="https://github.com/s-tajima/nspv">https://github.com/s-tajima/nspv</a></p>
+
+<hr />
+
+<h1 id="nspvによるバリデーション">nspvによるバリデーション</h1>
+
+<h2 id="パスワードの文字列長">パスワードの文字列長</h2>
+
+<p>NIST SP 800-63B には、</p>
+
+<blockquote>
+<p>Verifiers SHALL require subscriber-chosen memorized secrets to be at least 8 characters in length.<br />
+Verifiers SHOULD permit subscriber-chosen memorized secrets at least 64 characters in length.</p>
+</blockquote>
+
+<p>ということで、</p>
 
 <ul>
-<li>ホスティングはGitHub Pages</li>
-<li>コンテンツ作成はHugo</li>
-<li>CDN, TLS配信はCloudflare</li>
+<li>パスワードは最低8文字であることをもとめなければならず</li>
+<li>パスワードは最低64文字を許容するべきである</li>
 </ul>
 
-<p>を利用して運用しています。</p>
+<p>と書かれています。</p>
 
-<p>過去のブログはこちら。<br />
-<a href="http://s-tajima.hateblo.jp/">http://s-tajima.hateblo.jp/</a></p>
+<p>これは特に難しいことではなく、単純に文字列長を確認することで実現します。</p>
+
+<h2 id="よく使われる-漏洩したことのあるパスワード">よく使われる、漏洩したことのあるパスワード</h2>
+
+<p>この項目がとても重要です。</p>
+
+<blockquote>
+<p>verifiers SHALL compare the prospective secrets against a list that contains values known to be commonly-used, expected, or compromised. For example, the list MAY include, but is not limited to:</p>
+
+<ul>
+<li>Passwords obtained from previous breach corpuses.<br /></li>
+<li>Dictionary words.<br /></li>
+<li>Repetitive or sequential characters (e.g. ‘aaaaaa’, ‘1234abcd’).<br /></li>
+</ul>
+</blockquote>
+
+<p>ということで、</p>
+
+<ul>
+<li>よく使われていたり、推測可能だったり、侵害されたパスワードではないことを確認しなければならない</li>
+</ul>
+
+<p>と書かれています。</p>
+
+<p>これを実現するために、 <a href="https://haveibeenpwned.com/">Have I Been Pwned</a> の <a href="https://haveibeenpwned.com/API/v3#PwnedPasswords">PwnedPasswords API</a> を利用しています。</p>
+
+<p>PwnedPasswords API は、k-匿名化という手法を使って、APIにパスワード自体を送信することなく、そのパスワードが侵害されたものかを確認することができます。</p>
+
+<h2 id="コンテキストから推測可能なパスワード">コンテキストから推測可能なパスワード</h2>
+
+<p>上記のリストには、</p>
+
+<blockquote>
+<ul>
+<li>Context-specific words, such as the name of the service, the username, and derivatives thereof.</li>
+</ul>
+</blockquote>
+
+<p>ということで、</p>
+
+<ul>
+<li>サービス名やユーザーネームのような、コンテキストに特化した単語と、その派生</li>
+</ul>
+
+<p>も禁止しなければならないと書かれています。</p>
+
+<p>これは、任意のカスタム辞書を登録できるようにし、その文字列とパスワードのレーベンシュタイン距離をとることで、推測可能なパスワードになっていないかを判定します。</p>
+
+<h1 id="nspvの使い方">nspvの使い方</h1>
+
+<h2 id="ベーシックな使い方">ベーシックな使い方</h2>
+
+<p>nspvのベーシックな使い方はこのとおりです。</p>
+
+<pre><code class="language-go">v := nspv.NewValidator()
+v.SetDict([]string{&quot;nist-sp-800-63&quot;})
+
+result, err := v.Validate(&quot;_sup3r_comp1ex_passw0rd_&quot;)
+if err != nil {
+    // HIBPのAPIへのリクエストが失敗した等、バリデーションの実行に問題があった場合は err が返ります。
+}
+if result != nspv.Ok {
+    // バリデーションの失敗は result で表現します。
+}
+fmt.Println(result.String()) // Ok
+</code></pre>
+
+<h2 id="カスタムした使い方">カスタムした使い方</h2>
+
+<pre><code class="language-go">v := nspv.NewValidator()
+v.SetHibpThreshold(3) // PwnedPasswords API が返すパスワードの漏洩回数もとに、一定回数まで許容することができます。
+v.SetLevenshteinThreshold(4) // カスタム辞書とのレーベンシュタイン距離のしきい値を変更することができます。
+
+v.Validate(&quot;_sup3r_comp1ex_passw0rd_&quot;)
+</code></pre>
+
+<hr />
+
+<p>最後に一番大事なこととして、 NIST SP 800-63B には</p>
+
+<blockquote>
+<p>Verifiers SHOULD NOT impose other composition rules (e.g., requiring mixtures of different character types or prohibiting consecutively repeated characters) for memorized secrets.</p>
+</blockquote>
+
+<p>ということで、一般的に使われる &ldquo;複数の文字種を混ぜることを求める&rdquo; &ldquo;連続して繰り返される文字を禁止する&rdquo; のような、追加のルールを強制すべきではないとも書かれています。
+よって、nspvは上記3つの観点以外ではパスワードのバリデーションを行いません。</p>
+
+<p>一般消費者向けサービスとしては<a href="https://fidoalliance.org/fido2/">FIDO2</a>やSlackのMagic Link のようなPasswordLess Authenticationが広まっていったり、企業においてはSSOのような仕組みが広がることで、パスワード自体を設定する必要のあるサービスというのは徐々に減っていくとは思います。
+しかし、それができずどうしてもパスワードが必要になる場面において、少しでも &ldquo;マシな&rdquo; パスワードが設定されることの助けになったらいいなと思っています。</p>
 
     </div>
 
@@ -337,7 +449,7 @@ ga('send', 'pageview');
                     
 
                     
-                        Category
+                        Categories
                     
                 
             </li>
@@ -348,6 +460,8 @@ ga('send', 'pageview');
     
         <li><a href='/categories/ja'>ja</a></li>
     
+        <li><a href='/categories/'></a></li>
+    
 </ul>
 
     </footer>
@@ -357,43 +471,43 @@ ga('send', 'pageview');
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fhello%2f&text=hello&via=s_tajima" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&text=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f&via=s_tajima" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fhello%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fhello%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fhello%2f&title=hello" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&title=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fhello%2f&title=hello" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&title=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fhello%2f&title=hello" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&title=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fhello%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -403,13 +517,10 @@ ga('send', 'pageview');
 </article>
 <ul class="actions pagination">
     
-        <li><a href="https://blog.s-tajima.work/post/2016/intro-github-dice/"
-                class="button big previous">GitHubのPull Requestへのレビュアーアサインを自動化するツール「github-dice」の紹介</a></li>
+        <li><a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/"
+                class="button big previous">DEF CON CTF Qualifier 2020 uploooadit WriteUp</a></li>
     
 
-    
-        <li><a href="https://blog.s-tajima.work/post/2017/intro-tshark/"
-                class="button big next">tsharkを用いたネットワークトラフィックの内訳の調査</a></li>
     
 </ul>
 
