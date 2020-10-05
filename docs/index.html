@@ -30,7 +30,7 @@
 <meta property="og:description" content="s_tajima::TechBlog" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://blog.s-tajima.work/" />
-<meta property="og:updated_time" content="2020-07-05T12:00:00+09:00" />
+<meta property="og:updated_time" content="2020-10-05T18:45:00+09:00" />
 
         <meta itemprop="name" content="s_tajima::TechBlog">
 <meta itemprop="description" content="s_tajima::TechBlog">
@@ -168,11 +168,15 @@ if (!doNotTrack) {
 
                 
                     <li>
-                        <a href="https://blog.s-tajima.work/post/2020/nspv/"><p>GoでNIST SP 800-63Bに則ったPassword Validatorを作りました</p></a>
+                        <a href="https://blog.s-tajima.work/post/2020/isucon10-final-hz46/"><p>ISUCON10本選に参加して4位(KLab賞)でした - 一口坂46</p></a>
                     </li>
                 
                     <li>
                         <a href="https://blog.s-tajima.work/post/"><p>Posts</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2020/nspv/"><p>GoでNIST SP 800-63Bに則ったPassword Validatorを作りました</p></a>
                     </li>
                 
                     <li>
@@ -181,10 +185,6 @@ if (!doNotTrack) {
                 
                     <li>
                         <a href="https://blog.s-tajima.work/post/2019/input-output/"><p>2019年のインプット・アウトプットまとめ</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="https://blog.s-tajima.work/post/2019/security-assessment/"><p>セキュリティ診断で確認する項目</p></a>
                     </li>
                 
             </ul>
@@ -201,7 +201,7 @@ if (!doNotTrack) {
     <header>
     <div class="title">
         
-            <h2><a href="https://blog.s-tajima.work/post/2020/nspv/">GoでNIST SP 800-63Bに則ったPassword Validatorを作りました</a></h2>
+            <h2><a href="https://blog.s-tajima.work/post/2020/isucon10-final-hz46/">ISUCON10本選に参加して4位(KLab賞)でした - 一口坂46</a></h2>
         
         
     </div>
@@ -211,8 +211,8 @@ if (!doNotTrack) {
         
 
         <time class="published"
-            datetime='2020-07-05'>
-            July 5, 2020</time>
+            datetime='2020-10-05'>
+            October 5, 2020</time>
         <span class="author">Satoshi Tajima</span>
         
         
@@ -223,88 +223,109 @@ if (!doNotTrack) {
     
 
     <div id="content">
-        <p>インターネットのサービスを利用する上で、どんなパスワードを設定するかというのはアカウントを安全に保護する上で重要な要素になります。
-日常的にデータ漏洩がおこり、多くのパスワードリストが出回る現代においては、少し頭を捻って考えたくらいのパスワードだと、突破されてしまうリスクは非常に高いでしょう。</p>
-<p>いちサービス利用者としては、パスワードマネージャーを使いサイトごとに個別のランダムな文字列をパスワードに設定しておくことで、そのリスクを低減することができます。
-サービスの提供者としては、適切なパスワードのバリデーションルールを設けることで、利用者が危険なパスワードを設定してしまうことを防ぐ事ができます。</p>
-<p>しかし、 &ldquo;パスワードのバリデーションルール&rdquo; というのはサービスによってバラバラで、中にはかえって安全なパスワードを設定するのを阻むバリデーションルールも存在しています。</p>
-<p>『NIST Special Publication 800-63B Digital Identity Guidelines (NIST SP 800-63B)』というガイドライン(数年前に「パスワードの定期変更は不要」というくだりで話題になったあの資料です) には、Memorized Secrets(つまりパスワードのこと)の設定時・変更時において、どのような基準でそれを受け入れるべきかというのが書かれています。このガイドライン自体は、アメリカの政府機関に向けたものなので、日本でサービスを提供する上では何ら強制力はないのですが、非常に参考になるものです。</p>
-<p>今回、この NIST SP 800-63B に書かれた推奨事項に則ったGo製のパスワードバリデーターを作成したので紹介します。
-<a href="https://github.com/s-tajima/nspv">https://github.com/s-tajima/nspv</a></p>
-<hr>
-<h1 id="nspvによるバリデーション">nspvによるバリデーション</h1>
-<h2 id="パスワードの文字列長">パスワードの文字列長</h2>
-<p>NIST SP 800-63B には、</p>
-<blockquote>
-<p>Verifiers SHALL require subscriber-chosen memorized secrets to be at least 8 characters in length.<br>
-Verifiers SHOULD permit subscriber-chosen memorized secrets at least 64 characters in length.</p>
-</blockquote>
-<p>ということで、</p>
-<ul>
-<li>パスワードは最低8文字であることをもとめなければならず</li>
-<li>パスワードは最低64文字を許容するべきである</li>
-</ul>
-<p>と書かれています。</p>
-<p>これは特に難しいことではなく、単純に文字列長を確認することで実現します。</p>
-<h2 id="よく使われる漏洩したことのあるパスワード">よく使われる、漏洩したことのあるパスワード</h2>
-<p>この項目がとても重要です。</p>
-<blockquote>
-<p>verifiers SHALL compare the prospective secrets against a list that contains values known to be commonly-used, expected, or compromised. For example, the list MAY include, but is not limited to:</p>
-<ul>
-<li>Passwords obtained from previous breach corpuses.</li>
-<li>Dictionary words.</li>
-<li>Repetitive or sequential characters (e.g. ‘aaaaaa’, ‘1234abcd’).</li>
-</ul>
-</blockquote>
-<p>ということで、</p>
-<ul>
-<li>よく使われていたり、推測可能だったり、侵害されたパスワードではないことを確認しなければならない</li>
-</ul>
-<p>と書かれています。</p>
-<p>これを実現するために、 <a href="https://haveibeenpwned.com/">Have I Been Pwned</a> の <a href="https://haveibeenpwned.com/API/v3#PwnedPasswords">PwnedPasswords API</a> を利用しています。</p>
-<p>PwnedPasswords API は、k-匿名化という手法を使って、APIにパスワード自体を送信することなく、そのパスワードが侵害されたものかを確認することができます。</p>
-<h2 id="コンテキストから推測可能なパスワード">コンテキストから推測可能なパスワード</h2>
-<p>上記のリストには、</p>
-<blockquote>
-<ul>
-<li>Context-specific words, such as the name of the service, the username, and derivatives thereof.</li>
-</ul>
-</blockquote>
-<p>ということで、</p>
-<ul>
-<li>サービス名やユーザーネームのような、コンテキストに特化した単語と、その派生</li>
-</ul>
-<p>も禁止しなければならないと書かれています。</p>
-<p>これは、任意のカスタム辞書を登録できるようにし、その文字列とパスワードのレーベンシュタイン距離をとることで、推測可能なパスワードになっていないかを判定します。</p>
-<h1 id="nspvの使い方">nspvの使い方</h1>
-<h2 id="ベーシックな使い方">ベーシックな使い方</h2>
-<p>nspvのベーシックな使い方はこのとおりです。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">nspv</span>.<span style="color:#a6e22e">NewValidator</span>()
-<span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">SetDict</span>([]<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;nist-sp-800-63&#34;</span>})
+        <p>10月3日に行われたISUCON10に、チーム 一口坂46 として参加しました。<br>
+結果としては4位で、KLab賞をいただききました！</p>
+<p>私は主にOS/ミドルウェア周り・ベンチマーク実行・ボトルネック分析あたりをやっていたのでそのあたりでどんなことをやっていたかを書こうと思います。チーム一口坂46全体としてどんなことをやったかは、チームメンバーの <a href="https://gist.github.com/yami20/0dedc537f4baedecc54162867d9e298d">@yami20の記事</a> と <a href="https://medium.com/@atsushiishibashi/isucon10-final-4bc852322e9">@bashi0501の記事</a> を読むとわかるようになっています。</p>
+<p>リポジトリはこちらです。<br>
+<a href="https://github.com/s-tajima/isucon10f-hz46">https://github.com/s-tajima/isucon10f-hz46</a></p>
+<p>ちなみに、予選の振り返りブログはこちらです。<br>
+<a href="https://medium.com/finatext/isucon10-qual-fcf6590556c0">https://medium.com/finatext/isucon10-qual-fcf6590556c0</a></p>
+<h1 id="事前準備">事前準備</h1>
+<p>多くの準備は予選の時と同じだったのですが、予選ではあまり活用されず、本選ではじめて役に立ったものを紹介します。</p>
+<h2 id="nginxのログ設定">Nginxのログ設定</h2>
+<p>ログをLTSVにしてalpで分析しやすい状態にしつつ、キャッシュの状況、圧縮の状況を確認するために3つのLogFormatを用意して、常時3つのファイルにログを吐く準備をしてありました。設定としてはこんな感じです。</p>
+<pre><code>log_format general
+    &quot;time:$time_local&quot;
+    &quot;\thost:$remote_addr&quot;
+    &quot;\tforwardedfor:$http_x_forwarded_for&quot;
+    &quot;\treq:$request&quot;
+    &quot;\tstatus:$status&quot;
+    &quot;\tmethod:$request_method&quot;
+    &quot;\turi:$request_uri&quot;
+    &quot;\tsize:$body_bytes_sent&quot;
+    &quot;\treferer:$http_referer&quot;
+    &quot;\tua:$http_user_agent&quot;
+    &quot;\treqtime:$request_time&quot;
+    &quot;\tcache:$upstream_http_x_cache&quot;
+    &quot;\truntime:$upstream_http_x_runtime&quot;
+    &quot;\tapptime:$upstream_response_time&quot;
+    &quot;\tvhost:$host&quot;;
 
-<span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Validate</span>(<span style="color:#e6db74">&#34;_sup3r_comp1ex_passw0rd_&#34;</span>)
-<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-    <span style="color:#75715e">// HIBPのAPIへのリクエストが失敗した等、バリデーションの実行に問題があった場合は err が返ります。
-</span><span style="color:#75715e"></span>}
-<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">nspv</span>.<span style="color:#a6e22e">Ok</span> {
-    <span style="color:#75715e">// バリデーションの失敗は result で表現します。
-</span><span style="color:#75715e"></span>}
-<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">String</span>()) <span style="color:#75715e">// Ok
-</span></code></pre></div><h2 id="カスタムした使い方">カスタムした使い方</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">nspv</span>.<span style="color:#a6e22e">NewValidator</span>()
-<span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">SetHibpThreshold</span>(<span style="color:#ae81ff">3</span>) <span style="color:#75715e">// PwnedPasswords API が返すパスワードの漏洩回数もとに、一定回数まで許容することができます。
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">SetLevenshteinThreshold</span>(<span style="color:#ae81ff">4</span>) <span style="color:#75715e">// カスタム辞書とのレーベンシュタイン距離のしきい値を変更することができます。
-</span><span style="color:#75715e"></span>
-<span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Validate</span>(<span style="color:#e6db74">&#34;_sup3r_comp1ex_passw0rd_&#34;</span>)
-</code></pre></div><hr>
-<p>最後に一番大事なこととして、 NIST SP 800-63B には</p>
+log_format cache
+    &quot;time:$time_local&quot;
+    &quot;\tmethod:$request_method&quot;
+    &quot;\turi:$request_uri&quot;
+    &quot;\tr_ims:$http_if_modified_since&quot;
+    &quot;\tr_inm:$http_if_none_match&quot;
+    &quot;\ts_cc:$sent_http_cache_control&quot;
+    &quot;\ts_et:$sent_http_etag&quot;
+    &quot;\ts_lm:$sent_http_last_modified&quot;
+    &quot;\tstatus:$status&quot;
+    &quot;\tsize:$body_bytes_sent&quot;;
+
+log_format deflate
+    &quot;time:$time_local&quot;
+    &quot;\tmethod:$request_method&quot;
+    &quot;\turi:$request_uri&quot;
+    &quot;\tr_ae:$http_accept_encoding&quot;
+    &quot;\ts_ce:$sent_http_content_encoding&quot;
+    &quot;\ts_ct:$sent_http_content_type&quot;
+    &quot;\ts_cl:$sent_http_content_length&quot;
+    &quot;\tstatus:$status&quot;
+    &quot;\tsize:$body_bytes_sent&quot;;
+
+access_log  /var/log/isucon/nginx-access.log general;
+access_log  /var/log/isucon/nginx-access-cache.log cache;
+access_log  /var/log/isucon/nginx-access-deflate.log deflate;
+#access_log  off;
+</code></pre><p>これにより、必要な情報をawkやgrep等で整形して表示するなどの手間が少し削減されます。</p>
+<h1 id="当日">当日</h1>
+<p>予選のときは割と堅実にコミットログやチャットに記録を残しながら進められてたのでうまく時系列で整理できたのですが、今回はかなりバタバタしていて丁寧に記録が残せてないのでやったことを純粋にリストアップします。<br>
+細かいので個別には書かないですが、この他にカーネルパラメータやMySQLサーバの設定の調整をして、OSのリソース消費によるエラーやボトルネックとなる処理の排除とかをやったりもしていました。</p>
+<h2 id="envoy--nginx-への入れ替え">Envoy → Nginx への入れ替え</h2>
+<p>出題者のクックパッドさんでは <a href="https://techlife.cookpad.com/entry/2020/06/30/140000">テックブログの記事</a> 等から社内でEnvoyが使われることは知っていたので、出題されるかもなとうっすら思ってはいました。<br>
+Envoyは検証程度に触ったことはあるものの、ISUCONで使いこなせるほどチューニングの知識を持っていなかったので、早々に使い慣れたNginxに置き換えることを考えました。(これができないと事前準備したログの設定や分析の仕組みがすぐに使えないというのもあります。)</p>
+<p>Nginxの設定をするにあたっては、</p>
+<ul>
+<li>UpstreamにgRPCを指定する</li>
+<li>HTTP/2, TLSでの配信の設定をする</li>
+</ul>
+<p>という部分は事前準備していませんでしたが、わりとサクッと終わらせることができました。(特にgRPCの部分が一発でうまく動いたので良かった。)</p>
+<p>最初にNginxを設定したとき、443番のTLS用の設定しかしてなかったのですが、ラスト10分で80番の設定をしてないけど大丈夫か？と気づき、レギュレーションを確認 → 明確にわからなかったので運営に確認 → 回答できないといわれたのでリダイレクトの設定 というのをドタバタとやりました。かなり心臓に悪かったです。</p>
+<h2 id="get-apiaudiencedashboard-のキャッシュ">GET /api/audience/dashboard のキャッシュ</h2>
+<p>当日マニュアル上、最大1秒は古い情報をかえすことができると合ったので、Nginxでproxy_cacheをするようにしました。<br>
+Nginxの <a href="https://trac.nginx.org/nginx/ticket/1505">proxy_cache_valid では、ms単位のTTLが設定できず</a>、若干ベンチマークが不安定になってしまい、アプリ側でのキャッシュに切り替えることも考えましたが、結局ここは最後までこのままでした。</p>
+<h2 id="packsjs-packscss-のキャッシュ">/packs/*.js, /packs/*.css のキャッシュ</h2>
+<p>早期にNginxに入れ替えることができたので、Nginx周りの設定は楽勝&hellip; と思ってたのですが、このキャッシュの設定で少しつまりました。</p>
+<p>レギュレーションによると</p>
 <blockquote>
-<p>Verifiers SHOULD NOT impose other composition rules (e.g., requiring mixtures of different character types or prohibiting consecutively repeated characters) for memorized secrets.</p>
+<p>実ベンチマーカーは一般的なブラウザの挙動を模した Conditional GET に対応しています。</p>
 </blockquote>
-<p>ということで、一般的に使われる &ldquo;複数の文字種を混ぜることを求める&rdquo; &ldquo;連続して繰り返される文字を禁止する&rdquo; のような、追加のルールを強制すべきではないとも書かれています。
-よって、nspvは上記3つの観点以外ではパスワードのバリデーションを行いません。</p>
-<p>一般消費者向けサービスとしては<a href="https://fidoalliance.org/fido2/">FIDO2</a>やSlackのMagic Link のようなPasswordLess Authenticationが広まっていったり、企業においてはSSOのような仕組みが広がることで、パスワード自体を設定する必要のあるサービスというのは徐々に減っていくとは思います。
-しかし、それができずどうしてもパスワードが必要になる場面において、少しでも &ldquo;マシな&rdquo; パスワードが設定されることの助けになったらいいなと思っています。</p>
+<p>とのことで、キャッシュ関連のHTTPヘッダを調整する必要がありそうなことがわかります。/packs/*.js, /packs/*.css は、デフォルトではGoのアプリケーションから配信するようになっています。これをNginxだけで配信し、かつ304を返せるようにしようとしたのですが、なぜかうまくいきませんでした。なにかの勘違いだったかもしれないですが、 expires ディレクティブで <code>Cache-Control</code> と <code>Expires</code> を両方セットしていると (どちらも正しくキャッシュされる設定になっているにも関わらず) クライアントがキャッシュしてくれてないように見えました。(実際は何か他の要因を見落としていたかもしれない。) 最終的には <code>Cache-Control</code> のみ返すようにして正しくキャッシュされるようになりました。</p>
+<h2 id="サーバー構成の組み換え">サーバー構成の組み換え</h2>
+<p>結論として、弊チームは予選・本選ともに1台使わず2台構成となりました。(本来3台使いたかったが3台目のいい感じな使い方を検討する暇がないまに終わってしまった。)
+構成としては、</p>
+<ul>
+<li>1号機を 未使用</li>
+<li>2号機を Nginx + Go(api) + Go(web) + benchmarker</li>
+<li>3号機を MySQL</li>
+</ul>
+<p>としていました。</p>
+<p>今回、3台ともスペックが違う構成だったので、2号機と3号機を逆にするなどのトライもしていたりしました。</p>
+<p>ちなみに、コンテスト終了後の感想戦で、</p>
+<ul>
+<li>1号機を Go(api) + Go(web) + benchmark_server</li>
+<li>2号機を Nginx + Go(api) + Go(web) + benchmark_server</li>
+<li>3号機を MySQL</li>
+</ul>
+<p>という感じでさくっと3台構成したら 38000点 くらいになりました。</p>
+<h1 id="結果">結果</h1>
+<p>スコアの推移はこんな感じです。赤が弊チームです。せっかくなので緑で優勝した @takonomura さんのスコアも表示してみました。ラスト1時間のスコアの伸ばしかたで一気に置いていかれてるのがわかりますね。悔しい。</p>
+<p><img src="./score.png" alt="image"></p>
+<h1 id="最後に">最後に</h1>
+<p>過去にも何度かISUCONには参加していたのですが、予選突破あと少しの惜しい年もあればまったく歯が立たずで終わる年もありました。今回初めて決勝に行けたのですが、順位としては4位とそこそこの結果が残せてよかったです。</p>
+<p>&hellip; などとぬるいことを言わずに来年こそは優勝できるようにがんばります！！<br>
+運営に関わって頂いた皆さん、本当にお疲れ様でした &amp; ありがとうございました！</p>
 
     </div>
 
@@ -343,43 +364,43 @@ Verifiers SHOULD permit subscriber-chosen memorized secrets at least 64 characte
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&text=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f&via=s_tajima" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fisucon10-final-hz46%2f&text=ISUCON10%e6%9c%ac%e9%81%b8%e3%81%ab%e5%8f%82%e5%8a%a0%e3%81%97%e3%81%a64%e4%bd%8d%28KLab%e8%b3%9e%29%e3%81%a7%e3%81%97%e3%81%9f%20-%20%e4%b8%80%e5%8f%a3%e5%9d%8246&via=s_tajima" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fisucon10-final-hz46%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fisucon10-final-hz46%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&title=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fisucon10-final-hz46%2f&title=ISUCON10%e6%9c%ac%e9%81%b8%e3%81%ab%e5%8f%82%e5%8a%a0%e3%81%97%e3%81%a64%e4%bd%8d%28KLab%e8%b3%9e%29%e3%81%a7%e3%81%97%e3%81%9f%20-%20%e4%b8%80%e5%8f%a3%e5%9d%8246" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&title=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fisucon10-final-hz46%2f&title=ISUCON10%e6%9c%ac%e9%81%b8%e3%81%ab%e5%8f%82%e5%8a%a0%e3%81%97%e3%81%a64%e4%bd%8d%28KLab%e8%b3%9e%29%e3%81%a7%e3%81%97%e3%81%9f%20-%20%e4%b8%80%e5%8f%a3%e5%9d%8246" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&title=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fisucon10-final-hz46%2f&title=ISUCON10%e6%9c%ac%e9%81%b8%e3%81%ab%e5%8f%82%e5%8a%a0%e3%81%97%e3%81%a64%e4%bd%8d%28KLab%e8%b3%9e%29%e3%81%a7%e3%81%97%e3%81%9f%20-%20%e4%b8%80%e5%8f%a3%e5%9d%8246" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fisucon10-final-hz46%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -389,8 +410,8 @@ Verifiers SHOULD permit subscriber-chosen memorized secrets at least 64 characte
 </article>
 <ul class="actions pagination">
     
-        <li><a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/"
-                class="button big previous">DEF CON CTF Qualifier 2020 uploooadit WriteUp</a></li>
+        <li><a href="https://blog.s-tajima.work/post/2020/nspv/"
+                class="button big previous">GoでNIST SP 800-63Bに則ったPassword Validatorを作りました</a></li>
     
 
     
@@ -409,43 +430,43 @@ Verifiers SHOULD permit subscriber-chosen memorized secrets at least 64 characte
             
 
 
-<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&text=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f&via=s_tajima" target="_blank" class="share-btn twitter">
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fisucon10-final-hz46%2f&text=ISUCON10%e6%9c%ac%e9%81%b8%e3%81%ab%e5%8f%82%e5%8a%a0%e3%81%97%e3%81%a64%e4%bd%8d%28KLab%e8%b3%9e%29%e3%81%a7%e3%81%97%e3%81%9f%20-%20%e4%b8%80%e5%8f%a3%e5%9d%8246&via=s_tajima" target="_blank" class="share-btn twitter">
     <i class="fa fa-twitter"></i>
     <p>Twitter</p>
 </a></li>
 
 
-<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f" target="_blank" class="share-btn google-plus">
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fisucon10-final-hz46%2f" target="_blank" class="share-btn google-plus">
     <i class="fa fa-google-plus"></i>
     <p>Google+</p>
 </a></li>
 
 
-<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f" target="_blank" class="share-btn facebook">
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fisucon10-final-hz46%2f" target="_blank" class="share-btn facebook">
     <i class="fa fa-facebook"></i>
     <p>Facebook</p>
 </a></li>
 
 
-<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&title=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f" target="_blank" class="share-btn reddit">
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fisucon10-final-hz46%2f&title=ISUCON10%e6%9c%ac%e9%81%b8%e3%81%ab%e5%8f%82%e5%8a%a0%e3%81%97%e3%81%a64%e4%bd%8d%28KLab%e8%b3%9e%29%e3%81%a7%e3%81%97%e3%81%9f%20-%20%e4%b8%80%e5%8f%a3%e5%9d%8246" target="_blank" class="share-btn reddit">
     <i class="fa fa-reddit-alien"></i>
     <p>Reddit</p>
 </a></li>
 
 
-<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&title=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f" target="_blank" class="share-btn linkedin">
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fisucon10-final-hz46%2f&title=ISUCON10%e6%9c%ac%e9%81%b8%e3%81%ab%e5%8f%82%e5%8a%a0%e3%81%97%e3%81%a64%e4%bd%8d%28KLab%e8%b3%9e%29%e3%81%a7%e3%81%97%e3%81%9f%20-%20%e4%b8%80%e5%8f%a3%e5%9d%8246" target="_blank" class="share-btn linkedin">
     <i class="fa fa-linkedin"></i>
     <p>LinkedIn</p>
 </a></li>
 
 
-<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f&title=Go%e3%81%a7NIST%20SP%20800-63B%e3%81%ab%e5%89%87%e3%81%a3%e3%81%9fPassword%20Validator%e3%82%92%e4%bd%9c%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f" target="_blank" class="share-btn stumbleupon">
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fisucon10-final-hz46%2f&title=ISUCON10%e6%9c%ac%e9%81%b8%e3%81%ab%e5%8f%82%e5%8a%a0%e3%81%97%e3%81%a64%e4%bd%8d%28KLab%e8%b3%9e%29%e3%81%a7%e3%81%97%e3%81%9f%20-%20%e4%b8%80%e5%8f%a3%e5%9d%8246" target="_blank" class="share-btn stumbleupon">
     <i class="fa fa-stumbleupon"></i>
     <p>StumbleUpon</p>
 </a></li>
 
 
-<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fnspv%2f" target="_blank" class="share-btn email">
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2020%2fisucon10-final-hz46%2f" target="_blank" class="share-btn email">
     <i class="fa fa-envelope"></i>
     <p>Email</p>
 </a></li>
@@ -471,7 +492,7 @@ Verifiers SHOULD permit subscriber-chosen memorized secrets at least 64 characte
             
             <ul class="icons">
                 
-                    <li><a href="https://blog.s-tajima.work/index.xml" type="application/rss+xml"
+                    <li><a href="/" type="application/rss+xml"
                         target="_blank" title="RSS" class="fa fa-rss"></a></li>
                 
                 
@@ -553,13 +574,13 @@ Verifiers SHOULD permit subscriber-chosen memorized secrets at least 64 characte
                     <li>
                         <article>
                             <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2020/nspv/">GoでNIST SP 800-63Bに則ったPassword Validatorを作りました</a></h3>
+                                <h3><a href="https://blog.s-tajima.work/post/2020/isucon10-final-hz46/">ISUCON10本選に参加して4位(KLab賞)でした - 一口坂46</a></h3>
                                 
                                     
                                 
                                 <time class="published" datetime=
-                                    '2020-07-05'>
-                                    July 5, 2020</time>
+                                    '2020-10-05'>
+                                    October 5, 2020</time>
                             </header>
                         </article>
                     </li>
@@ -568,6 +589,20 @@ Verifiers SHOULD permit subscriber-chosen memorized secrets at least 64 characte
                         <article>
                             <header>
                                 <h3><a href="https://blog.s-tajima.work/post/">Posts</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2020-10-05'>
+                                    October 5, 2020</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2020/nspv/">GoでNIST SP 800-63Bに則ったPassword Validatorを作りました</a></h3>
                                 
                                     
                                 
@@ -602,20 +637,6 @@ Verifiers SHOULD permit subscriber-chosen memorized secrets at least 64 characte
                                 <time class="published" datetime=
                                     '2019-12-30'>
                                     December 30, 2019</time>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2019/security-assessment/">セキュリティ診断で確認する項目</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2019-02-12'>
-                                    February 12, 2019</time>
                             </header>
                         </article>
                     </li>
@@ -672,7 +693,7 @@ Verifiers SHOULD permit subscriber-chosen memorized secrets at least 64 characte
                         <article>
                             <header>
                                 <a href="/categories/ja/">ja</a>
-                                <span style="float:right;">13</span>
+                                <span style="float:right;">14</span>
                             </header>
                         </article>
                     </li>
@@ -724,7 +745,7 @@ Verifiers SHOULD permit subscriber-chosen memorized secrets at least 64 characte
         <section id="footer">
             <ul class="icons">
                 
-                    <li><a href="https://blog.s-tajima.work/index.xml" type="application/rss+xml"
+                    <li><a href="/" type="application/rss+xml"
                         target="_blank" title="RSS" class="fa fa-rss"></a></li>
                 
                 
