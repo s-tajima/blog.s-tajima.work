@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>s_tajima::TechBlog</title>
@@ -6,11 +6,7 @@
     <description>Recent content on s_tajima::TechBlog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Sun, 05 Jul 2020 12:00:00 +0900</lastBuildDate>
-    
-	<atom:link href="https://blog.s-tajima.work/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 05 Jul 2020 12:00:00 +0900</lastBuildDate><atom:link href="https://blog.s-tajima.work/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>GoでNIST SP 800-63Bに則ったPassword Validatorを作りました</title>
       <link>https://blog.s-tajima.work/post/2020/nspv/</link>

@@ -1,5 +1,8 @@
 HUGO := bin/hugo
 
+init:
+	docker build -t blog.s-tajima.work/hugo .
+
 build:
 	rm -rf docs/*
 	echo "blog.s-tajima.work" > docs/CNAME

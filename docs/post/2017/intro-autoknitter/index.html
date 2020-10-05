@@ -10,7 +10,7 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="generator" content="Hugo 0.25.1" />
+        <meta name="generator" content="Hugo 0.76.0-DEV" />
         
 
 
@@ -23,13 +23,7 @@
             
         
 
-        
-
-  <meta name="twitter:card" content="summary"/>
-
-
-
-<meta name="twitter:text:title" content="AWSのAMIをゼロから作る autoknitterの紹介"/>
+        <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="AWSのAMIをゼロから作る autoknitterの紹介"/>
 <meta name="twitter:description" content="TL; DR AWSでは自分で作成したAMIを使いたい。 PackerのEBS Surrogate Builderを使うと便利にAMIを作成できる。 EBS Surrogate Builderをより"/>
 <meta name="twitter:site" content="@s_tajima"/>
@@ -38,29 +32,14 @@
 <meta property="og:description" content="TL; DR AWSでは自分で作成したAMIを使いたい。 PackerのEBS Surrogate Builderを使うと便利にAMIを作成できる。 EBS Surrogate Builderをより" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.s-tajima.work/post/2017/intro-autoknitter/" />
+<meta property="article:published_time" content="2017-05-11T23:21:25+09:00" />
+<meta property="article:modified_time" content="2017-05-11T23:21:25+09:00" />
 
-
-
-<meta property="article:published_time" content="2017-05-11T23:21:25&#43;09:00"/>
-<meta property="article:modified_time" content="2017-05-11T23:21:25&#43;09:00"/>
-
-
-
-
-
-
-
-
-
-
-
-        
-<meta itemprop="name" content="AWSのAMIをゼロから作る autoknitterの紹介">
+        <meta itemprop="name" content="AWSのAMIをゼロから作る autoknitterの紹介">
 <meta itemprop="description" content="TL; DR AWSでは自分で作成したAMIを使いたい。 PackerのEBS Surrogate Builderを使うと便利にAMIを作成できる。 EBS Surrogate Builderをより">
-
-
-<meta itemprop="dateModified" content="2017-05-11T23:21:25&#43;09:00" />
-<meta itemprop="wordCount" content="1554">
+<meta itemprop="datePublished" content="2017-05-11T23:21:25+09:00" />
+<meta itemprop="dateModified" content="2017-05-11T23:21:25+09:00" />
+<meta itemprop="wordCount" content="1563">
 
 
 
@@ -98,14 +77,17 @@
         
         
             
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-22927498-5', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-22927498-5', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
         
@@ -200,6 +182,10 @@ ga('send', 'pageview');
                     </li>
                 
                     <li>
+                        <a href="https://blog.s-tajima.work/post/"><p>Posts</p></a>
+                    </li>
+                
+                    <li>
                         <a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/"><p>DEF CON CTF Qualifier 2020 uploooadit WriteUp</p></a>
                     </li>
                 
@@ -209,10 +195,6 @@ ga('send', 'pageview');
                 
                     <li>
                         <a href="https://blog.s-tajima.work/post/2019/security-assessment/"><p>セキュリティ診断で確認する項目</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/"><p>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</p></a>
                     </li>
                 
             </ul>
@@ -307,96 +289,62 @@ ga('send', 'pageview');
     
 
     <div id="content">
-        
-
-<h1 id="tl-dr">TL; DR</h1>
-
+        <h1 id="tl-dr">TL; DR</h1>
 <ul>
 <li>AWSでは自分で作成したAMIを使いたい。</li>
 <li>PackerのEBS Surrogate Builderを使うと便利にAMIを作成できる。</li>
 <li>EBS Surrogate Builderをより簡単に使えるように autoknitter という参照実行を公開した。</li>
 </ul>
-
 <h1 id="背景">背景</h1>
-
 <p>AWSのEC2を使う上で、どのAMIを利用するかというのはとても重要な選択の1つです。</p>
-
 <p>細かい選択肢は色々ありますが、大きく分けると</p>
-
 <ol>
 <li>Community AMIsにて提供されているAMIを利用する</li>
 <li>AWS Marketplaceにて提供されているAMIを利用する</li>
 <li>自分たちでAMIを作成する</li>
 </ol>
-
 <p>というパターンがあると思います。</p>
-
 <p>AWSへのロックインを避けたい、 AWS以外の環境でも同じOSを利用したいといった要件から、CentOSを利用したい場合を考えてみます。</p>
-
 <p>まず、1のCommunity AMIsで CentOS を検索してみます。</p>
-
-<p><img src="/post/2017/intro-autoknitter/choose-ami-community.png" alt="choose-ami-community" /></p>
-
-<p>このようにたくさんのAMIが出てきます。<br />
+<p><img src="/post/2017/intro-autoknitter/choose-ami-community.png" alt="choose-ami-community"></p>
+<p>このようにたくさんのAMIが出てきます。<br>
 しかし、基本的にはこれらは <em>だれが作ったのか</em> も <em>どうやって作ったのか</em> もわからないAMIです。
 悪意のあるAMIが公開されていない保証がないため使うにはリスクが伴います。</p>
-
 <p>AWSとしてもこのような <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/building-shared-amis.html">ガイドライン</a> を公開していますが、個人的には利用は避けたいところです。</p>
-
 <p>次に、2のAWS Marketplaceにて CentOS を検索してみます。</p>
-
-<p><img src="/post/2017/intro-autoknitter/choose-ami-marketplace.png" alt="choose-ami-marketplace" /></p>
-
-<p>こちらもいくつかのAMIが出てきます。<br />
+<p><img src="/post/2017/intro-autoknitter/choose-ami-marketplace.png" alt="choose-ami-marketplace"></p>
+<p>こちらもいくつかのAMIが出てきます。<br>
 今度は Centos.org が提供するAMIも出てきました。
 Centos.org が提供するAMIであれば、Community AMIsの時のようなリスクは伴わないと考えてもよさそうです。
 しかしこれを利用するには注意が必要で、このAMIから作成されたEBSはRoot Volumeとして以外はアタッチできないという制限を受けることになります。</p>
-
 <p>サポートケースを起票すればその制限を解除してもらうこともできるようですが、障害対応時等、緊急度の高いときにはそんな余裕がないこともありそうなのでこの選択肢も避けたいところです。</p>
-
 <p>参考: <a href="https://www.quora.com/Amazon-EC2/Amazon-EC2-Is-it-possible-to-rescue-an-EBS-volume-which-has-marketplace-codes">https://www.quora.com/Amazon-EC2/Amazon-EC2-Is-it-possible-to-rescue-an-EBS-volume-which-has-marketplace-codes</a></p>
-
 <p>最後の手段として、3の通り自分たちでAMIをビルドすることになります。</p>
-
 <h1 id="packer-ebs-surrogate-builderの紹介">Packer, EBS Surrogate Builderの紹介</h1>
-
 <p><a href="https://www.packer.io/">Packer</a> には、AWSのAMIを作成するためのBuilderが実装されています。</p>
-
 <p><a href="https://www.packer.io/docs/builders/amazon.html">Amazon AMI Builder</a> に記載されている通り、そのためのBuilderは複数用意されているのですが、
 今回はその中でも <a href="https://www.packer.io/docs/builders/amazon-ebssurrogate.html">EBS Surrogate Builder</a> を利用してAMIを作成します。</p>
-
 <p>EBS Surrogate BuilderによるAMI作成の仕組みについて説明します。</p>
-
-<p><img src="/post/2017/intro-autoknitter/amazon-ebssurrogate.png" alt="amazon-ebssurrogate.png" /></p>
-
+<p><img src="/post/2017/intro-autoknitter/amazon-ebssurrogate.png" alt="amazon-ebssurrogate.png"></p>
 <ol>
 <li>まずAMI構築の作業用インスタンス(Source Instance)が起動されます。</li>
 <li>Source Instanceにアタッチされた、AMIのルートボリュームとして利用するEBS(AMI Root Device)に対して、OSのイメージを書き込みます。</li>
 <li>AMI Root Deviceのスナップショットを作成し、そのスナップショットからAMIを作成します。</li>
 </ol>
-
 <p>EBS Surrogate Builderを使うことで、</p>
-
 <ul>
 <li>AMI作成の手順をコードで記述することで、自動化され再現性のある状態になる。</li>
 <li>元となるAMIを必要とせず、空のEBSからAMIを作成できる。</li>
 <li>作業用のインスタンスを毎回自動起動/ターミネートできる。</li>
 </ul>
-
 <p>といった条件でAMIを作成することができます。</p>
-
 <p>EBS Surrogate Builderはとても便利な手段なのですが、AMI Root Deviceに対してOSのイメージを書き込むための手順を実装するのが一番の手間になります。</p>
-
 <h1 id="autoknitter">autoknitter</h1>
-
 <p>EBS Surrogate Builderをより簡単に使えるように、autoknitterというリポジトリを公開しました。</p>
-
 <p><a href="https://github.com/s-tajima/autoknitter">https://github.com/s-tajima/autoknitter</a></p>
-
 <p>autoknitterはPackerのEBS Surrogate Builderを利用するための参考実装です。
 セットアップ後、このように <code>make build</code> するだけでAMIが作成できるようになっています。</p>
-
-<pre><code class="language-text">$ make build
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ make build
 ./bin/packer build \
 	-var-file ./variables.json \
 	-var-file ./resources/centos/6.9/variables.json \
@@ -407,15 +355,13 @@ amazon-ebssurrogate output will be in this color.
 
 .. snip ..
 
-Build 'amazon-ebssurrogate' finished.
+Build &#39;amazon-ebssurrogate&#39; finished.
 
 ==&gt; Builds finished. The artifacts of successful builds are:
 --&gt; amazon-ebssurrogate: AMIs were created:
 
 ap-northeast-1: ami-XXXXXXXX
-</code></pre>
-
-<p>現在対応しているディストリビューションはCentOS 6.9のみですが、今後色々なバリエーションを増やしていく予定です。</p>
+</code></pre></div><p>現在対応しているディストリビューションはCentOS 6.9のみですが、今後色々なバリエーションを増やしていく予定です。</p>
 
     </div>
 
@@ -622,6 +568,20 @@ ap-northeast-1: ami-XXXXXXXX
                     <li>
                         <article>
                             <header>
+                                <h3><a href="https://blog.s-tajima.work/post/">Posts</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2020-07-05'>
+                                    July 5, 2020</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
                                 <h3><a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/">DEF CON CTF Qualifier 2020 uploooadit WriteUp</a></h3>
                                 
                                     
@@ -661,20 +621,6 @@ ap-northeast-1: ami-XXXXXXXX
                         </article>
                     </li>
                 
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/">CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2018-11-25'>
-                                    November 25, 2018</time>
-                            </header>
-                        </article>
-                    </li>
-                
 
                 
                     <li>
@@ -704,15 +650,6 @@ ap-northeast-1: ami-XXXXXXXX
                     
                 
 
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories//"></a>
-                                <span style="float:right;">6</span>
-                            </header>
-                        </article>
-                    </li>
                 
                     <li>
                         <article>
