@@ -10,7 +10,7 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="generator" content="Hugo 0.25.1" />
+        <meta name="generator" content="Hugo 0.76.0-DEV" />
         
 
 
@@ -23,13 +23,7 @@
             
         
 
-        
-
-  <meta name="twitter:card" content="summary"/>
-
-
-
-<meta name="twitter:text:title" content="ptraceを使ってプロセスの *現在の* 環境変数を参照する"/>
+        <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="ptraceを使ってプロセスの *現在の* 環境変数を参照する"/>
 <meta name="twitter:description" content="ptraceを使って特定のプロセスの 現在の 環境変数を参照するためのプログラムを書いてみたのでその紹介です。 背景 Linuxを使っていると、プロ"/>
 <meta name="twitter:site" content="@s_tajima"/>
@@ -38,29 +32,14 @@
 <meta property="og:description" content="ptraceを使って特定のプロセスの 現在の 環境変数を参照するためのプログラムを書いてみたのでその紹介です。 背景 Linuxを使っていると、プロ" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.s-tajima.work/post/2018/intro-peke-envs/" />
+<meta property="article:published_time" content="2018-10-15T12:00:00+09:00" />
+<meta property="article:modified_time" content="2018-10-15T12:00:00+09:00" />
 
-
-
-<meta property="article:published_time" content="2018-10-15T12:00:00&#43;09:00"/>
-<meta property="article:modified_time" content="2018-10-15T12:00:00&#43;09:00"/>
-
-
-
-
-
-
-
-
-
-
-
-        
-<meta itemprop="name" content="ptraceを使ってプロセスの *現在の* 環境変数を参照する">
+        <meta itemprop="name" content="ptraceを使ってプロセスの *現在の* 環境変数を参照する">
 <meta itemprop="description" content="ptraceを使って特定のプロセスの 現在の 環境変数を参照するためのプログラムを書いてみたのでその紹介です。 背景 Linuxを使っていると、プロ">
-
-
-<meta itemprop="dateModified" content="2018-10-15T12:00:00&#43;09:00" />
-<meta itemprop="wordCount" content="2280">
+<meta itemprop="datePublished" content="2018-10-15T12:00:00+09:00" />
+<meta itemprop="dateModified" content="2018-10-15T12:00:00+09:00" />
+<meta itemprop="wordCount" content="2307">
 
 
 
@@ -98,14 +77,17 @@
         
         
             
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-22927498-5', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-22927498-5', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
         
@@ -200,6 +182,10 @@ ga('send', 'pageview');
                     </li>
                 
                     <li>
+                        <a href="https://blog.s-tajima.work/post/"><p>Posts</p></a>
+                    </li>
+                
+                    <li>
                         <a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/"><p>DEF CON CTF Qualifier 2020 uploooadit WriteUp</p></a>
                     </li>
                 
@@ -209,10 +195,6 @@ ga('send', 'pageview');
                 
                     <li>
                         <a href="https://blog.s-tajima.work/post/2019/security-assessment/"><p>セキュリティ診断で確認する項目</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/"><p>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</p></a>
                     </li>
                 
             </ul>
@@ -307,32 +289,21 @@ ga('send', 'pageview');
     
 
     <div id="content">
-        
-
-<p>ptraceを使って特定のプロセスの <strong>現在の</strong> 環境変数を参照するためのプログラムを書いてみたのでその紹介です。</p>
-
+        <p>ptraceを使って特定のプロセスの <strong>現在の</strong> 環境変数を参照するためのプログラムを書いてみたのでその紹介です。</p>
 <h2 id="背景">背景</h2>
-
-<p>Linuxを使っていると、プロセスの環境変数を参照したいと思うことってありますよね。<br />
+<p>Linuxを使っていると、プロセスの環境変数を参照したいと思うことってありますよね。<br>
 そんなとき、僕はよく <code>/proc/[PID]/environ</code> を参照します。</p>
-
 <pre><code>$ strings /proc/1234/environ
 LANG=ja_JP.UTF-8
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
 .. snip ..
-</code></pre>
-
-<p>(権限がないプロセスを対象にする場合はroot権限が必要です。)</p>
-
-<p>しかし、 <code>/proc/[PID]/environ</code> で参照できるのはあくまで <strong>プロセス実行時の</strong> 環境変数のみであり、<br />
+</code></pre><p>(権限がないプロセスを対象にする場合はroot権限が必要です。)</p>
+<p>しかし、 <code>/proc/[PID]/environ</code> で参照できるのはあくまで <strong>プロセス実行時の</strong> 環境変数のみであり、<br>
 実行後に追加/変更されたものを参照することができません。</p>
-
 <p>つまり、このようにDotenv等によって追加された変数を参照することはできないということです。</p>
-
 <ul>
 <li>起動時にシェルから / 起動後にDotenvで 追加した環境変数を表示するスクリプト(env.rb)を実行。</li>
 </ul>
-
 <pre><code>$ cat env.rb
 require 'dotenv'
 Dotenv.load
@@ -350,96 +321,64 @@ pid: 7716
 STARTUP_KEY: STARTUP_VAL
 DOTENV_ADDED_KEY: DOTENV_ADDED_VAL
 # .. sleeping ..
-</code></pre>
-
-<ul>
+</code></pre><ul>
 <li>別のシェルから <code>/proc/[PID]/environ</code> を確認。</li>
 </ul>
-
 <pre><code>$ strings /proc/7716/environ | grep _KEY=
 STARTUP_KEY=STARTUP_VAL
-</code></pre>
-
-<p>今開いているシェルのプロセスに限って言えば、 <code>env</code> コマンドを使うことができます。<br />
+</code></pre><p>今開いているシェルのプロセスに限って言えば、 <code>env</code> コマンドを使うことができます。<br>
 <code>env</code> コマンドであれば、プロセス(シェル)起動後に追加された環境変数も参照できます。</p>
-
 <pre><code>$ env | grep ADDED_KEY
 $ export ADDED_KEY=ADDED_VALUE
 $ env | grep ADDED_KEY
 ADDED_KEY=ADDED_VALUE
-</code></pre>
-
-<p>では、それ以外のプロセスの <strong>現在の</strong> 環境変数を参照したい場合はどうすればよいでしょう。<br />
+</code></pre><p>では、それ以外のプロセスの <strong>現在の</strong> 環境変数を参照したい場合はどうすればよいでしょう。<br>
 今回は、それを実現するためのプログラムを書いてみたという話です。</p>
-
-<p>尚、プログラムを書いてみたのはあくまで学習目的であり、<br />
+<p>尚、プログラムを書いてみたのはあくまで学習目的であり、<br>
 同様のことを手軽にやるならgdbを使うことをおすすめします。</p>
-
-<h2 id="peke-envs">peke_envs</h2>
-
-<p>作成したプログラムはこちら。<br />
+<h2 id="peke_envs">peke_envs</h2>
+<p>作成したプログラムはこちら。<br>
 <a href="https://github.com/s-tajima/peke_envs">https://github.com/s-tajima/peke_envs</a></p>
-
 <p>先程の env.rb のプロセスに対して実行すると、このようにDotenvで追加した環境変数も表示されます。</p>
-
 <pre><code>$ ./peek 7716
 .. snip ..
 STARTUP_KEY=STARTUP_VAL
 DOTENV_ADDED_KEY=DOTENV_ADDED_VAL
 .. snip ..
-</code></pre>
-
-<p>尚、現時点ではすべてのプロセスを対象にできるわけではなく、<br />
-libcをダイナミックリンクしているプロセスだけを対象にできます。<br />
+</code></pre><p>尚、現時点ではすべてのプロセスを対象にできるわけではなく、<br>
+libcをダイナミックリンクしているプロセスだけを対象にできます。<br>
 理由は次に記載する動作の仕組みによるものです。</p>
-
 <p><em>エラーハンドリングの不備により、対象のプロセスが停止状態のままになってしまう(SIGCONTを送れば再開できます) ケースがあるので、重要なプロセスを対象にするのは避けてください。</em></p>
-
 <h2 id="動作の仕組み">動作の仕組み</h2>
-
 <p><em>もしかしたら認識や表現が誤っている部分があるかもしれないですが、そのときはTwitterなどで教えてください。</em></p>
-
-<p>Linux上で稼働するプロセスは、POSIXに準拠しています。<br />
-環境変数というのは、POSIXで定義されている値で environ というポインタから参照できます。<br />
+<p>Linux上で稼働するプロセスは、POSIXに準拠しています。<br>
+環境変数というのは、POSIXで定義されている値で environ というポインタから参照できます。<br>
 現状、多くのプログラムはPOSIXに準拠するためにlibcというライブラリを使っています。</p>
-
 <p>よって、対象のプロセスにおいてlibcがマッピングされているアドレスを調べ、  そのlibcにおける environ ポインタのオフセットを調べ、  対象のプロセスにおいてenviron ポインタの値を参照し、  それを辿ることで環境変数の値が参照できます。</p>
-
-<p>肝となるのは ptrace(2) というシステムコールです。<br />
+<p>肝となるのは ptrace(2) というシステムコールです。<br>
 <a href="http://man.he.net/?topic=ptrace&amp;section=all">http://man.he.net/?topic=ptrace&amp;section=all</a></p>
-
 <blockquote>
 <p>The ptrace() system call provides a means by which one process (the &ldquo;tracer&rdquo;) may observe and control the execution of another process (the &ldquo;tracee&rdquo;), and examine and change the tracee&rsquo;s memory and registers.</p>
 </blockquote>
-
 <p>ドキュメントにある通り、 ptrace を使うと特定のプロセスのメモリ値を参照したり、書き換えたりすることができます。
 操作の内容は、ptraceの第一引数で指定するのですが、 PTRACE_PEEKDATAで値の参照、PTRACE_POKEDATAで値の書き換えができます。これが peke_envsの名前の由来です。</p>
-
 <p>この方法であれば、プロセスのメモリ <strong>現在の</strong> 状態を直接参照するので、起動後に追加された環境変数も参照できるのです。</p>
-
 <p>straceやgdbも、内部的にはこのptraceを使って動作しています。</p>
-
 <h2 id="これから">これから</h2>
-
-<p>peke_envsは勉強のためにRustで書いてみました。<br />
-Rustを書くのは初めてで、まだ慣れないところがあって思うようにかけてないところもありますが、<br />
+<p>peke_envsは勉強のためにRustで書いてみました。<br>
+Rustを書くのは初めてで、まだ慣れないところがあって思うようにかけてないところもありますが、<br>
 少しずつ良くしていこうと思っています。</p>
-
-<p>また、現時点では環境変数を参照するところまでしかできていないのですが、<br />
-変更や追加もできるようにしてみようと思っています。<br />
-今のように環境変数のアドレスに対して直接操作(PEEKDATA/POKEDATA)するのではなく、<br />
+<p>また、現時点では環境変数を参照するところまでしかできていないのですが、<br>
+変更や追加もできるようにしてみようと思っています。<br>
+今のように環境変数のアドレスに対して直接操作(PEEKDATA/POKEDATA)するのではなく、<br>
 対象のプロセスの <code>putenv()/setenv()</code> を呼び出すというアプローチをとってみようと思っています。</p>
-
 <h2 id="余談">余談</h2>
-
 <p>今回のように稼働中のプロセスの環境変数を操作してみようと思い至ったのは、Webアプリケーションにおけるデータベース等の認証情報の取り扱いについて考えたのがきっかけでした。</p>
-
-<p>AWS Secrets Manager や HashiCorp Vault を使うと、認証情報を定期的に自動的にローテートすることができるようになります。<br />
-問題となるのは、Webアプリケーションからローテート後の認証情報を使えるようにするところなのですが、通常は Secrets ManagerのAPIを呼び出すための <a href="https://aws.amazon.com/jp/tools/">SDK</a> や、Vaultの <a href="https://www.vaultproject.io/api/libraries.html">クライアントライブラリ</a> を使って認証情報を取得する実装を書く必要があります。<br />
-毎回そういった実装をアプリケーションに書いていくのは少し面倒だし、OSSなどでそのあたりを自由にコントロールできないというケースもあります。<br />
+<p>AWS Secrets Manager や HashiCorp Vault を使うと、認証情報を定期的に自動的にローテートすることができるようになります。<br>
+問題となるのは、Webアプリケーションからローテート後の認証情報を使えるようにするところなのですが、通常は Secrets ManagerのAPIを呼び出すための <a href="https://aws.amazon.com/jp/tools/">SDK</a> や、Vaultの <a href="https://www.vaultproject.io/api/libraries.html">クライアントライブラリ</a> を使って認証情報を取得する実装を書く必要があります。<br>
+毎回そういった実装をアプリケーションに書いていくのは少し面倒だし、OSSなどでそのあたりを自由にコントロールできないというケースもあります。<br>
 「Secrets ManagerやVaultによる認証情報のローテートを検知して、対象のプロセスの環境変数を自動的に書き換えてくれるような仕組み」が作れると、既存のアプリケーションはあくまで環境変数を読み込むだけでよく、また開発環境のため処理を分岐するといったこともせずに済むので楽なのではと考えました。</p>
-
-<p>結局、こんなやり方をしなくとも、少し雑ですが「認証情報のローテートを検知して、認証情報を環境変数にセットした上で対象のプロセスを再起動する」という仕組みでも十分なのではと考え直したので、peke_envsはあくまで趣味の勉強のためという範疇にとどまるでしょう。<br />
+<p>結局、こんなやり方をしなくとも、少し雑ですが「認証情報のローテートを検知して、認証情報を環境変数にセットした上で対象のプロセスを再起動する」という仕組みでも十分なのではと考え直したので、peke_envsはあくまで趣味の勉強のためという範疇にとどまるでしょう。<br>
 Rustやptrace(2)の勉強をするいい機会になりました。</p>
 
     </div>
@@ -647,6 +586,20 @@ Rustやptrace(2)の勉強をするいい機会になりました。</p>
                     <li>
                         <article>
                             <header>
+                                <h3><a href="https://blog.s-tajima.work/post/">Posts</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2020-07-05'>
+                                    July 5, 2020</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
                                 <h3><a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/">DEF CON CTF Qualifier 2020 uploooadit WriteUp</a></h3>
                                 
                                     
@@ -686,20 +639,6 @@ Rustやptrace(2)の勉強をするいい機会になりました。</p>
                         </article>
                     </li>
                 
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/">CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2018-11-25'>
-                                    November 25, 2018</time>
-                            </header>
-                        </article>
-                    </li>
-                
 
                 
                     <li>
@@ -729,15 +668,6 @@ Rustやptrace(2)の勉強をするいい機会になりました。</p>
                     
                 
 
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories//"></a>
-                                <span style="float:right;">6</span>
-                            </header>
-                        </article>
-                    </li>
                 
                     <li>
                         <article>

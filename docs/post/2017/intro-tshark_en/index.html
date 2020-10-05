@@ -10,7 +10,7 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="generator" content="Hugo 0.25.1" />
+        <meta name="generator" content="Hugo 0.76.0-DEV" />
         
 
 
@@ -23,13 +23,7 @@
             
         
 
-        
-
-  <meta name="twitter:card" content="summary"/>
-
-
-
-<meta name="twitter:text:title" content="Breakdown investigation of network traffic using tshark."/>
+        <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Breakdown investigation of network traffic using tshark."/>
 <meta name="twitter:description" content="This graph represents network traffic of a server.
 Concrete figures have been masked, however, it can be seen that network traffic volume is gradually increasing over several weeks.
@@ -48,34 +42,19 @@ If you are using RHEL-based distribution, You can use tshark by installing wires
 This article was written with Tshark 1." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.s-tajima.work/post/2017/intro-tshark_en/" />
+<meta property="article:published_time" content="2017-05-11T00:00:00+09:00" />
+<meta property="article:modified_time" content="2017-05-11T00:00:00+09:00" />
 
-
-
-<meta property="article:published_time" content="2017-05-11T00:00:00&#43;09:00"/>
-<meta property="article:modified_time" content="2017-05-11T00:00:00&#43;09:00"/>
-
-
-
-
-
-
-
-
-
-
-
-        
-<meta itemprop="name" content="Breakdown investigation of network traffic using tshark.">
+        <meta itemprop="name" content="Breakdown investigation of network traffic using tshark.">
 <meta itemprop="description" content="This graph represents network traffic of a server.
 Concrete figures have been masked, however, it can be seen that network traffic volume is gradually increasing over several weeks.
 This article provides that how to investigate network traffic breakdown using tshark.
 What is tshark tshark is a CUI equivalent of Wireshark.
 If you are using RHEL-based distribution, You can use tshark by installing wireshark package.
 This article was written with Tshark 1.">
-
-
-<meta itemprop="dateModified" content="2017-05-11T00:00:00&#43;09:00" />
-<meta itemprop="wordCount" content="1066">
+<meta itemprop="datePublished" content="2017-05-11T00:00:00+09:00" />
+<meta itemprop="dateModified" content="2017-05-11T00:00:00+09:00" />
+<meta itemprop="wordCount" content="1067">
 
 
 
@@ -113,14 +92,17 @@ This article was written with Tshark 1.">
         
         
             
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-22927498-5', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-22927498-5', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
         
@@ -215,6 +197,10 @@ ga('send', 'pageview');
                     </li>
                 
                     <li>
+                        <a href="https://blog.s-tajima.work/post/"><p>Posts</p></a>
+                    </li>
+                
+                    <li>
                         <a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/"><p>DEF CON CTF Qualifier 2020 uploooadit WriteUp</p></a>
                     </li>
                 
@@ -224,10 +210,6 @@ ga('send', 'pageview');
                 
                     <li>
                         <a href="https://blog.s-tajima.work/post/2019/security-assessment/"><p>セキュリティ診断で確認する項目</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/"><p>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</p></a>
                     </li>
                 
             </ul>
@@ -322,34 +304,23 @@ ga('send', 'pageview');
     
 
     <div id="content">
-        
-
-<p>This graph represents network traffic of a server.<br />
-Concrete figures have been masked, however, it can be seen that network traffic volume is gradually increasing over several weeks.<br />
+        <p>This graph represents network traffic of a server.<br>
+Concrete figures have been masked, however, it can be seen that network traffic volume is gradually increasing over several weeks.<br>
 This article provides that how to investigate network traffic breakdown using tshark.</p>
-
-<p><img src="/post/2017/intro-tshark_en/traffic.png" alt="traffic.png" /></p>
-
+<p><img src="/post/2017/intro-tshark_en/traffic.png" alt="traffic.png"></p>
 <h1 id="what-is-tshark">What is tshark</h1>
-
-<p>tshark is a CUI equivalent of <a href="https://www.wireshark.org/">Wireshark</a>.<br />
-If you are using RHEL-based distribution, You can use tshark by installing <code>wireshark</code> package.<br />
+<p>tshark is a CUI equivalent of <a href="https://www.wireshark.org/">Wireshark</a>.<br>
+If you are using RHEL-based distribution, You can use tshark by installing <code>wireshark</code> package.<br>
 This article was written with <code>Tshark 1.8.10</code>, installed by <code>wireshark-1.8.10-17.el6.x86_64</code></p>
-
-<p>tcpdump is one of the most famous tools as CUI-based packet capture tool.<br />
+<p>tcpdump is one of the most famous tools as CUI-based packet capture tool.<br>
 It is a similar tool from the point of view that it can capture packets and display the contents; however, tshark is a more helpful tool that has many functions, such as to decode the packets into Human-Readable and to aggregates packets over a given time interval and calculates statistical information.</p>
-
 <p>You can see how to use tshark by man command, or some nice articles were written already.</p>
-
 <h1 id="investigation">Investigation</h1>
-
-<p><code>-z</code> is one of the best useful options implemented in tshark, it allows you to display statistical information.<br />
+<p><code>-z</code> is one of the best useful options implemented in tshark, it allows you to display statistical information.<br>
 In this post, I investigated network traffic by using the statistical information displayed by <code>-z</code> option.</p>
-
-<p>At first, I see the ratio between TCP and UDP of this packets.<br />
+<p>At first, I see the ratio between TCP and UDP of this packets.<br>
 Notes: For the sake of convenience, I rewrote some of the commands, outputs, IP addresses, figures and others by hand.</p>
-
-<pre><code class="language-text">$ tshark -a duration:60 -f 'dst host 172.17.XXX.XXX' -q -z io,stat,10,tcp,udp
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ tshark -a duration:60 -f &#39;dst host 172.17.XXX.XXX&#39; -q -z io,stat,10,tcp,udp
 Capturing on eth0
 16 packets dropped
 2666 packets captured
@@ -372,26 +343,20 @@ Capturing on eth0
 | 40 &lt;&gt; 50 |    137 |   21731 |    135 |   21462 |      2 |   269 |
 | 50 &lt;&gt; 58 |    113 |   28049 |    110 |   27351 |      2 |   638 |
 ===================================================================
-</code></pre>
-
-<p>I will explain the command line options.</p>
-
+</code></pre></div><p>I will explain the command line options.</p>
 <ul>
 <li><code>-a duration:60</code>: Specify the condition of stopping tshark. <em>duration:60</em> means stop 60 seconds later.</li>
 <li><code>-f 'dst host 172.17.XXX.XXX'</code>: Set the capture filter expression. To investigate inbound traffic, specify destination host is an own IP address.</li>
 <li><code>-q</code>: Suppress output of each captured packets. It is necessary to show only statistical information.</li>
 <li><code>-z io,stat,10,tcp,udp</code>: <em>-z</em> is an option for showing statistical information. <em>io,stat,interval[,filter][,filter][,filter]&hellip;</em> means that aggregates how many packets / bytes the communication matching <em>filter</em> was during the <em>interval</em> interval. <em>tcp</em>, <em>udp</em> represent TCP communication and UDP communication respectively as you can see.</li>
 </ul>
-
 <p>I think the content of the output is not so difficult.
-<code>2</code> in the table indicates TCP communication, and<code>3</code> indicates UDP communication .
+<code>2</code> in the table indicates TCP communication, and<code> 3</code> indicates UDP communication .
 <code>1</code> is the total amount of captured packets.</p>
-
 <p>From this result, I found that most of the communication is TCP.
 So, in this TCP communication, what host is the destination and what kind of communication is it?
 I checked it with the following command.</p>
-
-<pre><code class="language-text">$ tshark -n -a duration:60 -f 'dst host 172.17.XXX.XXX' -q -z conv,tcp
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ tshark -n -a duration:60 -f &#39;dst host 172.17.XXX.XXX&#39; -q -z conv,tcp
 Capturing on eth0
 47 packets dropped
 1623 packets captured
@@ -410,19 +375,14 @@ Filter:&lt;No Filter&gt;
 210.XXX.XX.XXX:59861 &lt;-&gt; 172.17.X.XX:22             0         0       2       132       2       132     2.435391340        10.0354
 210.XXX.XX.XXX:14136 &lt;-&gt; 172.17.X.XX:22             0         0       1       106       1       106    19.941849383         0.0000
 ================================================================================
-</code></pre>
-
-<p>I explain the options of the newly used command this time.</p>
-
+</code></pre></div><p>I explain the options of the newly used command this time.</p>
 <ul>
 <li><code>-n</code>: Disable name resolution of hostname, port and so on.</li>
 <li><code>-z conv,tcp</code>:For each pair of host and port, output the number of packets / Byte of communication.</li>
 </ul>
-
 <p>I found that the response of the request for TCP port 80 of a host occupies most of the communication.
 Statistically see the contents of this http communication with the following command.</p>
-
-<pre><code class="language-text">$ tshark -a duration:60 -q -z http_req,tree
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ tshark -a duration:60 -q -z http_req,tree
 Capturing on eth0
 304 packets dropped
 1795 packets captured
@@ -442,31 +402,21 @@ HTTP Requests by HTTP Host                                         58       0.00
    /XXX                                                               1       0.000108           5.56%
   .. snip ..
 ===================================================================
-</code></pre>
-
-<p>I explain the options of the newly used command this time.</p>
-
+</code></pre></div><p>I explain the options of the newly used command this time.</p>
 <ul>
 <li><code>-z http_req,tree</code>: Calculate the HTTP requests by server. Displayed values are the server name and the URI path.</li>
 </ul>
-
 <p>I found out that it is communication with Amazon S3.
 If we came up until here, after that, it would be easy to clarify which process is communicating.
 If making it difficult yet, you can also use <code>ss</code> or <code>netstat</code> and so on for clarifying the process.</p>
-
 <p>In this case, we are doing periodic <code>s3 sync</code> to a certain S3 bucket. And the number of objects in this S3 bucket is gradually increasing. I found that accordance with the increase of the size of the file list, the traffic volume was also increasing.</p>
-
 <h1 id="conclusion">Conclusion</h1>
-
 <p>Previously,I conducted such a survey like this way.</p>
-
 <ol>
 <li>Create a pcap file with tcpdump</li>
 <li>Transfer to GUI environment and check with Wireshark</li>
 </ol>
-
 <p>But now, using tstark makes it easier to carry out.</p>
-
 <p>In fact, I think that there are cases in which it is impossible to identify the cause cleanly like this time, and it is not possible to go ahead if we do a more muddy survey,
 There are many other types of options for <code>-z</code>, so I think that it is better to choose a more convenient one to suit the content you want to investigate.</p>
 
@@ -675,6 +625,20 @@ There are many other types of options for <code>-z</code>, so I think that it is
                     <li>
                         <article>
                             <header>
+                                <h3><a href="https://blog.s-tajima.work/post/">Posts</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2020-07-05'>
+                                    July 5, 2020</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
                                 <h3><a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/">DEF CON CTF Qualifier 2020 uploooadit WriteUp</a></h3>
                                 
                                     
@@ -714,20 +678,6 @@ There are many other types of options for <code>-z</code>, so I think that it is
                         </article>
                     </li>
                 
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/">CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2018-11-25'>
-                                    November 25, 2018</time>
-                            </header>
-                        </article>
-                    </li>
-                
 
                 
                     <li>
@@ -757,15 +707,6 @@ There are many other types of options for <code>-z</code>, so I think that it is
                     
                 
 
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories//"></a>
-                                <span style="float:right;">6</span>
-                            </header>
-                        </article>
-                    </li>
                 
                     <li>
                         <article>

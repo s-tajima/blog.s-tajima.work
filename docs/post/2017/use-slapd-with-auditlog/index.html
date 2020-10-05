@@ -10,7 +10,7 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="generator" content="Hugo 0.25.1" />
+        <meta name="generator" content="Hugo 0.76.0-DEV" />
         
 
 
@@ -23,13 +23,7 @@
             
         
 
-        
-
-  <meta name="twitter:card" content="summary"/>
-
-
-
-<meta name="twitter:text:title" content="CentOSでslapdのauditlogを有効にする"/>
+        <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CentOSでslapdのauditlogを有効にする"/>
 <meta name="twitter:description" content="概要 CentOSにてRPM(openldap-servers)でインストールしたslapdを使う際、auditlogの設定でハマったのでその"/>
 <meta name="twitter:site" content="@s_tajima"/>
@@ -38,29 +32,14 @@
 <meta property="og:description" content="概要 CentOSにてRPM(openldap-servers)でインストールしたslapdを使う際、auditlogの設定でハマったのでその" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.s-tajima.work/post/2017/use-slapd-with-auditlog/" />
+<meta property="article:published_time" content="2017-07-20T12:00:00+09:00" />
+<meta property="article:modified_time" content="2017-07-20T12:00:00+09:00" />
 
-
-
-<meta property="article:published_time" content="2017-07-20T12:00:00&#43;09:00"/>
-<meta property="article:modified_time" content="2017-07-20T12:00:00&#43;09:00"/>
-
-
-
-
-
-
-
-
-
-
-
-        
-<meta itemprop="name" content="CentOSでslapdのauditlogを有効にする">
+        <meta itemprop="name" content="CentOSでslapdのauditlogを有効にする">
 <meta itemprop="description" content="概要 CentOSにてRPM(openldap-servers)でインストールしたslapdを使う際、auditlogの設定でハマったのでその">
-
-
-<meta itemprop="dateModified" content="2017-07-20T12:00:00&#43;09:00" />
-<meta itemprop="wordCount" content="1199">
+<meta itemprop="datePublished" content="2017-07-20T12:00:00+09:00" />
+<meta itemprop="dateModified" content="2017-07-20T12:00:00+09:00" />
+<meta itemprop="wordCount" content="1273">
 
 
 
@@ -98,14 +77,17 @@
         
         
             
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-22927498-5', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-22927498-5', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
         
@@ -200,6 +182,10 @@ ga('send', 'pageview');
                     </li>
                 
                     <li>
+                        <a href="https://blog.s-tajima.work/post/"><p>Posts</p></a>
+                    </li>
+                
+                    <li>
                         <a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/"><p>DEF CON CTF Qualifier 2020 uploooadit WriteUp</p></a>
                     </li>
                 
@@ -209,10 +195,6 @@ ga('send', 'pageview');
                 
                     <li>
                         <a href="https://blog.s-tajima.work/post/2019/security-assessment/"><p>セキュリティ診断で確認する項目</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/"><p>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</p></a>
                     </li>
                 
             </ul>
@@ -307,88 +289,53 @@ ga('send', 'pageview');
     
 
     <div id="content">
-        
-
-<h1 id="概要">概要</h1>
-
+        <h1 id="概要">概要</h1>
 <p>CentOSにてRPM(openldap-servers)でインストールしたslapdを使う際、auditlogの設定でハマったのでその対応のメモです。
 実際に検証したのは CentOS 7系 の環境ですが、CentOS 6系の環境にも適用できる話だと思います。</p>
-
 <p>結論としては、Static Configurationの場合は <code>moduleload auditlog</code> を, Dynamic Configurationの場合は <code>olcModuleLoad: auditlog</code> を設定すればよいことがわかりました。
 わかってしまえば簡単な設定なのですが、そこにたどり着くまでが大変だったのでその過程を残しておきます。</p>
-
 <h1 id="slapdのoverlayについて">slapdのOverlayについて</h1>
-
-<p>slapdには、<a href="http://www.openldap.org/doc/admin24/overlays.html#Audit Logging">Overlays</a>と呼ばれるLDAPサーバの機能を拡張するための機構があります。
+<p>slapdには、[Overlays](<a href="http://www.openldap.org/doc/admin24/overlays.html#Audit">http://www.openldap.org/doc/admin24/overlays.html#Audit</a> Logging)と呼ばれるLDAPサーバの機能を拡張するための機構があります。
 slapdにて監査ログを取得する場合、Audit Logging overlayを使用することができます。</p>
-
 <p>manの<a href="https://linux.die.net/man/5/slapd.conf">slapd.conf</a>, <a href="https://linux.die.net/man/5/slapo-auditlog">slapo-auditlog</a> によると、 Static Configurationの場合、</p>
-
 <pre><code>overlay auditlog
-</code></pre>
-
-<p>にてauditlogのoverlayを有効にし、</p>
-
+</code></pre><p>にてauditlogのoverlayを有効にし、</p>
 <pre><code>auditlog &lt;filename&gt;  
-</code></pre>
-
-<p>にてauditlogの出力先を指定すればよさそうなことがわかります。</p>
-
+</code></pre><p>にてauditlogの出力先を指定すればよさそうなことがわかります。</p>
 <h1 id="困ったこと">困ったこと</h1>
-
 <p>前述のように設定し、slapdを起動しようとすると</p>
-
 <blockquote>
 <p>overlay &ldquo;auditlog&rdquo; not found</p>
 </blockquote>
-
 <p>というエラーによって起動に失敗します。</p>
-
 <p>このエラーの解消方法を調べていると、いくつか紛らわしい情報が見つかります。</p>
-
 <h3 id="openldap-servers-overlays">openldap-servers-overlays</h3>
-
 <p>auditlogを始めとするoverlayの類は、<code>openldap-servers-overlays</code> というRPMをインストールすることで利用可能になるという記述が見つかります。しかし実際は、このRPMを使うのはCentOS 5系の話のようで、CentOS 7系の環境においてはこのRPMは存在しません。</p>
-
 <h3 id="by-default-it-is-not-built">By default it is not built.</h3>
-
 <p>manの <a href="https://linux.die.net/man/5/slapd.overlays">slapd.overlays</a> を見ると</p>
-
 <blockquote>
-<p>auditlog<br />
+<p>auditlog<br>
 Audit Logging. This overlay records changes on a given backend database to an LDIF log file. By default it is not built.</p>
 </blockquote>
-
-<p>という記述が見つかります。<br />
+<p>という記述が見つかります。<br>
 ビルドオプションを変更してRPMをビルドしなおさなければならないように思えますが、実際はそうではありません。</p>
-
 <h3 id="modulepath">modulepath</h3>
-
 <p>このように、auditlogのmoduleはopenldap-serversによって既にインストールされていそうなことがわかります。</p>
-
 <pre><code>$ rpm -qpl openldap-servers-2.4.40-13.el7.x86_64.rpm | grep auditlog
 /usr/lib64/openldap/auditlog-2.4.so.2
 /usr/lib64/openldap/auditlog-2.4.so.2.10.3
 /usr/lib64/openldap/auditlog.la
-</code></pre>
-
-<p>ではなぜこのmoduleが読み込まれていないのかを調べます。
+</code></pre><p>ではなぜこのmoduleが読み込まれていないのかを調べます。
 関連しそうな設定として、<code>modulepath</code> がありました。しかし、このパラメータのデフォルトは <code>/usr/lib64/openldap</code> となっているようなので、これを変更することで解決することはなさそうです。</p>
-
 <h1 id="解決方法">解決方法</h1>
-
 <p><code>modulepath</code> と関連した設定として <code>moduleload</code> というパラメータがあります。
- <code>modulepath</code> で指定したパスに存在するmoduleは自動的に読み込まれるものと思い込んでしまいましたが、実際は <code>moduleload</code> にてmodule名を指定する必要があるようです。</p>
-
+<code>modulepath</code> で指定したパスに存在するmoduleは自動的に読み込まれるものと思い込んでしまいましたが、実際は <code>moduleload</code> にてmodule名を指定する必要があるようです。</p>
 <p>ということで、最終的には以下のように設定することで、auditlogを出力することができるということがわかりました。</p>
-
 <pre><code>modulepath /usr/lib64/openldap # デフォルト値なので省略可
 moduleload auditlog
 overlay auditlog
 auditlog &lt;filename&gt;  
-</code></pre>
-
-<p>以上、CentOSでslapdのauditlogを使う方法でした。</p>
+</code></pre><p>以上、CentOSでslapdのauditlogを使う方法でした。</p>
 
     </div>
 
@@ -595,6 +542,20 @@ auditlog &lt;filename&gt;
                     <li>
                         <article>
                             <header>
+                                <h3><a href="https://blog.s-tajima.work/post/">Posts</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2020-07-05'>
+                                    July 5, 2020</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
                                 <h3><a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/">DEF CON CTF Qualifier 2020 uploooadit WriteUp</a></h3>
                                 
                                     
@@ -634,20 +595,6 @@ auditlog &lt;filename&gt;
                         </article>
                     </li>
                 
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/">CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2018-11-25'>
-                                    November 25, 2018</time>
-                            </header>
-                        </article>
-                    </li>
-                
 
                 
                     <li>
@@ -677,15 +624,6 @@ auditlog &lt;filename&gt;
                     
                 
 
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories//"></a>
-                                <span style="float:right;">6</span>
-                            </header>
-                        </article>
-                    </li>
                 
                     <li>
                         <article>

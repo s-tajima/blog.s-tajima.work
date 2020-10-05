@@ -10,7 +10,7 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="generator" content="Hugo 0.25.1" />
+        <meta name="generator" content="Hugo 0.76.0-DEV" />
         
 
 
@@ -23,13 +23,7 @@
             
         
 
-        
-
-  <meta name="twitter:card" content="summary"/>
-
-
-
-<meta name="twitter:text:title" content="shell2httpでAWS FargateやSSHレスの運用を少しだけ楽にする"/>
+        <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="shell2httpでAWS FargateやSSHレスの運用を少しだけ楽にする"/>
 <meta name="twitter:description" content="はじめに AWS Fargate、便利ですよね。 EC2のコンテナインスタンスの管理が不要になり、コンテナの管理だけを気にすればよくなるため、設定の管"/>
 <meta name="twitter:site" content="@s_tajima"/>
@@ -38,29 +32,14 @@
 <meta property="og:description" content="はじめに AWS Fargate、便利ですよね。 EC2のコンテナインスタンスの管理が不要になり、コンテナの管理だけを気にすればよくなるため、設定の管" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.s-tajima.work/post/2018/shell2http-on-fargate/" />
+<meta property="article:published_time" content="2018-10-22T23:30:00+09:00" />
+<meta property="article:modified_time" content="2018-10-22T23:30:00+09:00" />
 
-
-
-<meta property="article:published_time" content="2018-10-22T23:30:00&#43;09:00"/>
-<meta property="article:modified_time" content="2018-10-22T23:30:00&#43;09:00"/>
-
-
-
-
-
-
-
-
-
-
-
-        
-<meta itemprop="name" content="shell2httpでAWS FargateやSSHレスの運用を少しだけ楽にする">
+        <meta itemprop="name" content="shell2httpでAWS FargateやSSHレスの運用を少しだけ楽にする">
 <meta itemprop="description" content="はじめに AWS Fargate、便利ですよね。 EC2のコンテナインスタンスの管理が不要になり、コンテナの管理だけを気にすればよくなるため、設定の管">
-
-
-<meta itemprop="dateModified" content="2018-10-22T23:30:00&#43;09:00" />
-<meta itemprop="wordCount" content="2212">
+<meta itemprop="datePublished" content="2018-10-22T23:30:00+09:00" />
+<meta itemprop="dateModified" content="2018-10-22T23:30:00+09:00" />
+<meta itemprop="wordCount" content="2236">
 
 
 
@@ -98,14 +77,17 @@
         
         
             
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-22927498-5', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-22927498-5', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
         
@@ -200,6 +182,10 @@ ga('send', 'pageview');
                     </li>
                 
                     <li>
+                        <a href="https://blog.s-tajima.work/post/"><p>Posts</p></a>
+                    </li>
+                
+                    <li>
                         <a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/"><p>DEF CON CTF Qualifier 2020 uploooadit WriteUp</p></a>
                     </li>
                 
@@ -209,10 +195,6 @@ ga('send', 'pageview');
                 
                     <li>
                         <a href="https://blog.s-tajima.work/post/2019/security-assessment/"><p>セキュリティ診断で確認する項目</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/"><p>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</p></a>
                     </li>
                 
             </ul>
@@ -307,101 +289,62 @@ ga('send', 'pageview');
     
 
     <div id="content">
-        
-
-<h1 id="はじめに">はじめに</h1>
-
+        <h1 id="はじめに">はじめに</h1>
 <p>AWS Fargate、便利ですよね。</p>
-
 <p>EC2のコンテナインスタンスの管理が不要になり、コンテナの管理だけを気にすればよくなるため、設定の管理やアップデート等の運用の手間が大きく減ります。</p>
-
 <p>また、コンテナインスタンスを管理しないため、コンテナインスタンスにSSHし、docker execすることでコンテナの内部にシェルを起動することができません。これはコンテナインスタンスやコンテナや内で悪意あるプロセスを立ち上げられてしまうというリスクを低減するためにとても有効です。</p>
-
 <h1 id="fargate運用の難しさ">Fargate運用の難しさ</h1>
-
 <p>一方で、この制限は正規の管理者がシェルを立ち上げてトラブルシュートやデバッグをすることもできないという不便さでもあります。</p>
-
 <p>実際に、Fargate上のコンテナにdocker execができないことでこれだけの人々が困っているようです。</p>
-
 <blockquote>
-<p>How to run &ldquo;docker exec&hellip; &rdquo; command in ECS #143<br />
+<p>How to run &ldquo;docker exec&hellip; &quot; command in ECS #143<br>
 <a href="https://github.com/aws/amazon-ecs-cli/issues/143#issuecomment-386106151">https://github.com/aws/amazon-ecs-cli/issues/143#issuecomment-386106151</a></p>
 </blockquote>
-
 <p>このような不便さに対して、現時点でのプラクティスとしては、</p>
-
 <ul>
 <li>ECSにデプロイする前に、手元の環境で十分にコンテナの動作確認を行う。</li>
 <li>ログを十分に出力し、CloudWatch Logsで必要な情報が確認できるようにする。</li>
 <li>モニタリングエージェントを使って各種メトリクスを十分に取得する。</li>
 <li>問題の切り分けがしやすいようにできるかぎりタスクやコンテナを分割する。</li>
 </ul>
-
-<p>などといったやり方があるようです。<br />
-このようなやり方だけでは思うような運用ができない等、<br />
+<p>などといったやり方があるようです。<br>
+このようなやり方だけでは思うような運用ができない等、<br>
 どうしてもコンテナ上にシェルを立ち上げたいときは、最終手段として</p>
-
 <ul>
 <li>コンテナ内にsshdを立ち上げて、SSH経由でシェルを立ち上げる。</li>
 </ul>
-
-<p>といったことをしているという例もありました。<br />
+<p>といったことをしているという例もありました。<br>
 しかし、sshdを立ち上げてしまうと、そこから不正なプロセスを立ち上げられてしまう可能性がでてきたたり、ユーザーや認証情報をどうやって管理するの？そこで実行されたコマンドをどうやって監査するの？といった問題が出てきてFargateのセキュアさや手軽さが損なわれてしまいます。</p>
-
 <p>同様の課題は、Fargateを利用する時に限らずSSHレスの運用をしようとしているときにも浮上してくることでしょう。(この場合は、条件が合えばSSM AgentのRun CommandやSession Managerを使うこともできますね。)</p>
-
 <h1 id="postfix-on-fargate">Postfix on Fargate</h1>
-
-<p>今回、とある事情でFargateを使ってPostfixを起動することになりました。<br />
-Postfixを運用する際、必要になってくるのが postqueue コマンドや postsuper コマンド等によるメールキューの管理です。<br />
+<p>今回、とある事情でFargateを使ってPostfixを起動することになりました。<br>
+Postfixを運用する際、必要になってくるのが postqueue コマンドや postsuper コマンド等によるメールキューの管理です。<br>
 これらのコマンドを使ったオペレーションは、前述のプラクティスでは、sshdを起動する以外の選択肢はなさそうで、どうしたものかと悩んでいました。</p>
-
 <h1 id="shell2http">shell2http</h1>
-
 <p>他にいいやり方はないものかと調べていたところ、こんなものを見つけました。</p>
-
 <p><a href="https://github.com/msoap/shell2http">https://github.com/msoap/shell2http</a></p>
-
 <p>HTTPサーバとして起動し、予め決められたパスでHTTPのリクエストを受け取ると、決められたコマンドを実行してくれるツールです。</p>
-
 <p>Postfixを起動するコンテナで、このように shell2http を立ち上げておくことで、(完全に思い通りとはいかないものの)SSHすることなくメールキューの操作が行えるようになります。</p>
-
 <pre><code>/bin/shell2http \
 	/postqueue   'postqueue -p' \
 	/postcat_all 'postcat $(cd /var/spool/postfix/; find incoming active bounce corrupt deferred hold defer flush maildrop saved trace -type f)' &amp;
-</code></pre>
-
-<p>このように、とても便利なツールではあるのですが、利用にはいくつかの注意が必要です。</p>
-
+</code></pre><p>このように、とても便利なツールではあるのですが、利用にはいくつかの注意が必要です。</p>
 <h2 id="osコマンドインジェクション">OSコマンドインジェクション</h2>
-
 <p>ざっと確認したところ今の使い方の範囲内では大丈夫そうなのですが、この手のツールはつくり方や設定によってはOSコマンドインジェクションによって (設定者が意図していない) 任意のコマンドが実行できてしまう可能性があります。</p>
-
 <p>例えば shell2http には、HTTPリクエスト内の任意のパラメータをコマンドに含めることができる機能はあるのですが、それは今回は利用せずに様子をみることにしています。</p>
-
 <p>また、万が一OSコマンドインジェクションが成立してしまった場合の影響を小さくするため、shell2httpを起動するユーザーには注意しましょう。</p>
-
 <h2 id="認証">認証</h2>
-
 <p>shell2http は、デフォルトでは特別な認証なくHTTPリクエストさえ送信できればコマンドが実行できる状態で起動します。</p>
-
 <p>SSHの場合は基本的にはパスワードや公開鍵/秘密鍵による認証があるため、その点を比較すると危険であるといえるでしょう。</p>
-
 <p>オプションでBASIC認証をかけることはできます。また、 shell2http 単体では実現できませんが、NginxなどでProxyすることで、クライアント証明書による認証をすることもできるでしょう。</p>
-
 <h2 id="通信内容の暗号化">通信内容の暗号化</h2>
-
-<p>shell2http は、デフォルトではhttpでの通信となるため、通信の内容は平文になっています。<br />
+<p>shell2http は、デフォルトではhttpでの通信となるため、通信の内容は平文になっています。<br>
 設定で、SSL/TLSの証明書を指定してhttpsでの通信をすることもできるようなので、センシティブな情報が流れる可能性がある場合には利用しましょう。</p>
-
 <h2 id="リクエスト元の制限">リクエスト元の制限</h2>
-
-<p>shell2http は、デフォルトではGETリクエストによってコマンドを実行するため、意図せずリクエストが投げられてしまわないように注意する必要があります。<br />
-自分で誤ってリクエストしてしまうことがなくとも、クローラー(さすがにインターネットにこのエンドポイントを公開するといったことはしないと思いますが)や、<br />
+<p>shell2http は、デフォルトではGETリクエストによってコマンドを実行するため、意図せずリクエストが投げられてしまわないように注意する必要があります。<br>
+自分で誤ってリクエストしてしまうことがなくとも、クローラー(さすがにインターネットにこのエンドポイントを公開するといったことはしないと思いますが)や、<br>
 Webブラウザの暗黙的なリクエストを想定し、リクエスト元を適切に制限しておきましょう。</p>
-
-<hr />
-
+<hr>
 <p>以上、shell2httpでAWS FargateやSSHレスの運用を少しだけ楽にする話でした。
 もし今回のような課題を解決するもっと良さそうなやり方があったら教えてもらえるととても助かります。</p>
 
@@ -610,6 +553,20 @@ Webブラウザの暗黙的なリクエストを想定し、リクエスト元�
                     <li>
                         <article>
                             <header>
+                                <h3><a href="https://blog.s-tajima.work/post/">Posts</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2020-07-05'>
+                                    July 5, 2020</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
                                 <h3><a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/">DEF CON CTF Qualifier 2020 uploooadit WriteUp</a></h3>
                                 
                                     
@@ -649,20 +606,6 @@ Webブラウザの暗黙的なリクエストを想定し、リクエスト元�
                         </article>
                     </li>
                 
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/">CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2018-11-25'>
-                                    November 25, 2018</time>
-                            </header>
-                        </article>
-                    </li>
-                
 
                 
                     <li>
@@ -692,15 +635,6 @@ Webブラウザの暗黙的なリクエストを想定し、リクエスト元�
                     
                 
 
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories//"></a>
-                                <span style="float:right;">6</span>
-                            </header>
-                        </article>
-                    </li>
                 
                     <li>
                         <article>

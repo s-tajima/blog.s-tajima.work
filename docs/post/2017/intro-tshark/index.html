@@ -10,7 +10,7 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="generator" content="Hugo 0.25.1" />
+        <meta name="generator" content="Hugo 0.76.0-DEV" />
         
 
 
@@ -23,13 +23,7 @@
             
         
 
-        
-
-  <meta name="twitter:card" content="summary"/>
-
-
-
-<meta name="twitter:text:title" content="tsharkを用いたネットワークトラフィックの内訳の調査"/>
+        <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="tsharkを用いたネットワークトラフィックの内訳の調査"/>
 <meta name="twitter:description" content="下の図は、とあるサーバのネットワークトラフィックのモニタリングのグラフです。 具体的な数値はマスクしてありますが、数週間かけてじわじわとトラフ"/>
 <meta name="twitter:site" content="@s_tajima"/>
@@ -38,29 +32,14 @@
 <meta property="og:description" content="下の図は、とあるサーバのネットワークトラフィックのモニタリングのグラフです。 具体的な数値はマスクしてありますが、数週間かけてじわじわとトラフ" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.s-tajima.work/post/2017/intro-tshark/" />
+<meta property="article:published_time" content="2017-05-10T19:11:08+09:00" />
+<meta property="article:modified_time" content="2017-05-10T19:11:08+09:00" />
 
-
-
-<meta property="article:published_time" content="2017-05-10T19:11:08&#43;09:00"/>
-<meta property="article:modified_time" content="2017-05-10T19:11:08&#43;09:00"/>
-
-
-
-
-
-
-
-
-
-
-
-        
-<meta itemprop="name" content="tsharkを用いたネットワークトラフィックの内訳の調査">
+        <meta itemprop="name" content="tsharkを用いたネットワークトラフィックの内訳の調査">
 <meta itemprop="description" content="下の図は、とあるサーバのネットワークトラフィックのモニタリングのグラフです。 具体的な数値はマスクしてありますが、数週間かけてじわじわとトラフ">
-
-
-<meta itemprop="dateModified" content="2017-05-10T19:11:08&#43;09:00" />
-<meta itemprop="wordCount" content="2357">
+<meta itemprop="datePublished" content="2017-05-10T19:11:08+09:00" />
+<meta itemprop="dateModified" content="2017-05-10T19:11:08+09:00" />
+<meta itemprop="wordCount" content="2370">
 
 
 
@@ -98,14 +77,17 @@
         
         
             
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-22927498-5', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-22927498-5', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
         
@@ -200,6 +182,10 @@ ga('send', 'pageview');
                     </li>
                 
                     <li>
+                        <a href="https://blog.s-tajima.work/post/"><p>Posts</p></a>
+                    </li>
+                
+                    <li>
                         <a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/"><p>DEF CON CTF Qualifier 2020 uploooadit WriteUp</p></a>
                     </li>
                 
@@ -209,10 +195,6 @@ ga('send', 'pageview');
                 
                     <li>
                         <a href="https://blog.s-tajima.work/post/2019/security-assessment/"><p>セキュリティ診断で確認する項目</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/"><p>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</p></a>
                     </li>
                 
             </ul>
@@ -307,34 +289,23 @@ ga('send', 'pageview');
     
 
     <div id="content">
-        
-
-<p>下の図は、とあるサーバのネットワークトラフィックのモニタリングのグラフです。<br />
-具体的な数値はマスクしてありますが、数週間かけてじわじわとトラフィック量が増加しています。<br />
+        <p>下の図は、とあるサーバのネットワークトラフィックのモニタリングのグラフです。<br>
+具体的な数値はマスクしてありますが、数週間かけてじわじわとトラフィック量が増加しています。<br>
 今回はtsharkを用いてこの通信の内容を調査し、トラフィック量増加の原因を特定した話です。</p>
-
-<p><img src="/post/2017/intro-tshark/traffic.png" alt="traffic.png" /></p>
-
+<p><img src="/post/2017/intro-tshark/traffic.png" alt="traffic.png"></p>
 <h1 id="tsharkとは">tsharkとは</h1>
-
 <p>tsharkは、おそらくこの記事を読んでいる多くの方がご存知であろう、<a href="https://www.wireshark.org/">Wireshark</a>のCUI版のツールです。
-RHEL系のOSであれば、<code>wireshark</code>のパッケージをインストールすることで利用可能になります。<br />
+RHEL系のOSであれば、<code>wireshark</code>のパッケージをインストールすることで利用可能になります。<br>
 今回の記事の内容は、<code>wireshark-1.8.10-17.el6.x86_64</code> からインストールされる、<code>TShark 1.8.10</code> を利用して作成しています。</p>
-
-<p>CUIベースでのパケットキャプチャツールとしては、tcpdumpがとても有名なツールだと思います。<br />
+<p>CUIベースでのパケットキャプチャツールとしては、tcpdumpがとても有名なツールだと思います。<br>
 パケットをキャプチャし通信の内容を表示することができるという観点では同じようなツールなのですが、tsharkは通信の内容をHuman-Readableにデコードしたり、一定期間の通信を集計をして統計情報を表示できたりと、便利な機能が多く実装されています。</p>
-
 <p>tsharkの基本的な使い方は、manを見るか、既に多くまとめられている他のサイトを見ることをおすすめします。</p>
-
 <h1 id="調査">調査</h1>
-
-<p>tsharkの便利な機能の1つに、<code>-z</code> オプションを使った統計情報の表示があります。<br />
+<p>tsharkの便利な機能の1つに、<code>-z</code> オプションを使った統計情報の表示があります。<br>
 今回はその <code>-z</code> オプションで表示できる統計情報をいくつか用いて調査を行います。</p>
-
-<p>まずは手始めに、この通信のTCPとUDPの割合を確認してみます。<br />
+<p>まずは手始めに、この通信のTCPとUDPの割合を確認してみます。<br>
 ※尚、入力したコマンドや出力の内容は、IPアドレスや各種数値等、便宜的に手で書き換えている部分があります。</p>
-
-<pre><code class="language-text">$ tshark -a duration:60 -f 'dst host 172.17.XXX.XXX' -q -z io,stat,10,tcp,udp
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ tshark -a duration:60 -f &#39;dst host 172.17.XXX.XXX&#39; -q -z io,stat,10,tcp,udp
 Capturing on eth0
 16 packets dropped
 2666 packets captured
@@ -357,22 +328,16 @@ Capturing on eth0
 | 40 &lt;&gt; 50 |    137 |   21731 |    135 |   21462 |      2 |   269 |
 | 50 &lt;&gt; 58 |    113 |   28049 |    110 |   27351 |      2 |   638 |
 ===================================================================
-</code></pre>
-
-<p>コマンドのオプションを解説します。</p>
-
+</code></pre></div><p>コマンドのオプションを解説します。</p>
 <ul>
 <li><code>-a duration:60</code>: tsharkの停止条件を指定しています。<code>duration:60</code> は <code>60秒後に停止</code> を意味しています。</li>
 <li><code>-f 'dst host 172.17.XXX.XXX'</code>: キャプチャするパケットのフィルタを記載します。inboundのトラフィックについて調査したいので自ホストが送信先になっているパケットを対象とします。</li>
 <li><code>-q</code>: キャプチャしたパケットを、1件ずつ出力するのをやめます。今回は統計情報だけ見れればよいので有効にしておきます。</li>
 <li><code>-z io,stat,10,tcp,udp</code>: <code>-z</code> は統計情報を出力するためのオプションです。 <code>io,stat,interval[,filter][,filter][,filter]...</code> は <code>interval</code> の間隔の間に、<code>filter</code> にマッチする通信がどれくらいの パケット数/Byte数 だったかを集計してくれるオプションです。 <code>tcp</code>, <code>udp</code> は見て分かる通りそれぞれ TCPの通信とUDPの通信を表しています。</li>
 </ul>
-
 <p>出力の内容はそれほど難しくないと思います。表中の <code>2</code> がTCPでの通信、<code>3</code> がUDPでの通信を表しています。<code>1</code> はキャプチャしたパケット全体の量です。</p>
-
 <p>この結果から、通信の大半はTCPだということがわかりました。ではこのTCPの通信は、どこのホストとのどんな通信でしょうか。それは次のコマンドで確認します。</p>
-
-<pre><code class="language-text">$ tshark -n -a duration:60 -f 'dst host 172.17.XXX.XXX' -q -z conv,tcp
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ tshark -n -a duration:60 -f &#39;dst host 172.17.XXX.XXX&#39; -q -z conv,tcp
 Capturing on eth0
 47 packets dropped
 1623 packets captured
@@ -391,18 +356,13 @@ Filter:&lt;No Filter&gt;
 210.XXX.XX.XXX:59861 &lt;-&gt; 172.17.X.XX:22             0         0       2       132       2       132     2.435391340        10.0354
 210.XXX.XX.XXX:14136 &lt;-&gt; 172.17.X.XX:22             0         0       1       106       1       106    19.941849383         0.0000
 ================================================================================
-</code></pre>
-
-<p>今回新たに使ったコマンドのオプションを解説します。</p>
-
+</code></pre></div><p>今回新たに使ったコマンドのオプションを解説します。</p>
 <ul>
-<li><code>-n</code>: ホスト名やポート名の名前解決を無効にします。<br /></li>
-<li><code>-z conv,tcp</code>: ホストとTCPのポートのペア毎に、通信のパケット数/Byte数を出力します。<br /></li>
+<li><code>-n</code>: ホスト名やポート名の名前解決を無効にします。</li>
+<li><code>-z conv,tcp</code>: ホストとTCPのポートのペア毎に、通信のパケット数/Byte数を出力します。</li>
 </ul>
-
 <p>あるホストのTCP80番ポートに対するリクエストの応答が、通信の大半を占めていることがわかりました。次のコマンドで、このhttpの通信の内容を統計的に見てみます。</p>
-
-<pre><code class="language-text">$ tshark -a duration:60 -q -z http_req,tree
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ tshark -a duration:60 -q -z http_req,tree
 Capturing on eth0
 304 packets dropped
 1795 packets captured
@@ -422,31 +382,20 @@ HTTP Requests by HTTP Host                                         58       0.00
    /XXX                                                               1       0.000108           5.56%
   .. snip ..
 ===================================================================
-</code></pre>
-
-<p>今回新たに使ったコマンドのオプションを解説します。</p>
-
+</code></pre></div><p>今回新たに使ったコマンドのオプションを解説します。</p>
 <ul>
 <li><code>-z http_req,tree</code>: キャプチャしたパケットのうち、HTTPの通信を集計して、ホストとパス毎にグルーピングして統計情報を表示します。</li>
 </ul>
-
 <p>Amazon S3との通信であることがわかりました。このあたりまでわかれば、あとはどの処理が通信を行っているのか心当たりがつくのではないでしょうか。初見の環境などで、まったく検討もつかない場合はssコマンドやnetstatコマンドを組み合わせてプロセスを特定しましょう。</p>
-
 <p>今回のケースではあるS3バケットに対して定期的な <code>s3 sync</code> を行っているのですが、そのS3バケットのオブジェクト数が徐々に増えていたため、その増加に応じてファイルリスト取得時の通信量も増えていたということがわかりました。(S3との通信がhttpになってしまっているのは意図していなかったのでそれは後日修正しました&hellip;.)</p>
-
 <h1 id="まとめ">まとめ</h1>
-
 <p>以前はこのような調査を</p>
-
 <ol>
 <li>tcpdumpでpcapファイルを作成</li>
 <li>GUI環境に転送してWiresharkで確認</li>
 </ol>
-
 <p>といったステップで行っていたのですが、tstarkを使うことでより簡単に実施することができるようになりました。</p>
-
 <p>実際には今回のようにきれいに原因を特定できず、もう少し泥臭い調査をしなければ行けないケースもあるかと思いますが、<code>-z</code> のオプションには他にもたくさんの種類があるので、調査したい内容に合わせてより都合のいいものを選ぶとよいと思います。</p>
-
 <p>以上、tsharkを用いたネットワークトラフィックの内訳の調査でした。</p>
 
     </div>
@@ -654,6 +603,20 @@ HTTP Requests by HTTP Host                                         58       0.00
                     <li>
                         <article>
                             <header>
+                                <h3><a href="https://blog.s-tajima.work/post/">Posts</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2020-07-05'>
+                                    July 5, 2020</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
                                 <h3><a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/">DEF CON CTF Qualifier 2020 uploooadit WriteUp</a></h3>
                                 
                                     
@@ -693,20 +656,6 @@ HTTP Requests by HTTP Host                                         58       0.00
                         </article>
                     </li>
                 
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/">CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2018-11-25'>
-                                    November 25, 2018</time>
-                            </header>
-                        </article>
-                    </li>
-                
 
                 
                     <li>
@@ -736,15 +685,6 @@ HTTP Requests by HTTP Host                                         58       0.00
                     
                 
 
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories//"></a>
-                                <span style="float:right;">6</span>
-                            </header>
-                        </article>
-                    </li>
                 
                     <li>
                         <article>

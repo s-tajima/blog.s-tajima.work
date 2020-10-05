@@ -10,7 +10,7 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="generator" content="Hugo 0.25.1" />
+        <meta name="generator" content="Hugo 0.76.0-DEV" />
         
 
 
@@ -23,13 +23,7 @@
             
         
 
-        
-
-  <meta name="twitter:card" content="summary"/>
-
-
-
-<meta name="twitter:text:title" content="GitHubのPull Requestへのレビュアーアサインを自動化するツール「github-dice」の紹介"/>
+        <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="GitHubのPull Requestへのレビュアーアサインを自動化するツール「github-dice」の紹介"/>
 <meta name="twitter:description" content="ブログ移転のテストです。 元の記事はこちら。 http://s-tajima.hateblo.jp/entry/2016/12/19/131319 こんにちは、今回はGitHubのPull Requestへのアサインを自動化するツール 「githu"/>
 <meta name="twitter:site" content="@s_tajima"/>
@@ -38,29 +32,14 @@
 <meta property="og:description" content="ブログ移転のテストです。 元の記事はこちら。 http://s-tajima.hateblo.jp/entry/2016/12/19/131319 こんにちは、今回はGitHubのPull Requestへのアサインを自動化するツール 「githu" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.s-tajima.work/post/2016/intro-github-dice/" />
+<meta property="article:published_time" content="2016-12-19T00:00:00+09:00" />
+<meta property="article:modified_time" content="2016-12-19T00:00:00+09:00" />
 
-
-
-<meta property="article:published_time" content="2016-12-19T00:00:00&#43;09:00"/>
-<meta property="article:modified_time" content="2016-12-19T00:00:00&#43;09:00"/>
-
-
-
-
-
-
-
-
-
-
-
-        
-<meta itemprop="name" content="GitHubのPull Requestへのレビュアーアサインを自動化するツール「github-dice」の紹介">
+        <meta itemprop="name" content="GitHubのPull Requestへのレビュアーアサインを自動化するツール「github-dice」の紹介">
 <meta itemprop="description" content="ブログ移転のテストです。 元の記事はこちら。 http://s-tajima.hateblo.jp/entry/2016/12/19/131319 こんにちは、今回はGitHubのPull Requestへのアサインを自動化するツール 「githu">
-
-
-<meta itemprop="dateModified" content="2016-12-19T00:00:00&#43;09:00" />
-<meta itemprop="wordCount" content="1380">
+<meta itemprop="datePublished" content="2016-12-19T00:00:00+09:00" />
+<meta itemprop="dateModified" content="2016-12-19T00:00:00+09:00" />
+<meta itemprop="wordCount" content="1397">
 
 
 
@@ -98,14 +77,17 @@
         
         
             
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-22927498-5', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-22927498-5', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
         
@@ -200,6 +182,10 @@ ga('send', 'pageview');
                     </li>
                 
                     <li>
+                        <a href="https://blog.s-tajima.work/post/"><p>Posts</p></a>
+                    </li>
+                
+                    <li>
                         <a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/"><p>DEF CON CTF Qualifier 2020 uploooadit WriteUp</p></a>
                     </li>
                 
@@ -209,10 +195,6 @@ ga('send', 'pageview');
                 
                     <li>
                         <a href="https://blog.s-tajima.work/post/2019/security-assessment/"><p>セキュリティ診断で確認する項目</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/"><p>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</p></a>
                     </li>
                 
             </ul>
@@ -307,66 +289,42 @@ ga('send', 'pageview');
     
 
     <div id="content">
-        
-
-<p>ブログ移転のテストです。<br />
-元の記事はこちら。<br />
+        <p>ブログ移転のテストです。<br>
+元の記事はこちら。<br>
 <a href="http://s-tajima.hateblo.jp/entry/2016/12/19/131319">http://s-tajima.hateblo.jp/entry/2016/12/19/131319</a></p>
-
-<hr />
-
-<p>こんにちは、今回はGitHubのPull Requestへのアサインを自動化するツール<br />
+<hr>
+<p>こんにちは、今回はGitHubのPull Requestへのアサインを自動化するツール<br>
 「github-dice」を作成したお話です。</p>
-
 <h1 id="背景">背景</h1>
-
 <p>GitHubのPull Requestベースの開発をする際、コードレビューはとても大事な工程の一つです。</p>
-
 <p>よくあるコードレビューは、 <strong>技術力の高い/システムの理解度が深い/ベテラン</strong> のメンバーが、<strong>技術力の低い/システムの理解度の浅い/若手</strong> のメンバーが書いたコードをレビューするようなやり方かなと思います。</p>
-
 <p>しかしコードレビューは、レビューを受ける側(レビュイー)にとってとても良い成長の機会ですが、同時にレビューをする側(レビュアー)にとっても良い成長の機会となります。
-自分より実力の高い人の書いたコードをレビューすることで、新しい知見を得て、技術力の向上に繋げることができます。<br />
+自分より実力の高い人の書いたコードをレビューすることで、新しい知見を得て、技術力の向上に繋げることができます。<br>
 システムの理解の深い人間が増えることは、システムの属人性を減らすことにも繋がるでしょう。</p>
-
 <p>そこで、僕の所属しているチームでは、技術力/システムの理解度/在籍期間等に関係なく、チームのメンバーが均等にレビュアーの機会を経験できるような運用を行っています。</p>
-
 <h1 id="github-dice">github-dice</h1>
-
 <p><a href="https://github.com/s-tajima/github-dice">github-dice</a></p>
-
-<p>github-diceは、GitHubのPull Requestへのレビュアーのアサインを自動化するためのツールです。<br />
+<p>github-diceは、GitHubのPull Requestへのレビュアーのアサインを自動化するためのツールです。<br>
 あらかじめ指定した<a href="https://help.github.com/articles/setting-up-teams/">Team</a>のメンバーから、サイコロを振るようにランダムにレビュアーを選出しアサインします。</p>
-
-<p>導入方法、使い方はREADMEに記載の通りです。<br />
-Golang製のツールなのでバイナリを配置するだけで使用できます。<br />
-github-diceを使用すると、以下のようにコメントと共にレビュアーがアサインされます。<br />
+<p>導入方法、使い方はREADMEに記載の通りです。<br>
+Golang製のツールなのでバイナリを配置するだけで使用できます。<br>
+github-diceを使用すると、以下のようにコメントと共にレビュアーがアサインされます。<br>
 (オプションで起票者を同時にアサインすることもできます。)</p>
-
-<p><img src="./github.png" alt="github.png" /></p>
-
+<p><img src="./github.png" alt="github.png"></p>
 <p>尚、<code>-q, --query</code> オプションで検索クエリを書き換えられるので、Pull Requestだけでなく、Issueを自動アサインの対象にすることも可能です。</p>
-
 <h1 id="終わりに">終わりに</h1>
-
-<p>技術的知見があまりなく、業務用件の理解も浅いコードをいきなりレビューするのはそれなりに負担が高いです。<br />
+<p>技術的知見があまりなく、業務用件の理解も浅いコードをいきなりレビューするのはそれなりに負担が高いです。<br>
 「チームのメンバーが均等にレビュアーの機会を経験できるように」という方針だけ立ててあとは各メンバーの自主性に任せるというやり方では結局うまく回らなそうだと考え、ランダムにレビュアーを選出し機械的にアサインをするというアプローチをとりました。</p>
-
 <p>自信のないときにはしっかり他のメンバーのサポートも受けられる体制も合わせた運用をすることで、過度に心理的, 技術的な負荷のかかるレビューをしなければいけない状況を避けられるようにしています。
 (僕も大いに助けられています。)</p>
-
 <p>実際に半年ほど運用を続けていますが、自分が直接は触らないようなコードの理解も深まり、最初は大きかった負担もだんだん小さくなっていくのを感じています。</p>
-
-<p>以上、簡単ですがgithub-diceの紹介でした。<br />
+<p>以上、簡単ですがgithub-diceの紹介でした。<br>
 ぜひ使ってみてください。Pull Requestもお待ちしております。</p>
-
 <h1 id="余談">余談</h1>
-
-<p>先日、GitHubはPull Requestに対してAssigneesとは別にReviewersを割り当てられるようになりました。<br />
+<p>先日、GitHubはPull Requestに対してAssigneesとは別にReviewersを割り当てられるようになりました。<br>
 <a href="https://github.com/blog/2291-introducing-review-requests">https://github.com/blog/2291-introducing-review-requests</a></p>
-
-<p>ちょうどこの記事を書いているタイミングで、このReviewersに対するAPIもEarly Accessが開始されました。<br />
+<p>ちょうどこの記事を書いているタイミングで、このReviewersに対するAPIもEarly Accessが開始されました。<br>
 <a href="https://developer.github.com/changes/2016-12-16-review-requests-api/">https://developer.github.com/changes/2016-12-16-review-requests-api/</a></p>
-
 <p>github-diceも近いうちにこの機能に対応しようと考えています。</p>
 
     </div>
@@ -571,6 +529,20 @@ github-diceを使用すると、以下のようにコメントと共にレビュ
                     <li>
                         <article>
                             <header>
+                                <h3><a href="https://blog.s-tajima.work/post/">Posts</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2020-07-05'>
+                                    July 5, 2020</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
                                 <h3><a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/">DEF CON CTF Qualifier 2020 uploooadit WriteUp</a></h3>
                                 
                                     
@@ -610,20 +582,6 @@ github-diceを使用すると、以下のようにコメントと共にレビュ
                         </article>
                     </li>
                 
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/">CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2018-11-25'>
-                                    November 25, 2018</time>
-                            </header>
-                        </article>
-                    </li>
-                
 
                 
                     <li>
@@ -653,15 +611,6 @@ github-diceを使用すると、以下のようにコメントと共にレビュ
                     
                 
 
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories//"></a>
-                                <span style="float:right;">6</span>
-                            </header>
-                        </article>
-                    </li>
                 
                     <li>
                         <article>

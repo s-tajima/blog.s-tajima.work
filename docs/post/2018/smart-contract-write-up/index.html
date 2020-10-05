@@ -10,7 +10,7 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="generator" content="Hugo 0.25.1" />
+        <meta name="generator" content="Hugo 0.76.0-DEV" />
         
 
 
@@ -23,13 +23,7 @@
             
         
 
-        
-
-  <meta name="twitter:card" content="summary"/>
-
-
-
-<meta name="twitter:text:title" content="CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp"/>
+        <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp"/>
 <meta name="twitter:description" content="2018/10/29 ~ 2018/11/02 に開催された CODE BLUE 2018 に参加し、 そこで行われていた PolySwarm の Smart Contract Hacking Challenge に挑戦してみました。 結果、1位で解くことができたのでそのWriteUpを公開"/>
 <meta name="twitter:site" content="@s_tajima"/>
@@ -38,29 +32,14 @@
 <meta property="og:description" content="2018/10/29 ~ 2018/11/02 に開催された CODE BLUE 2018 に参加し、 そこで行われていた PolySwarm の Smart Contract Hacking Challenge に挑戦してみました。 結果、1位で解くことができたのでそのWriteUpを公開" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.s-tajima.work/post/2018/smart-contract-write-up/" />
+<meta property="article:published_time" content="2018-11-08T12:00:00+09:00" />
+<meta property="article:modified_time" content="2018-11-08T12:00:00+09:00" />
 
-
-
-<meta property="article:published_time" content="2018-11-08T12:00:00&#43;09:00"/>
-<meta property="article:modified_time" content="2018-11-08T12:00:00&#43;09:00"/>
-
-
-
-
-
-
-
-
-
-
-
-        
-<meta itemprop="name" content="CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp">
+        <meta itemprop="name" content="CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp">
 <meta itemprop="description" content="2018/10/29 ~ 2018/11/02 に開催された CODE BLUE 2018 に参加し、 そこで行われていた PolySwarm の Smart Contract Hacking Challenge に挑戦してみました。 結果、1位で解くことができたのでそのWriteUpを公開">
-
-
-<meta itemprop="dateModified" content="2018-11-08T12:00:00&#43;09:00" />
-<meta itemprop="wordCount" content="3964">
+<meta itemprop="datePublished" content="2018-11-08T12:00:00+09:00" />
+<meta itemprop="dateModified" content="2018-11-08T12:00:00+09:00" />
+<meta itemprop="wordCount" content="3968">
 
 
 
@@ -98,14 +77,17 @@
         
         
             
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-22927498-5', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-22927498-5', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
         
@@ -200,6 +182,10 @@ ga('send', 'pageview');
                     </li>
                 
                     <li>
+                        <a href="https://blog.s-tajima.work/post/"><p>Posts</p></a>
+                    </li>
+                
+                    <li>
                         <a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/"><p>DEF CON CTF Qualifier 2020 uploooadit WriteUp</p></a>
                     </li>
                 
@@ -209,10 +195,6 @@ ga('send', 'pageview');
                 
                     <li>
                         <a href="https://blog.s-tajima.work/post/2019/security-assessment/"><p>セキュリティ診断で確認する項目</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/"><p>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</p></a>
                     </li>
                 
             </ul>
@@ -307,258 +289,168 @@ ga('send', 'pageview');
     
 
     <div id="content">
-        
-
-<p>2018/10/29 ~ 2018/11/02 に開催された CODE BLUE 2018 に参加し、<br />
+        <p>2018/10/29 ~ 2018/11/02 に開催された CODE BLUE 2018 に参加し、<br>
 そこで行われていた <a href="https://polyswarm.io/">PolySwarm</a> の <a href="https://codeblue.jp/2018/contests/detail_03/">Smart Contract Hacking Challenge</a> に挑戦してみました。</p>
-
 <p>結果、1位で解くことができたのでそのWriteUpを公開します。</p>
-
 <h1 id="前提知識">前提知識</h1>
-
 <p>このコンテストに参加した時点の僕は</p>
-
 <ul>
 <li>暗号通貨に興味があり、国内外の暗号通貨取引所で取引をしたことがある。</li>
 <li>Smart contractは趣味で勉強し、概要は理解している。</li>
 <li>自分でSmart contractのコードを書いたり、実用的に利用したことはなく、 <a href="https://cryptozombies.io/">CryptoZombies</a> を一通りやったことがある程度。</li>
 </ul>
-
 <p>といった感じです。
-だいたいこのあたりのレベルの人達に向けた記事になってます。<br />
-このレベルから、Smart contractの実行やデバッグに必要なツールや知識を徐々に手に入れていき、<br />
+だいたいこのあたりのレベルの人達に向けた記事になってます。<br>
+このレベルから、Smart contractの実行やデバッグに必要なツールや知識を徐々に手に入れていき、<br>
 最終的に問題を解くことができるようになるまでの話になります。</p>
-
-<p>Smart contractとは?  Solidityとは? といった内容は触れません。<br />
+<p>Smart contractとは?  Solidityとは? といった内容は触れません。<br>
 逆に、EVMに詳しい方にはもっと効率のよい解き方があれば教えてほしいなと思ってます。</p>
-
 <h1 id="問題">問題</h1>
-
-<p>CODE BLUE の PolySwarm のブースに行き、<br />
+<p>CODE BLUE の PolySwarm のブースに行き、<br>
 Smart Contract Hacking Challenge に参加したい旨を伝えると、1枚の紙がもらえます。</p>
-
 <p>紙には</p>
-
 <ul>
 <li><a href="https://etherscan.io/address/0x64ba926175bc69ba757ef53a6d5ef616889c9999">Ethereumのコントラクトのアドレス</a> (EtherscanのURL)</li>
 <li>EthereumのEOAのアドレス・秘密鍵</li>
 </ul>
-
 <p>が記載されています。</p>
-
 <p>このコントラクトがハックすべき対象です。</p>
-
 <h1 id="解き方">解き方</h1>
-
 <h2 id="コントラクトの確認">コントラクトの確認</h2>
-
 <p>コントラクトの内容を確認するため、まずは Etherscan の <a href="https://etherscan.io/address/0x64ba926175bc69ba757ef53a6d5ef616889c9999#code">Codeタブ</a> を見ます。</p>
-
-<p><img src="/post/2018/smart-contract-write-up/64ba92.png" alt="image" /></p>
-
-<p>ここで不思議だったのが、Human Readableなソースコードが表示されている点です。<br />
-Ethereumのブロックチェーンには、コントラクトはバイトコードとして書き込まれているはずなので、<br />
+<p><img src="/post/2018/smart-contract-write-up/64ba92.png" alt="image"></p>
+<p>ここで不思議だったのが、Human Readableなソースコードが表示されている点です。<br>
+Ethereumのブロックチェーンには、コントラクトはバイトコードとして書き込まれているはずなので、<br>
 このような形でソースコードが確認できるのはおかしいと思いました。</p>
-
-<p>調べてみると、 Etherscan には、 <a href="https://etherscan.io/verifyContract2">Verify Contract Code</a> という仕組みがあり、<br />
-あるアドレスを指定してコントラクトのソースコードをアップロードし、<br />
+<p>調べてみると、 Etherscan には、 <a href="https://etherscan.io/verifyContract2">Verify Contract Code</a> という仕組みがあり、<br>
+あるアドレスを指定してコントラクトのソースコードをアップロードし、<br>
 コンパイルされた結果がブロックチェーン上のものと一致すればこのように表示することができる仕組みがあるようです。</p>
-
-<p>ということで、ここに表示されたソースコードを読んでいきます。<br />
+<p>ということで、ここに表示されたソースコードを読んでいきます。<br>
 173行なのでそれほど読むのは大変ではなく、コントラクトの概要は、</p>
-
 <ul>
 <li>CashMoney という数当てゲーム。</li>
 <li>数字を予想する際にはコントラクトに 0.001 ETH 以上を送金する必要がある。</li>
 <li>数が当たると、送金した金額に加えて先着順でボーナスの ETH が返金される。</li>
 <li>数が外れると、送金したETH はコントラクトが没収。</li>
 </ul>
-
 <p>というものでした。
 もう少し詳しい仕様として、</p>
-
 <ul>
 <li>予測する数字の範囲は 0 ~ 10。</li>
 <li>チャレンジできるのは、予めコントラクト作成者がプレイヤーとして指定したアドレス(冒頭の紙に書かれていたもの)からのみ。</li>
 <li>プレイヤーの情報 (プレイヤーNo. と 名前) を設定することができる。</li>
 <li>同じアドレスが複数回ボーナスを獲得できないように、WinnerLogという別のコントラクトにログが記録される。</li>
 </ul>
-
 <p>といったものであることもわかりました。</p>
-
 <h2 id="最初のトライ">最初のトライ</h2>
-
 <p>正解の数字がどのように決められているのかを確認します。</p>
-
 <p>すると、正解の数字は</p>
-
 <pre><code>uint256 private current;
-</code></pre>
-
-<p>として定義され、</p>
-
+</code></pre><p>として定義され、</p>
 <pre><code>function every_day_im_shufflin() internal {
     // EVERY DAY IM SHUFFLIN
     current = uint8(keccak256(abi.encodePacked(blockhash(block.number-2)))) % 11;
 }
-</code></pre>
-
-<p>という関数で設定されているのがわかります。<br />
+</code></pre><p>という関数で設定されているのがわかります。<br>
 また、この every_day_im_shufflin() は、コントラクト作成時と、誰かが数字を当てた時によびだされているようです。</p>
-
-<p>予想する数字が 0 ~ 10 であり、正解がシャッフルされるのが誰かが数字を当てたときだけなのであれば、<br />
+<p>予想する数字が 0 ~ 10 であり、正解がシャッフルされるのが誰かが数字を当てたときだけなのであれば、<br>
 総当たりで正解できてしまうのでは? と思って試してみることにしました。</p>
-
-<p>このときは、Node.jsのweb3.jsを使ってこんなコードを書き、コントラクトを実行していました。<br />
+<p>このときは、Node.jsのweb3.jsを使ってこんなコードを書き、コントラクトを実行していました。<br>
 <a href="https://gist.github.com/s-tajima/970901318960c038291ff90f4404fe35">https://gist.github.com/s-tajima/970901318960c038291ff90f4404fe35</a></p>
-
-<p>ここから<br />
+<p>ここから<br>
 <a href="https://etherscan.io/tx/0xc9e32cf91c122a62c001e6a34b05e970e4c27eb0e807301b20953bc03601f0b8">https://etherscan.io/tx/0xc9e32cf91c122a62c001e6a34b05e970e4c27eb0e807301b20953bc03601f0b8</a></p>
-
-<p>ここまであたりがそのトライです。<br />
+<p>ここまであたりがそのトライです。<br>
 <a href="https://etherscan.io/tx/0xc7315ef6469d22c7c55d20c86bc80a59b8145d39ba74f24df96fc93782521660">https://etherscan.io/tx/0xc7315ef6469d22c7c55d20c86bc80a59b8145d39ba74f24df96fc93782521660</a></p>
-
-<p>結果としては、当然そんな簡単に解けてしまう問題であるわけはなく、<br />
+<p>結果としては、当然そんな簡単に解けてしまう問題であるわけはなく、<br>
 0 ~ 10のすべての数字でトランザクションがRevertされてしまいます。</p>
-
 <h2 id="remix-によるデバッグ">Remix によるデバッグ</h2>
-
-<p>次の手を考える上で、コントラクトがどのように実行されているのかを知りたくなりました。<br />
+<p>次の手を考える上で、コントラクトがどのように実行されているのかを知りたくなりました。<br>
 <a href="https://remix.ethereum.org/">Remix</a> という、SolidityのIDEがあるのを知っていたので、試しにそれを使ってみました。</p>
-
-<p><img src="/post/2018/smart-contract-write-up/remix_01.png" alt="image" /></p>
-
-<p>Etherscanで手に入れたソースコードを貼り付け、コントラクトのアドレスを指定すると、<br />
+<p><img src="/post/2018/smart-contract-write-up/remix_01.png" alt="image"></p>
+<p>Etherscanで手に入れたソースコードを貼り付け、コントラクトのアドレスを指定すると、<br>
 Remixからコントラクトを呼び出せるようになります。</p>
-
-<p>また、Debuggerの機能を使うと、呼び出したコントラクトの実行状況を確認することができます。<br />
+<p>また、Debuggerの機能を使うと、呼び出したコントラクトの実行状況を確認することができます。<br>
 このデバッグ機能を使うと、Solidity上でprivateとして定義した変数も参照できます。</p>
-
 <p>(privateという修飾子は、単なるスコープの定義であって、誰からも見えないようにするという設定ではないので、自分でコントラクトのコードを書くときには注意しましょう。)</p>
-
-<p>Debuggerを利用し、正解の番号と予想した番号を比較している処理を確認すると、<br />
+<p>Debuggerを利用し、正解の番号と予想した番号を比較している処理を確認すると、<br>
 正解の番号(current)がなぜか <code>42</code> になっているのがわかりました。</p>
-
-<p><img src="/post/2018/smart-contract-write-up/remix_02.png" alt="image" /></p>
-
-<p>前述した current の設定方法(ある値を11で割った余り)では、ここが <code>42</code> になることはなさそうで、<br />
+<p><img src="/post/2018/smart-contract-write-up/remix_02.png" alt="image"></p>
+<p>前述した current の設定方法(ある値を11で割った余り)では、ここが <code>42</code> になることはなさそうで、<br>
 また、予想した番号が <code>10</code> より大きい値だとエラーになるようなコードもあったので、なにかがおかしいです。</p>
-
 <p>処理を追っていくと、正しく設定されたcurrentの値(このときは4でした)が以下の処理のタイミングで書き換えられていることがわかりました。</p>
-
 <pre><code>Guess storage guess;
 guess.playerNo = players[msg.sender].playerNo; // ここでなぜかcurrentの値が変更される
-</code></pre>
-
-<p>調べてみると、guessが正しく初期化されていないことが問題になっていることがわかりました。<br />
-Solidityの仕様として、この正しく初期化されていない guess.playerNo に対しての値の操作は slot 0 に対する操作ということになるようです。<br />
+</code></pre><p>調べてみると、guessが正しく初期化されていないことが問題になっていることがわかりました。<br>
+Solidityの仕様として、この正しく初期化されていない guess.playerNo に対しての値の操作は slot 0 に対する操作ということになるようです。<br>
 <strong>つまり current が players[msg.sender].playerNo の値に書き換えられます。</strong></p>
-
 <p>このとき、playerNoの値は 42 (渡された紙に書いてありました) にしてあったので、その値が設定されたようです。</p>
-
 <p>ここまでわかればあとは簡単です。
-players[msg.sender].playerNo を 10以下の値にして、<br />
+players[msg.sender].playerNo を 10以下の値にして、<br>
 <a href="https://etherscan.io/tx/0x1b9a902a3faf65aaa8033435d3118ae844887a1861e4e8095530b3eaf1ced1eb#decodetab">https://etherscan.io/tx/0x1b9a902a3faf65aaa8033435d3118ae844887a1861e4e8095530b3eaf1ced1eb#decodetab</a></p>
-
-<p>かつそれを予想した番号としてコントラクトを呼び出せばよいのです。<br />
+<p>かつそれを予想した番号としてコントラクトを呼び出せばよいのです。<br>
 <a href="https://etherscan.io/tx/0xd27020cbbab206982d6a66f67ea3c5c1c983806f2199ae330ae8785bdfb124c3">https://etherscan.io/tx/0xd27020cbbab206982d6a66f67ea3c5c1c983806f2199ae330ae8785bdfb124c3</a></p>
-
 <p>しかし、残念ながらこれでもまだ ETH を獲得することはできませんでした。</p>
-
 <h2 id="winnerlog-のデコンパイル">WinnerLog のデコンパイル</h2>
-
 <p>再度 Remixで実行状況を確認すると、正解の番号と予想した番号の比較の部分は無事に通過していました。</p>
-
 <p>しかしその後、以下の外部コントラクト(WinnerLog)の呼び出しのところで処理が終わっていることがわかりました。</p>
-
 <pre><code>winnerLog.logWinner(msg.sender, players[msg.sender].playerNo, players[msg.sender].name);
-</code></pre>
-
-<p>現在実行しているコントラクト(0x64ba92&hellip;) には、WinnerLogコントラクトのソースコードも記載されていて、それによると logWinner は以下のような定義になっています。</p>
-
+</code></pre><p>現在実行しているコントラクト(0x64ba92&hellip;) には、WinnerLogコントラクトのソースコードも記載されていて、それによると logWinner は以下のような定義になっています。</p>
 <pre><code>function logWinner(address addr, uint256 playerNo, bytes name) public onlyPlayer { 
         winners[addr] = true;
         winner_name_list.push(string(name));
         winner_addr_list.push(addr);
         emit NewWinner(msg.sender, string(name), playerNo);
 }
-</code></pre>
-
-<p>これだけ見ると、特にエラーになるような要因もなさそうです。
+</code></pre><p>これだけ見ると、特にエラーになるような要因もなさそうです。
 が、ここに次の罠があります。</p>
-
 <p>winnerLog は、CashMoneyコントラクトのconstructorで以下のように作成されています。</p>
-
 <pre><code>winnerLog = WinnerLog(winnerLog_);
-</code></pre>
-
-<p>このとき <code>winnerLog_</code> の値は、とある別のコントラクトのアドレス(0x2e4d2a&hellip;) が指定されています。<br />
-<strong>つまり、<code>logWinner</code> は必ずしも上記のソースコードの通りに実行されているとは限らず、<br />
+</code></pre><p>このとき <code>winnerLog_</code> の値は、とある別のコントラクトのアドレス(0x2e4d2a&hellip;) が指定されています。<br>
+<strong>つまり、<code>logWinner</code> は必ずしも上記のソースコードの通りに実行されているとは限らず、<br>
 それどころか 0x2e4d2a&hellip; のコントラクトでは全く別の処理をしている可能性があります。</strong></p>
-
-<p>では、0x2e4d2a&hellip; のコントラクトを確認してみましょう。<br />
+<p>では、0x2e4d2a&hellip; のコントラクトを確認してみましょう。<br>
 <a href="https://etherscan.io/address/0x2e4d2a597a2fcbdf6cc55eb5c973e76aa19ac410#code">https://etherscan.io/address/0x2e4d2a597a2fcbdf6cc55eb5c973e76aa19ac410#code</a></p>
-
-<p><img src="/post/2018/smart-contract-write-up/2e4d2a.png" alt="image" /></p>
-
-<p>残念ながらこちらはソースコードが確認できません。<br />
-そうです。このバイトコード or アセンブリ を読み解く必要があるのです。<br />
-この手の解析は今までそんなに経験があるわけでもなくなかなかしんどそうだったので、<br />
+<p><img src="/post/2018/smart-contract-write-up/2e4d2a.png" alt="image"></p>
+<p>残念ながらこちらはソースコードが確認できません。<br>
+そうです。このバイトコード or アセンブリ を読み解く必要があるのです。<br>
+この手の解析は今までそんなに経験があるわけでもなくなかなかしんどそうだったので、<br>
 デコンパイラを探してみました。</p>
-
-<p>すると、 <a href="https://ethervm.io/decompile">Online Solidity Decompiler</a> というのを見つけたのでこれを使ってみました。<br />
-デコンパイルした結果がこちら。<br />
+<p>すると、 <a href="https://ethervm.io/decompile">Online Solidity Decompiler</a> というのを見つけたのでこれを使ってみました。<br>
+デコンパイルした結果がこちら。<br>
 <a href="https://ethervm.io/decompile?address=0x2E4d2a597A2fcBdF6CC55eb5c973E76Aa19Ac410&amp;network=">https://ethervm.io/decompile?address=0x2E4d2a597A2fcBdF6CC55eb5c973E76Aa19Ac410&amp;network=</a></p>
-
-<p><img src="/post/2018/smart-contract-write-up/decompilation.png" alt="image" /></p>
-
-<p>少しはマシになりました。しかし、まだ読み解くのは難しいです。<br />
+<p><img src="/post/2018/smart-contract-write-up/decompilation.png" alt="image"></p>
+<p>少しはマシになりました。しかし、まだ読み解くのは難しいです。<br>
 また、このコードはSolidityとしてValidなものではないので、これをデプロイして動作を確認してみることもできません。</p>
-
 <h2 id="アセンブリのデバッグ">アセンブリのデバッグ</h2>
-
-<p>仕方なく、アセンブリのままでデバッグを進めることにしました。<br />
+<p>仕方なく、アセンブリのままでデバッグを進めることにしました。<br>
 EVMのオペコードは <a href="https://ethervm.io/">ethervm.ioのもの</a> を参考にしました。</p>
-
-<p>デバッグは、RemixのDebugger機能を使いました。<br />
+<p>デバッグは、RemixのDebugger機能を使いました。<br>
 いろいろと試行錯誤しながら進めたのですが、</p>
-
 <ul>
 <li>アセンブリの処理を最後から遡りながら見ていく。</li>
 <li>JUMPI (条件分岐) の部分に注目し、どんな条件の分岐なのか、条件に使われた値はどこからきているのか。反対の分岐に進むためにはどこでどんな入力をすればいいのかを確認する。</li>
 </ul>
-
 <p>というのをがんばりました。</p>
-
-<p>ハマりどころとしては、RemixによるDebugをする際、<br />
-CashMoneyコントラクトからWinnerLogコントラクトをCallした後も、アセンブリの部分はCashMoneyコントラクトのままなところです。<br />
-表示されているオペコードと、スタックやメモリの変更内容がどうも食い違うのでおかしいなと気付きました。(おそらくバグ。)<br />
+<p>ハマりどころとしては、RemixによるDebugをする際、<br>
+CashMoneyコントラクトからWinnerLogコントラクトをCallした後も、アセンブリの部分はCashMoneyコントラクトのままなところです。<br>
+表示されているオペコードと、スタックやメモリの変更内容がどうも食い違うのでおかしいなと気付きました。(おそらくバグ。)<br>
 仕方ないので、WinnerLogのアセンブリは先述のデコンパイラで一緒に出てくる Disassembly を見ながら進めました。</p>
-
-<p><img src="/post/2018/smart-contract-write-up/disassembly.png" alt="image" /></p>
-
+<p><img src="/post/2018/smart-contract-write-up/disassembly.png" alt="image"></p>
 <p>結果として、logWinner関数の第2引数、つまり players[msg.sender].name を、</p>
-
 <ul>
 <li>128byte にすること。</li>
 <li>後半の64byteと <code>262d2527212d2b2c362d362a451acdc070148815b4ba154481c9c2983d8370d6</code> をXORした文字列が <code>546861742077617320766572792063617368206d6f6e6579206f6620796f752e</code>(ASCII に変換すると <code>That was very cash money of you.</code> になります。) になるようにすること。</li>
 </ul>
-
 <p>が必要であることがわかりました。
 (あっさり書いてますがかなり頑張りました。)</p>
-
-<p>そんな条件を満たした値をセットしたトランザクションがこちら。<br />
+<p>そんな条件を満たした値をセットしたトランザクションがこちら。<br>
 <a href="https://etherscan.io/tx/0x8a6bef803e7f9d1ad1e1724440bcec6a6d9e996f0a129485fc36c327bee0f559">https://etherscan.io/tx/0x8a6bef803e7f9d1ad1e1724440bcec6a6d9e996f0a129485fc36c327bee0f559</a></p>
-
-<p>この状態で、番号を予想すると&hellip;<br />
+<p>この状態で、番号を予想すると&hellip;<br>
 <a href="https://etherscan.io/tx/0x7775c55ef8fa67c1f3bc9363d6b2130cb6c9957f6da08099594ffa5a9df7c29f">https://etherscan.io/tx/0x7775c55ef8fa67c1f3bc9363d6b2130cb6c9957f6da08099594ffa5a9df7c29f</a></p>
-
 <p>見事に賞金の 5ETH が送金されてきます。(トランザクションIDが 777 で始まっていて縁起がいいですね。)</p>
-
 <h1 id="最後に">最後に</h1>
-
-<p>以上、Smart Contract Hacking ChallengeのWriteUpでした。<br />
-PolySwarm の皆さん、とてもよいChallengeをありがとうございました。<br />
+<p>以上、Smart Contract Hacking ChallengeのWriteUpでした。<br>
+PolySwarm の皆さん、とてもよいChallengeをありがとうございました。<br>
 せっかくなので、今度は自分でSmart Contractでも書いてみようかなと思います。</p>
 
     </div>
@@ -766,6 +658,20 @@ PolySwarm の皆さん、とてもよいChallengeをありがとうございま�
                     <li>
                         <article>
                             <header>
+                                <h3><a href="https://blog.s-tajima.work/post/">Posts</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2020-07-05'>
+                                    July 5, 2020</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
                                 <h3><a href="https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/">DEF CON CTF Qualifier 2020 uploooadit WriteUp</a></h3>
                                 
                                     
@@ -805,20 +711,6 @@ PolySwarm の皆さん、とてもよいChallengeをありがとうございま�
                         </article>
                     </li>
                 
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/">CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2018-11-25'>
-                                    November 25, 2018</time>
-                            </header>
-                        </article>
-                    </li>
-                
 
                 
                     <li>
@@ -848,15 +740,6 @@ PolySwarm の皆さん、とてもよいChallengeをありがとうございま�
                     
                 
 
-                
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories//"></a>
-                                <span style="float:right;">6</span>
-                            </header>
-                        </article>
-                    </li>
                 
                     <li>
                         <article>
