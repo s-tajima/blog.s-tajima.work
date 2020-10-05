@@ -1,7 +1,8 @@
-HUGO := bin/hugo
+HUGO_IMAGE := blog.s-tajima.work/hugo
+HUGO := docker run -v $(PWD):/work -p 127.0.0.1:11313:11313 --rm $(HUGO_IMAGE)
 
 init:
-	docker build -t blog.s-tajima.work/hugo .
+	docker build -t $(HUGO_IMAGE) .
 
 build:
 	rm -rf docs/*
@@ -9,7 +10,7 @@ build:
 	$(HUGO)
 
 preview:
-	$(HUGO) server -t hugo-future-imperfect-custom --port=11313 --disableFastRender
+	$(HUGO) server -t hugo-future-imperfect-custom --bind 0.0.0.0 --port=11313 --disableFastRender
 
 post: check/title
 	$(HUGO) new post/$(shell date +"%Y")/$(TITLE)/index.md
