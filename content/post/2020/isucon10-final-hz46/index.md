@@ -2,7 +2,7 @@
 +++
 author = "Satoshi Tajima"
 categories = [ "ja", "" ]
-date = "2020-10-05T14:00:00+09:00"
+date = "2020-10-05T18:45:00+09:00"
 description = ""
 featured = ""
 featuredalt = ""
