@@ -9,7 +9,7 @@ build:
 	$(HUGO)
 
 preview:
-	$(HUGO) server -t hugo-future-imperfect-custom --port=11313
+	$(HUGO) server -t hugo-future-imperfect-custom --port=11313 --disableFastRender
 
 post: check/title
 	$(HUGO) new post/$(shell date +"%Y")/$(TITLE)/index.md

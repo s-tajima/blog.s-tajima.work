@@ -20,8 +20,8 @@
                 </header>
             {{ end }}
             <ul class="icons">
-                {{ if .RSSLink }}
-                    <li><a href="{{ .RSSLink }}" type="application/rss+xml"
+                {{ if .RelPermalink }}
+                    <li><a href="{{ .RelPermalink }}" type="application/rss+xml"
                         target="_blank" title="RSS" class="fa fa-rss"></a></li>
                 {{ end }}
                 {{ if .Site.Params.socialAppearAtTop }}
@@ -127,8 +127,8 @@
     <!-- Footer -->
         <section id="footer">
             <ul class="icons">
-                {{ if .RSSLink }}
-                    <li><a href="{{ .RSSLink }}" type="application/rss+xml"
+                {{ if .RelPermalink }}
+                    <li><a href="{{ .RelPermalink }}" type="application/rss+xml"
                         target="_blank" title="RSS" class="fa fa-rss"></a></li>
                 {{ end }}
                 {{ if .Site.Params.socialAppearAtBottom }}
