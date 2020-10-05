@@ -1,4 +1,4 @@
-HUGO := bin/hugo
+HUGO := docker run -v $(PWD):/work --rm blog.s-tajima.work/hugo
 
 init:
 	docker build -t blog.s-tajima.work/hugo .
