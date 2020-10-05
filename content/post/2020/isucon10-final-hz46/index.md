@@ -140,7 +140,7 @@ Nginxの [proxy_cache_valid では、ms単位のTTLが設定できず](https://t
 
 スコアの推移はこんな感じです。赤が弊チームです。せっかくなので緑で優勝した @takonomura さんのスコアも表示してみました。ラスト1時間のスコアの伸ばしかたで一気に置いていかれてるのがわかりますね。悔しい。
 
-![image](./score.png)
+![image](/post/2020/isucon10-final-hz46/score.png)
 
 # 最後に
 
