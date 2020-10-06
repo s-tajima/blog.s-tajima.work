@@ -20,7 +20,7 @@
                 </header>
             {{ end }}
             <ul class="icons">
-                {{ if .RelPermalink }}
+                {{ with .OutputFormats.Get "RSS" }}
                     <li><a href="{{ .RelPermalink }}" type="application/rss+xml"
                         target="_blank" title="RSS" class="fa fa-rss"></a></li>
                 {{ end }}
@@ -127,7 +127,7 @@
     <!-- Footer -->
         <section id="footer">
             <ul class="icons">
-                {{ if .RelPermalink }}
+                {{ with .OutputFormats.Get "RSS" }}
                     <li><a href="{{ .RelPermalink }}" type="application/rss+xml"
                         target="_blank" title="RSS" class="fa fa-rss"></a></li>
                 {{ end }}
