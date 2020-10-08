@@ -27,3 +27,8 @@ googleAnalytics = "UA-22927498-5"
 [social]
     github = "s-tajima"
     twitter = "s_tajima"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
