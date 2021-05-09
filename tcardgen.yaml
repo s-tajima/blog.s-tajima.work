@@ -1,0 +1,35 @@
+title:
+  start:
+    px: 170
+    pY: 220
+  fgHexColor: "#FFFFFF"
+  fontSize: 65
+  fontStyle: Regular
+category:
+  start:
+    px: 170
+    py: 190
+  fgHexColor: "#FFFFFF"
+  bgHexColor: "#7F7776"
+  fontSize: 22
+  fontStyle: Medium
+  boxAlign: Left
+  boxSpacing: 6
+  boxPadding:
+    top: 6
+    right: 10
+    bottom: 6
+    left: 8
+info:
+  start:
+    px: 700
+    py: 460
+  fgHexColor: "#FFFFFF"
+  fontSize: 28
+  separator: " - "
+tags:
+  start:
+    px: 0
+    py: 0
+  fgHexColor: "#AAB5BF"
+  fontSize: 1
