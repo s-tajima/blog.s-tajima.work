@@ -1,3 +1,6 @@
 help/
 nohup.out
 .DS_Store
+**/*.swp
+fonts/*
+!fonts/.*
