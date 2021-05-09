@@ -1,5 +1,5 @@
 +++
-author = "@s_tajima"
+author = "Satoshi Tajima"
 categories = [ "misc", "ja" ]
 date = "2020-12-30T23:00:00+09:00"
 description = ""
@@ -7,6 +7,7 @@ featured = ""
 featuredalt = ""
 featuredpath = ""
 linktitle = ""
+images = ["post/2020/input-output/ogp.png"]
 title = "2020年のインプット・アウトプットまとめ"
 tags = ["."]
 

@@ -21,8 +21,8 @@ ogp:
 	~/go/bin/tcardgen --fontDir fonts/Kinto\ Sans/ \
 		--template static/ogp/_template.png \
 		--config tcardgen.yaml \
-		--output post/$(YEAR)/$(TITLE)/ogp.png \
-		post/$(YEAR)/$(TITLE)/index.md
+		--output content/post/$(YEAR)/$(TITLE)/ogp.png \
+		content/post/$(YEAR)/$(TITLE)/index.md
 
 check/title:
 	@[ "$(TITLE)" != "" ] || (echo "You have to specify TITLE." && exit 1)
