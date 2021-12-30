@@ -15,9 +15,9 @@ tags = ["."]
 
 例年どおり、2021年のインプットとアウトプットのまとめです。 (今年も会社の業務としてやったことは公開できるもの以外は割愛)
 
-## インプット
+# インプット
 
-### 本
+## 本
 
 * [ITロードマップ 2021年版](https://amzn.to/3pDD8ta)
 * [チームトポロジー　価値あるソフトウェアをすばやく届ける適応型組織設計](https://amzn.to/3JtL8VD)
@@ -51,28 +51,28 @@ tags = ["."]
 * [ユニコーン企業のひみつ――Spotifyで学んだソフトウェアづくりと働き方](https://www.oreilly.co.jp/books/9784873119465/)
 * [Wizard Bible事件から考えるサイバーセキュリティ](https://peaks.cc/wizard_bible_security)
 
-### イベント
+## イベント
 
 * [AWS Summit Online](https://aws.amazon.com/jp/events/summits/online/japan/)
 * [CODE BLUE 2021](https://codeblue.jp/2021/)
 * [DEF CON 29](https://defcon.org/html/defcon-29/dc-29-index.html)
 * [AWS re:Invent](https://reinvent.awsevents.com/)
 
-## アウトプット
+# アウトプット
 
-### 登壇
+## 登壇
 
 今年も引き続きオンライン登壇のみ。来年はそろそろ物理登壇もしていきたい。
 
 * [日々変わりゆく技術トレンドの中でスタートアップ4社が技術選定について語ります](https://finatext.connpass.com/event/213765/)
 * [AWS フィンテック 特別セミナー フィンテック 企業が見据える近未来の技術トレンド](https://www.sbbit.jp/article/fj/69624)
 
-### インタビュー
+## インタビュー
 
 * [Flatt Securityさんの事例紹介インタビュー](https://flatt.tech/assessment/voice/finatext)
 * [AWS Startup ブログの事例紹介インタビュー](https://aws.amazon.com/jp/blogs/startup/tech-interview-finatext-3/)
 
-### ブログ
+## ブログ
 
 TechBlogは例年どおりなんですが、今年はnoteにてフィードバック・評価制度を紹介する記事も書いてみました。
 会社で働く上で無関係な人はほとんどいないテーマだったためか、かなり多くの人に読んでもらえたみたいでよかったです。
@@ -84,7 +84,7 @@ TechBlogは例年どおりなんですが、今年はnoteにてフィードバ�
 * [Platform Teamとしての上場までの約3年を振り返る](https://medium.com/finatext/looking-back-on-activities-of-platform-team-f4a0acb09408)
 * [Platform Teamはなぜ “インフラ” ではなく “プラットフォーム” を冠しているのか](https://medium.com/finatext/why-not-infra-but-platform-ecb1166bd4ef)
 
-### 資格
+## 資格
 
 せっかく金融スタートアップで働いているので、金融関連の資格はとっておこうということで少額短期保険募集人と一種外務員の資格を取りました。
 今はOSCPに続きOSWEの取得に向けて絶賛勉強中です。
