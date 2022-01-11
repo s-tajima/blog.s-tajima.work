@@ -6,7 +6,16 @@
     <description>Recent content in ja on s_tajima::TechBlog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Thu, 30 Dec 2021 23:00:00 +0900</lastBuildDate><atom:link href="https://blog.s-tajima.work/categories/ja/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 11 Jan 2022 21:00:00 +0900</lastBuildDate><atom:link href="https://blog.s-tajima.work/categories/ja/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OSWE合格までの道のり</title>
+      <link>https://blog.s-tajima.work/post/2022/oswe-journey/</link>
+      <pubDate>Tue, 11 Jan 2022 21:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2022/oswe-journey/</guid>
+      <description>先日、OSWE (Offensive Security Web Expert) というWebアプリケーションに特化したペネトレーションテストの資格を取りました。OSCPの合格に続き、Offensiv</description>
+    </item>
+    
     <item>
       <title>2021年のインプット・アウトプットまとめ</title>
       <link>https://blog.s-tajima.work/post/2021/input-output/</link>

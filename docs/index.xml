@@ -6,7 +6,16 @@
     <description>Recent content on s_tajima::TechBlog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Thu, 30 Dec 2021 23:00:00 +0900</lastBuildDate><atom:link href="https://blog.s-tajima.work/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 11 Jan 2022 21:00:00 +0900</lastBuildDate><atom:link href="https://blog.s-tajima.work/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OSWE合格までの道のり</title>
+      <link>https://blog.s-tajima.work/post/2022/oswe-journey/</link>
+      <pubDate>Tue, 11 Jan 2022 21:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2022/oswe-journey/</guid>
+      <description>先日、OSWE (Offensive Security Web Expert) というWebアプリケーションに特化したペネトレーションテストの資格を取りました。OSCPの合格に続き、Offensiv</description>
+    </item>
+    
     <item>
       <title>2021年のインプット・アウトプットまとめ</title>
       <link>https://blog.s-tajima.work/post/2021/input-output/</link>
@@ -176,24 +185,6 @@ This article was written with Tshark 1.</description>
       
       <guid>https://blog.s-tajima.work/post/2017/hello/</guid>
       <description>Hatena Blogから移転してきました。 本ブログは ホスティングはGitHub Pages コンテンツ作成はHugo CDN, TLS配信はCloudflare を利用して運</description>
-    </item>
-    
-    <item>
-      <title>about</title>
-      <link>https://blog.s-tajima.work/about/</link>
-      <pubDate>Fri, 05 May 2017 21:58:57 +0900</pubDate>
-      
-      <guid>https://blog.s-tajima.work/about/</guid>
-      <description>In English me Satoshi Tajima (@s_tajima) 千代田区で働くインフラ/セキュリティエンジニアです。 主にLinuxやDocker等のコンテナやAWS等のクラウドサービスを使った</description>
-    </item>
-    
-    <item>
-      <title>about</title>
-      <link>https://blog.s-tajima.work/about_en/</link>
-      <pubDate>Fri, 05 May 2017 21:58:57 +0900</pubDate>
-      
-      <guid>https://blog.s-tajima.work/about_en/</guid>
-      <description>日本語版 me Satoshi Tajima (@s_tajima) Infrastructure/Security engineer, work in Chiyoda-Ku. I&amp;rsquo;m used to manage Linux servers, Containers (such as Docker) and Cloud Service (such as AWS). And I can use Ruby, Go and some languages. Email: tajima1989 ~at~ gmail.com blog This blog is &amp;hellip; Hosted on GitHub Pages. Created by Hugo. Using Cloudflare for CDN and TLS. Past articles are here. http://s-tajima.hateblo.jp/</description>
     </item>
     
     <item>

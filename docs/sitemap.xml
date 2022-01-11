@@ -3,17 +3,37 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://blog.s-tajima.work/post/2021/input-output/</loc>
-    <lastmod>2021-12-30T23:00:00+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://blog.s-tajima.work/categories/</loc>
-    <lastmod>2021-12-30T23:00:00+09:00</lastmod>
+    <lastmod>2022-01-11T21:00:00+09:00</lastmod>
   </url>
   
   <url>
     <loc>https://blog.s-tajima.work/categories/ja/</loc>
+    <lastmod>2022-01-11T21:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/post/2022/oswe-journey/</loc>
+    <lastmod>2022-01-11T21:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/post/</loc>
+    <lastmod>2022-01-11T21:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/</loc>
+    <lastmod>2022-01-11T21:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/categories/security/</loc>
+    <lastmod>2022-01-11T21:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/post/2021/input-output/</loc>
     <lastmod>2021-12-30T23:00:00+09:00</lastmod>
   </url>
   
@@ -23,22 +43,7 @@
   </url>
   
   <url>
-    <loc>https://blog.s-tajima.work/post/</loc>
-    <lastmod>2021-12-30T23:00:00+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.s-tajima.work/</loc>
-    <lastmod>2021-12-30T23:00:00+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://blog.s-tajima.work/post/2021/oscp-journey-and-things-i-learned/</loc>
-    <lastmod>2021-05-09T22:00:00+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.s-tajima.work/categories/security/</loc>
     <lastmod>2021-05-09T22:00:00+09:00</lastmod>
   </url>
   
@@ -140,16 +145,6 @@
   <url>
     <loc>https://blog.s-tajima.work/post/2017/hello/</loc>
     <lastmod>2017-05-05T23:03:50+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.s-tajima.work/about/</loc>
-    <lastmod>2017-05-05T21:58:57+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.s-tajima.work/about_en/</loc>
-    <lastmod>2017-05-05T21:58:57+09:00</lastmod>
   </url>
   
   <url>
