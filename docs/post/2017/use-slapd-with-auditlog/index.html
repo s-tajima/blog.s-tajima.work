@@ -1,0 +1,748 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        
+            
+                <title>CentOSでslapdのauditlogを有効にする</title>
+            
+        
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="generator" content="Hugo 0.76.0-DEV" />
+        
+
+
+        
+            <meta name="author" content="Satoshi Tajima">
+        
+        
+            
+                <meta name="description" content="s_tajima::TechBlog">
+            
+        
+
+        
+        
+
+        <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CentOSでslapdのauditlogを有効にする"/>
+<meta name="twitter:description" content="概要 CentOSにてRPM(openldap-servers)でインストールしたslapdを使う際、auditlogの設定でハマったのでその"/>
+<meta name="twitter:site" content="@s_tajima"/>
+
+        <meta property="og:title" content="CentOSでslapdのauditlogを有効にする" />
+<meta property="og:description" content="概要 CentOSにてRPM(openldap-servers)でインストールしたslapdを使う際、auditlogの設定でハマったのでその" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.s-tajima.work/post/2017/use-slapd-with-auditlog/" />
+<meta property="article:published_time" content="2017-07-20T12:00:00+09:00" />
+<meta property="article:modified_time" content="2017-07-20T12:00:00+09:00" />
+
+        <meta itemprop="name" content="CentOSでslapdのauditlogを有効にする">
+<meta itemprop="description" content="概要 CentOSにてRPM(openldap-servers)でインストールしたslapdを使う際、auditlogの設定でハマったのでその">
+<meta itemprop="datePublished" content="2017-07-20T12:00:00+09:00" />
+<meta itemprop="dateModified" content="2017-07-20T12:00:00+09:00" />
+<meta itemprop="wordCount" content="1273">
+
+
+
+<meta itemprop="keywords" content="" />
+
+        
+
+        
+
+        
+        
+            
+        
+
+        
+        
+            <link rel="stylesheet" href="/css/google-font.css" />
+            <link rel="stylesheet" href="/css/font-awesome.min.css" />
+            <link rel="stylesheet" href="/css/main.css" />
+            <link rel="stylesheet" href="/css/add-on.css" />
+            <link rel="stylesheet" href="/css/monokai-sublime.css">
+        
+
+        
+            
+                
+            
+                
+                    <link rel="stylesheet" href="/css/custom.css" />
+                
+            
+        
+
+        
+        
+        
+            
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-22927498-5', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+        
+    </head>
+    <body>
+
+        
+        <div id="wrapper">
+
+    
+    
+<header id="header">
+    
+        <h2><a href="/">s_tajima::TechBlog</i></a></h2>
+    
+
+    <nav class="links">
+        <ul>
+            
+                <li>
+                    <a href="/about">
+                        
+                            <i class="fa fa-user">&nbsp;</i>About
+                    </a>
+                </li>
+            
+        </ul>
+    </nav>
+    <nav class="main">
+        <ul>
+            
+            <li id="share-nav" class="share-menu" style="display:none;">
+                <a class="fa-share-alt" href="#share-menu">Share</a>
+            </li>
+            
+            <li class="search">
+                <a class="fa-search" href="#search">Search</a>
+                <form id="search" method="get" action="//google.com/search">
+                    <input type="text" name="q" placeholder="Search" />
+                    <input type="hidden" name="q" value="site:https://blog.s-tajima.work/">
+                </form>
+            </li>
+            <li class="menu">
+                <a class="fa-bars" href="#menu">Menu</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+<section id="menu">
+
+    
+        <section>
+            <form class="search" method="get" action="//google.com/search">
+                <input type="text" name="q" placeholder="Search" />
+                <input type="hidden" name="q" value="site:https://blog.s-tajima.work/">
+            </form>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                
+                    <li>
+                        <a href="/about">
+                            <h3>
+                                
+                                    <i class="fa fa-user">&nbsp;</i>
+                                
+                                About
+                            </h3>
+                        </a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2022/oswe-journey/"><p>OSWE合格までの道のり</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/"><p>Posts</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2021/input-output/"><p>2021年のインプット・アウトプットまとめ</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2021/oscp-journey-and-things-i-learned/"><p>OSCP合格までの道のりとそこから学んだこと</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2020/input-output/"><p>2020年のインプット・アウトプットまとめ</p></a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        
+</section>
+
+    <section id="share-menu">
+    <section id="social-share-nav">
+        <ul class="links">
+            <header>
+                <h3>Share this post <i class="fa fa-smile-o"></i></h3>
+            </header>
+            
+
+
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&text=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b&via=s_tajima" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
+
+
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&title=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&title=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&title=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+</section>
+
+    
+    <div id="main">
+        
+        
+        <article class="post">
+    <header>
+    <div class="title">
+        
+            <h1><a href="https://blog.s-tajima.work/post/2017/use-slapd-with-auditlog/">CentOSでslapdのauditlogを有効にする</a></h1>
+            
+        
+        
+    </div>
+    <div class="meta">
+        
+            
+        
+
+        <time class="published"
+            datetime='2017-07-20'>
+            July 20, 2017</time>
+        <span class="author">Satoshi Tajima</span>
+        
+        
+    </div>
+</header>
+
+
+    
+
+    <div id="content">
+        <h1 id="概要">概要</h1>
+<p>CentOSにてRPM(openldap-servers)でインストールしたslapdを使う際、auditlogの設定でハマったのでその対応のメモです。
+実際に検証したのは CentOS 7系 の環境ですが、CentOS 6系の環境にも適用できる話だと思います。</p>
+<p>結論としては、Static Configurationの場合は <code>moduleload auditlog</code> を, Dynamic Configurationの場合は <code>olcModuleLoad: auditlog</code> を設定すればよいことがわかりました。
+わかってしまえば簡単な設定なのですが、そこにたどり着くまでが大変だったのでその過程を残しておきます。</p>
+<h1 id="slapdのoverlayについて">slapdのOverlayについて</h1>
+<p>slapdには、[Overlays](<a href="http://www.openldap.org/doc/admin24/overlays.html#Audit">http://www.openldap.org/doc/admin24/overlays.html#Audit</a> Logging)と呼ばれるLDAPサーバの機能を拡張するための機構があります。
+slapdにて監査ログを取得する場合、Audit Logging overlayを使用することができます。</p>
+<p>manの<a href="https://linux.die.net/man/5/slapd.conf">slapd.conf</a>, <a href="https://linux.die.net/man/5/slapo-auditlog">slapo-auditlog</a> によると、 Static Configurationの場合、</p>
+<pre><code>overlay auditlog
+</code></pre><p>にてauditlogのoverlayを有効にし、</p>
+<pre><code>auditlog &lt;filename&gt;  
+</code></pre><p>にてauditlogの出力先を指定すればよさそうなことがわかります。</p>
+<h1 id="困ったこと">困ったこと</h1>
+<p>前述のように設定し、slapdを起動しようとすると</p>
+<blockquote>
+<p>overlay &ldquo;auditlog&rdquo; not found</p>
+</blockquote>
+<p>というエラーによって起動に失敗します。</p>
+<p>このエラーの解消方法を調べていると、いくつか紛らわしい情報が見つかります。</p>
+<h3 id="openldap-servers-overlays">openldap-servers-overlays</h3>
+<p>auditlogを始めとするoverlayの類は、<code>openldap-servers-overlays</code> というRPMをインストールすることで利用可能になるという記述が見つかります。しかし実際は、このRPMを使うのはCentOS 5系の話のようで、CentOS 7系の環境においてはこのRPMは存在しません。</p>
+<h3 id="by-default-it-is-not-built">By default it is not built.</h3>
+<p>manの <a href="https://linux.die.net/man/5/slapd.overlays">slapd.overlays</a> を見ると</p>
+<blockquote>
+<p>auditlog<br>
+Audit Logging. This overlay records changes on a given backend database to an LDIF log file. By default it is not built.</p>
+</blockquote>
+<p>という記述が見つかります。<br>
+ビルドオプションを変更してRPMをビルドしなおさなければならないように思えますが、実際はそうではありません。</p>
+<h3 id="modulepath">modulepath</h3>
+<p>このように、auditlogのmoduleはopenldap-serversによって既にインストールされていそうなことがわかります。</p>
+<pre><code>$ rpm -qpl openldap-servers-2.4.40-13.el7.x86_64.rpm | grep auditlog
+/usr/lib64/openldap/auditlog-2.4.so.2
+/usr/lib64/openldap/auditlog-2.4.so.2.10.3
+/usr/lib64/openldap/auditlog.la
+</code></pre><p>ではなぜこのmoduleが読み込まれていないのかを調べます。
+関連しそうな設定として、<code>modulepath</code> がありました。しかし、このパラメータのデフォルトは <code>/usr/lib64/openldap</code> となっているようなので、これを変更することで解決することはなさそうです。</p>
+<h1 id="解決方法">解決方法</h1>
+<p><code>modulepath</code> と関連した設定として <code>moduleload</code> というパラメータがあります。
+<code>modulepath</code> で指定したパスに存在するmoduleは自動的に読み込まれるものと思い込んでしまいましたが、実際は <code>moduleload</code> にてmodule名を指定する必要があるようです。</p>
+<p>ということで、最終的には以下のように設定することで、auditlogを出力することができるということがわかりました。</p>
+<pre><code>modulepath /usr/lib64/openldap # デフォルト値なので省略可
+moduleload auditlog
+overlay auditlog
+auditlog &lt;filename&gt;  
+</code></pre><p>以上、CentOSでslapdのauditlogを使う方法でした。</p>
+
+    </div>
+
+    <footer>
+        <ul class="stats">
+    
+        
+
+        
+        
+            <li>
+                
+                
+                    
+
+                    
+                        Categories
+                    
+                
+            </li>
+        
+    
+
+    
+    
+        <li><a href='/categories/ja'>ja</a></li>
+    
+        <li><a href='/categories/ldap'>ldap</a></li>
+    
+</ul>
+
+    </footer>
+
+    <section id="social-share">
+        <ul class="icons">
+            
+
+
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&text=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b&via=s_tajima" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
+
+
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&title=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&title=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f&title=CentOS%e3%81%a7slapd%e3%81%aeauditlog%e3%82%92%e6%9c%89%e5%8a%b9%e3%81%ab%e3%81%99%e3%82%8b" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fuse-slapd-with-auditlog%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+</article>
+<ul class="actions pagination">
+    
+        <li><a href="https://blog.s-tajima.work/post/2017/intro-autoknitter/"
+                class="button big previous">AWSのAMIをゼロから作る autoknitterの紹介</a></li>
+    
+
+    
+        <li><a href="https://blog.s-tajima.work/post/2018/cve-2018-17082/"
+                class="button big next">CVE-2018-17082によるXSSに関する見解</a></li>
+    
+</ul>
+
+
+
+
+    </div>
+    
+<section id="sidebar">
+
+    
+        <section id="intro">
+            
+            
+            
+                <header>
+                    <h2></h2>
+                    <p>Tech blog, written by infrastructure/security engineer work in Chiyoda-Ku.</p>
+                </header>
+            
+            <ul class="icons">
+                
+                
+                    
+<li><a href="//github.com/s-tajima" target="_blank" title="GitHub" class="fa fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/s_tajima" target="_blank" title="Twitter" class="fa fa-twitter"></a></li>
+
+
+
+
+                
+            </ul>
+        </section>
+
+    
+        <section id="recent-posts">
+            <ul class="posts">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2022/oswe-journey/">OSWE合格までの道のり</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2022-01-11'>
+                                    January 11, 2022</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/">Posts</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2022-01-11'>
+                                    January 11, 2022</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2021/input-output/">2021年のインプット・アウトプットまとめ</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2021-12-30'>
+                                    December 30, 2021</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2021/oscp-journey-and-things-i-learned/">OSCP合格までの道のりとそこから学んだこと</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2021-05-09'>
+                                    May 9, 2021</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2020/input-output/">2020年のインプット・アウトプットまとめ</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2020-12-30'>
+                                    December 30, 2020</time>
+                            </header>
+                        </article>
+                    </li>
+                
+
+                
+                    <li>
+                        <ul class="actions">
+                            <li><a href=
+                            
+                                /post/
+                            
+                            class="button">View more posts</a></li>
+                        </ul>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+    
+    
+    
+        <section id="categories">
+            <ul class="posts">
+                <header>
+                    <h3><a href="/categories/">Categories</a></h3>
+                </header>
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/aws/">aws</a>
+                                <span style="float:right;">2</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/en/">en</a>
+                                <span style="float:right;">2</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/ja/">ja</a>
+                                <span style="float:right;">18</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/ldap/">ldap</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/misc/">misc</a>
+                                <span style="float:right;">2</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/security/">security</a>
+                                <span style="float:right;">4</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/tools/">tools</a>
+                                <span style="float:right;">3</span>
+                            </header>
+                        </article>
+                    </li>
+                
+            </ul>
+        </section>
+    
+
+    
+        
+        <section class="blurb">
+            <h2>About</h2>
+            <p>Written by Satoshi Tajima. I&#39;m a infrastructure/security engineer, work in Chiyoda-Ku.</p>
+
+            <ul class="actions">
+                <li><a href="/about/" class="button">Learn More</a></li>
+            </ul>
+        </section>
+        
+
+    
+        <section id="footer">
+            <ul class="icons">
+                
+                
+            </ul>
+
+            <p class="copyright">&copy; s_tajima::TechBlog. Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a>. Ported by <a href="//github.com/jpescador" target="_blank">Julio Pescador</a>. Powered by <a href="//gohugo.io" target="_blank">Hugo</a></p>
+        </section>
+
+</section>
+
+            </div>
+        <a id="back-to-top" href="#" class="fa fa-arrow-up fa-border fa-2x"></a>
+        
+
+        
+        
+            
+        
+
+        
+        
+            <script src="/js/jquery.min.js"></script>
+            <script src="/js/skel.min.js"></script>
+            <script src="/js/util.js"></script>
+            <script src="/js/main.js"></script>
+            <script src="/js/backToTop.js"></script>
+            <script src="/js/highlight.pack.js"></script>
+        
+
+        
+
+            
+            <script>hljs.initHighlightingOnLoad();</script>
+            
+    </body>
+</html>
+

@@ -1,0 +1,809 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        
+            
+                <title>tsharkを用いたネットワークトラフィックの内訳の調査</title>
+            
+        
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="generator" content="Hugo 0.76.0-DEV" />
+        
+
+
+        
+            <meta name="author" content="Satoshi Tajima">
+        
+        
+            
+                <meta name="description" content="s_tajima::TechBlog">
+            
+        
+
+        
+        
+
+        <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="tsharkを用いたネットワークトラフィックの内訳の調査"/>
+<meta name="twitter:description" content="下の図は、とあるサーバのネットワークトラフィックのモニタリングのグラフです。 具体的な数値はマスクしてありますが、数週間かけてじわじわとトラフ"/>
+<meta name="twitter:site" content="@s_tajima"/>
+
+        <meta property="og:title" content="tsharkを用いたネットワークトラフィックの内訳の調査" />
+<meta property="og:description" content="下の図は、とあるサーバのネットワークトラフィックのモニタリングのグラフです。 具体的な数値はマスクしてありますが、数週間かけてじわじわとトラフ" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.s-tajima.work/post/2017/intro-tshark/" />
+<meta property="article:published_time" content="2017-05-10T19:11:08+09:00" />
+<meta property="article:modified_time" content="2017-05-10T19:11:08+09:00" />
+
+        <meta itemprop="name" content="tsharkを用いたネットワークトラフィックの内訳の調査">
+<meta itemprop="description" content="下の図は、とあるサーバのネットワークトラフィックのモニタリングのグラフです。 具体的な数値はマスクしてありますが、数週間かけてじわじわとトラフ">
+<meta itemprop="datePublished" content="2017-05-10T19:11:08+09:00" />
+<meta itemprop="dateModified" content="2017-05-10T19:11:08+09:00" />
+<meta itemprop="wordCount" content="2370">
+
+
+
+<meta itemprop="keywords" content="" />
+
+        
+
+        
+
+        
+        
+            
+        
+
+        
+        
+            <link rel="stylesheet" href="/css/google-font.css" />
+            <link rel="stylesheet" href="/css/font-awesome.min.css" />
+            <link rel="stylesheet" href="/css/main.css" />
+            <link rel="stylesheet" href="/css/add-on.css" />
+            <link rel="stylesheet" href="/css/monokai-sublime.css">
+        
+
+        
+            
+                
+            
+                
+                    <link rel="stylesheet" href="/css/custom.css" />
+                
+            
+        
+
+        
+        
+        
+            
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-22927498-5', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+        
+    </head>
+    <body>
+
+        
+        <div id="wrapper">
+
+    
+    
+<header id="header">
+    
+        <h2><a href="/">s_tajima::TechBlog</i></a></h2>
+    
+
+    <nav class="links">
+        <ul>
+            
+                <li>
+                    <a href="/about">
+                        
+                            <i class="fa fa-user">&nbsp;</i>About
+                    </a>
+                </li>
+            
+        </ul>
+    </nav>
+    <nav class="main">
+        <ul>
+            
+            <li id="share-nav" class="share-menu" style="display:none;">
+                <a class="fa-share-alt" href="#share-menu">Share</a>
+            </li>
+            
+            <li class="search">
+                <a class="fa-search" href="#search">Search</a>
+                <form id="search" method="get" action="//google.com/search">
+                    <input type="text" name="q" placeholder="Search" />
+                    <input type="hidden" name="q" value="site:https://blog.s-tajima.work/">
+                </form>
+            </li>
+            <li class="menu">
+                <a class="fa-bars" href="#menu">Menu</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+<section id="menu">
+
+    
+        <section>
+            <form class="search" method="get" action="//google.com/search">
+                <input type="text" name="q" placeholder="Search" />
+                <input type="hidden" name="q" value="site:https://blog.s-tajima.work/">
+            </form>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                
+                    <li>
+                        <a href="/about">
+                            <h3>
+                                
+                                    <i class="fa fa-user">&nbsp;</i>
+                                
+                                About
+                            </h3>
+                        </a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2022/oswe-journey/"><p>OSWE合格までの道のり</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/"><p>Posts</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2021/input-output/"><p>2021年のインプット・アウトプットまとめ</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2021/oscp-journey-and-things-i-learned/"><p>OSCP合格までの道のりとそこから学んだこと</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2020/input-output/"><p>2020年のインプット・アウトプットまとめ</p></a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        
+</section>
+
+    <section id="share-menu">
+    <section id="social-share-nav">
+        <ul class="links">
+            <header>
+                <h3>Share this post <i class="fa fa-smile-o"></i></h3>
+            </header>
+            
+
+
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f&text=tshark%e3%82%92%e7%94%a8%e3%81%84%e3%81%9f%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%88%e3%83%a9%e3%83%95%e3%82%a3%e3%83%83%e3%82%af%e3%81%ae%e5%86%85%e8%a8%b3%e3%81%ae%e8%aa%bf%e6%9f%bb&via=s_tajima" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
+
+
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f&title=tshark%e3%82%92%e7%94%a8%e3%81%84%e3%81%9f%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%88%e3%83%a9%e3%83%95%e3%82%a3%e3%83%83%e3%82%af%e3%81%ae%e5%86%85%e8%a8%b3%e3%81%ae%e8%aa%bf%e6%9f%bb" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f&title=tshark%e3%82%92%e7%94%a8%e3%81%84%e3%81%9f%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%88%e3%83%a9%e3%83%95%e3%82%a3%e3%83%83%e3%82%af%e3%81%ae%e5%86%85%e8%a8%b3%e3%81%ae%e8%aa%bf%e6%9f%bb" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f&title=tshark%e3%82%92%e7%94%a8%e3%81%84%e3%81%9f%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%88%e3%83%a9%e3%83%95%e3%82%a3%e3%83%83%e3%82%af%e3%81%ae%e5%86%85%e8%a8%b3%e3%81%ae%e8%aa%bf%e6%9f%bb" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+</section>
+
+    
+    <div id="main">
+        
+        
+        <article class="post">
+    <header>
+    <div class="title">
+        
+            <h1><a href="https://blog.s-tajima.work/post/2017/intro-tshark/">tsharkを用いたネットワークトラフィックの内訳の調査</a></h1>
+            
+        
+        
+    </div>
+    <div class="meta">
+        
+            
+        
+
+        <time class="published"
+            datetime='2017-05-10'>
+            May 10, 2017</time>
+        <span class="author">Satoshi Tajima</span>
+        
+        
+    </div>
+</header>
+
+
+    
+
+    <div id="content">
+        <p>下の図は、とあるサーバのネットワークトラフィックのモニタリングのグラフです。<br>
+具体的な数値はマスクしてありますが、数週間かけてじわじわとトラフィック量が増加しています。<br>
+今回はtsharkを用いてこの通信の内容を調査し、トラフィック量増加の原因を特定した話です。</p>
+<p><img src="/post/2017/intro-tshark/traffic.png" alt="traffic.png"></p>
+<h1 id="tsharkとは">tsharkとは</h1>
+<p>tsharkは、おそらくこの記事を読んでいる多くの方がご存知であろう、<a href="https://www.wireshark.org/">Wireshark</a>のCUI版のツールです。
+RHEL系のOSであれば、<code>wireshark</code>のパッケージをインストールすることで利用可能になります。<br>
+今回の記事の内容は、<code>wireshark-1.8.10-17.el6.x86_64</code> からインストールされる、<code>TShark 1.8.10</code> を利用して作成しています。</p>
+<p>CUIベースでのパケットキャプチャツールとしては、tcpdumpがとても有名なツールだと思います。<br>
+パケットをキャプチャし通信の内容を表示することができるという観点では同じようなツールなのですが、tsharkは通信の内容をHuman-Readableにデコードしたり、一定期間の通信を集計をして統計情報を表示できたりと、便利な機能が多く実装されています。</p>
+<p>tsharkの基本的な使い方は、manを見るか、既に多くまとめられている他のサイトを見ることをおすすめします。</p>
+<h1 id="調査">調査</h1>
+<p>tsharkの便利な機能の1つに、<code>-z</code> オプションを使った統計情報の表示があります。<br>
+今回はその <code>-z</code> オプションで表示できる統計情報をいくつか用いて調査を行います。</p>
+<p>まずは手始めに、この通信のTCPとUDPの割合を確認してみます。<br>
+※尚、入力したコマンドや出力の内容は、IPアドレスや各種数値等、便宜的に手で書き換えている部分があります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ tshark -a duration:60 -f &#39;dst host 172.17.XXX.XXX&#39; -q -z io,stat,10,tcp,udp
+Capturing on eth0
+16 packets dropped
+2666 packets captured
+
+===================================================================
+| IO Statistics                                                   |
+|                                                                 |
+| Interval size: 10 secs                                          |
+| Col 1: Frames and bytes                                         |
+|     2: tcp                                                      |
+|     3: udp                                                      |
+|-----------------------------------------------------------------|
+|          |1                 |2                 |3               |
+| Interval | Frames |  Bytes  | Frames |  Bytes  | Frames | Bytes |
+|-----------------------------------------------------------------|
+|  0 &lt;&gt; 10 |    164 |   41351 |    162 |   40863 |      2 |   488 |
+| 10 &lt;&gt; 20 |   1177 | 6283124 |   1165 | 6280295 |     12 |  2829 |
+| 20 &lt;&gt; 30 |    871 | 4516942 |    863 | 4514656 |      8 |  2286 |
+| 30 &lt;&gt; 40 |    204 |   43122 |    200 |   42138 |      4 |   984 |
+| 40 &lt;&gt; 50 |    137 |   21731 |    135 |   21462 |      2 |   269 |
+| 50 &lt;&gt; 58 |    113 |   28049 |    110 |   27351 |      2 |   638 |
+===================================================================
+</code></pre></div><p>コマンドのオプションを解説します。</p>
+<ul>
+<li><code>-a duration:60</code>: tsharkの停止条件を指定しています。<code>duration:60</code> は <code>60秒後に停止</code> を意味しています。</li>
+<li><code>-f 'dst host 172.17.XXX.XXX'</code>: キャプチャするパケットのフィルタを記載します。inboundのトラフィックについて調査したいので自ホストが送信先になっているパケットを対象とします。</li>
+<li><code>-q</code>: キャプチャしたパケットを、1件ずつ出力するのをやめます。今回は統計情報だけ見れればよいので有効にしておきます。</li>
+<li><code>-z io,stat,10,tcp,udp</code>: <code>-z</code> は統計情報を出力するためのオプションです。 <code>io,stat,interval[,filter][,filter][,filter]...</code> は <code>interval</code> の間隔の間に、<code>filter</code> にマッチする通信がどれくらいの パケット数/Byte数 だったかを集計してくれるオプションです。 <code>tcp</code>, <code>udp</code> は見て分かる通りそれぞれ TCPの通信とUDPの通信を表しています。</li>
+</ul>
+<p>出力の内容はそれほど難しくないと思います。表中の <code>2</code> がTCPでの通信、<code>3</code> がUDPでの通信を表しています。<code>1</code> はキャプチャしたパケット全体の量です。</p>
+<p>この結果から、通信の大半はTCPだということがわかりました。ではこのTCPの通信は、どこのホストとのどんな通信でしょうか。それは次のコマンドで確認します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ tshark -n -a duration:60 -f &#39;dst host 172.17.XXX.XXX&#39; -q -z conv,tcp
+Capturing on eth0
+47 packets dropped
+1623 packets captured
+================================================================================
+TCP Conversations
+Filter:&lt;No Filter&gt;
+                                               |       &lt;-      | |       -&gt;      | |     Total     |   Rel. Start   |   Duration   |
+                                               | Frames  Bytes | | Frames  Bytes | | Frames  Bytes |                |              |
+172.17.X.XX:47688    &lt;-&gt; 52.XXX.XX.XX:80          713   5288887       0         0     713   5288887     8.323630499        10.5606
+172.17.X.XX:47760    &lt;-&gt; 52.XXX.XX.XX:80          425   3349593       0         0     425   3349593    13.359284739         6.5439
+172.17.X.XX:47814    &lt;-&gt; 50.XX.XXX.XX:443          12      7029       0         0      12      7029    11.545835487         0.7044
+172.17.X.XX:44320    &lt;-&gt; 50.XX.XXX.XXX:443         12      7018       0         0      12      7018    11.061043611         0.7214
+.. snip ..
+172.17.X.XX:38302    &lt;-&gt; 210.XXX.XX.XXX:443         4       279       0         0       4       279     2.884381083         0.0025
+172.17.X.XX:39084    &lt;-&gt; 54.XXX.XXX.XXX:443         2       167       0         0       2       167    17.913879040         0.0001
+210.XXX.XX.XXX:59861 &lt;-&gt; 172.17.X.XX:22             0         0       2       132       2       132     2.435391340        10.0354
+210.XXX.XX.XXX:14136 &lt;-&gt; 172.17.X.XX:22             0         0       1       106       1       106    19.941849383         0.0000
+================================================================================
+</code></pre></div><p>今回新たに使ったコマンドのオプションを解説します。</p>
+<ul>
+<li><code>-n</code>: ホスト名やポート名の名前解決を無効にします。</li>
+<li><code>-z conv,tcp</code>: ホストとTCPのポートのペア毎に、通信のパケット数/Byte数を出力します。</li>
+</ul>
+<p>あるホストのTCP80番ポートに対するリクエストの応答が、通信の大半を占めていることがわかりました。次のコマンドで、このhttpの通信の内容を統計的に見てみます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ tshark -a duration:60 -q -z http_req,tree
+Capturing on eth0
+304 packets dropped
+1795 packets captured
+
+===================================================================
+HTTP/Requests                                                  value             rate          percent
+-------------------------------------------------------------------
+HTTP Requests by HTTP Host                                         58       0.006287
+  169.254.169.254                                                   38       0.004119          65.52%
+   /latest/meta-data/iam/security-credentials/                       19       0.002059          50.00%
+   /latest/meta-data/iam/security-credentials/XXX                    19       0.002059          50.00%
+  XXX.s3.amazonaws.com                                              18       0.001951          31.03%
+   /?prefix=XXXX                                                      1       0.000108           5.56%
+   /?marker=XXXX&amp;prefix=XXX/                                          1       0.000108           5.56%
+   .. snip ..
+   /?marker=XXXX&amp;prefix=XXX/                                          1       0.000108           5.56%
+   /XXX                                                               1       0.000108           5.56%
+  .. snip ..
+===================================================================
+</code></pre></div><p>今回新たに使ったコマンドのオプションを解説します。</p>
+<ul>
+<li><code>-z http_req,tree</code>: キャプチャしたパケットのうち、HTTPの通信を集計して、ホストとパス毎にグルーピングして統計情報を表示します。</li>
+</ul>
+<p>Amazon S3との通信であることがわかりました。このあたりまでわかれば、あとはどの処理が通信を行っているのか心当たりがつくのではないでしょうか。初見の環境などで、まったく検討もつかない場合はssコマンドやnetstatコマンドを組み合わせてプロセスを特定しましょう。</p>
+<p>今回のケースではあるS3バケットに対して定期的な <code>s3 sync</code> を行っているのですが、そのS3バケットのオブジェクト数が徐々に増えていたため、その増加に応じてファイルリスト取得時の通信量も増えていたということがわかりました。(S3との通信がhttpになってしまっているのは意図していなかったのでそれは後日修正しました&hellip;.)</p>
+<h1 id="まとめ">まとめ</h1>
+<p>以前はこのような調査を</p>
+<ol>
+<li>tcpdumpでpcapファイルを作成</li>
+<li>GUI環境に転送してWiresharkで確認</li>
+</ol>
+<p>といったステップで行っていたのですが、tstarkを使うことでより簡単に実施することができるようになりました。</p>
+<p>実際には今回のようにきれいに原因を特定できず、もう少し泥臭い調査をしなければ行けないケースもあるかと思いますが、<code>-z</code> のオプションには他にもたくさんの種類があるので、調査したい内容に合わせてより都合のいいものを選ぶとよいと思います。</p>
+<p>以上、tsharkを用いたネットワークトラフィックの内訳の調査でした。</p>
+
+    </div>
+
+    <footer>
+        <ul class="stats">
+    
+        
+
+        
+        
+            <li>
+                
+                
+                    
+
+                    
+                        Categories
+                    
+                
+            </li>
+        
+    
+
+    
+    
+        <li><a href='/categories/ja'>ja</a></li>
+    
+        <li><a href='/categories/tools'>tools</a></li>
+    
+</ul>
+
+    </footer>
+
+    <section id="social-share">
+        <ul class="icons">
+            
+
+
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f&text=tshark%e3%82%92%e7%94%a8%e3%81%84%e3%81%9f%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%88%e3%83%a9%e3%83%95%e3%82%a3%e3%83%83%e3%82%af%e3%81%ae%e5%86%85%e8%a8%b3%e3%81%ae%e8%aa%bf%e6%9f%bb&via=s_tajima" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
+
+
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f&title=tshark%e3%82%92%e7%94%a8%e3%81%84%e3%81%9f%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%88%e3%83%a9%e3%83%95%e3%82%a3%e3%83%83%e3%82%af%e3%81%ae%e5%86%85%e8%a8%b3%e3%81%ae%e8%aa%bf%e6%9f%bb" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f&title=tshark%e3%82%92%e7%94%a8%e3%81%84%e3%81%9f%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%88%e3%83%a9%e3%83%95%e3%82%a3%e3%83%83%e3%82%af%e3%81%ae%e5%86%85%e8%a8%b3%e3%81%ae%e8%aa%bf%e6%9f%bb" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f&title=tshark%e3%82%92%e7%94%a8%e3%81%84%e3%81%9f%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%88%e3%83%a9%e3%83%95%e3%82%a3%e3%83%83%e3%82%af%e3%81%ae%e5%86%85%e8%a8%b3%e3%81%ae%e8%aa%bf%e6%9f%bb" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2017%2fintro-tshark%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+</article>
+<ul class="actions pagination">
+    
+        <li><a href="https://blog.s-tajima.work/post/2017/hello/"
+                class="button big previous">hello</a></li>
+    
+
+    
+        <li><a href="https://blog.s-tajima.work/post/2017/intro-tshark_en/"
+                class="button big next">Breakdown investigation of network traffic using tshark.</a></li>
+    
+</ul>
+
+
+
+
+    </div>
+    
+<section id="sidebar">
+
+    
+        <section id="intro">
+            
+            
+            
+                <header>
+                    <h2></h2>
+                    <p>Tech blog, written by infrastructure/security engineer work in Chiyoda-Ku.</p>
+                </header>
+            
+            <ul class="icons">
+                
+                
+                    
+<li><a href="//github.com/s-tajima" target="_blank" title="GitHub" class="fa fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/s_tajima" target="_blank" title="Twitter" class="fa fa-twitter"></a></li>
+
+
+
+
+                
+            </ul>
+        </section>
+
+    
+        <section id="recent-posts">
+            <ul class="posts">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2022/oswe-journey/">OSWE合格までの道のり</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2022-01-11'>
+                                    January 11, 2022</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/">Posts</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2022-01-11'>
+                                    January 11, 2022</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2021/input-output/">2021年のインプット・アウトプットまとめ</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2021-12-30'>
+                                    December 30, 2021</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2021/oscp-journey-and-things-i-learned/">OSCP合格までの道のりとそこから学んだこと</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2021-05-09'>
+                                    May 9, 2021</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2020/input-output/">2020年のインプット・アウトプットまとめ</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2020-12-30'>
+                                    December 30, 2020</time>
+                            </header>
+                        </article>
+                    </li>
+                
+
+                
+                    <li>
+                        <ul class="actions">
+                            <li><a href=
+                            
+                                /post/
+                            
+                            class="button">View more posts</a></li>
+                        </ul>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+    
+    
+    
+        <section id="categories">
+            <ul class="posts">
+                <header>
+                    <h3><a href="/categories/">Categories</a></h3>
+                </header>
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/aws/">aws</a>
+                                <span style="float:right;">2</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/en/">en</a>
+                                <span style="float:right;">2</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/ja/">ja</a>
+                                <span style="float:right;">18</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/ldap/">ldap</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/misc/">misc</a>
+                                <span style="float:right;">2</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/security/">security</a>
+                                <span style="float:right;">4</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/tools/">tools</a>
+                                <span style="float:right;">3</span>
+                            </header>
+                        </article>
+                    </li>
+                
+            </ul>
+        </section>
+    
+
+    
+        
+        <section class="blurb">
+            <h2>About</h2>
+            <p>Written by Satoshi Tajima. I&#39;m a infrastructure/security engineer, work in Chiyoda-Ku.</p>
+
+            <ul class="actions">
+                <li><a href="/about/" class="button">Learn More</a></li>
+            </ul>
+        </section>
+        
+
+    
+        <section id="footer">
+            <ul class="icons">
+                
+                
+            </ul>
+
+            <p class="copyright">&copy; s_tajima::TechBlog. Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a>. Ported by <a href="//github.com/jpescador" target="_blank">Julio Pescador</a>. Powered by <a href="//gohugo.io" target="_blank">Hugo</a></p>
+        </section>
+
+</section>
+
+            </div>
+        <a id="back-to-top" href="#" class="fa fa-arrow-up fa-border fa-2x"></a>
+        
+
+        
+        
+            
+        
+
+        
+        
+            <script src="/js/jquery.min.js"></script>
+            <script src="/js/skel.min.js"></script>
+            <script src="/js/util.js"></script>
+            <script src="/js/main.js"></script>
+            <script src="/js/backToTop.js"></script>
+            <script src="/js/highlight.pack.js"></script>
+        
+
+        
+
+            
+            <script>hljs.initHighlightingOnLoad();</script>
+            
+    </body>
+</html>
+

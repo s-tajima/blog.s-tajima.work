@@ -142,4 +142,4 @@ AWAE/OSWE はOffensive Security社の分類では、PWK/OSCPよりも上位の�
 
 OSWEのシラバスを見て、ちょっと難しすぎそうだなと思う方向けに、[WEB-200/OSWA](https://www.offensive-security.com/web200-oswa/) という、エントリーレベルのコースも最近公開されたようです。(ただ現時点だと最低でLearn Oneという$2499のパッケージがないと受講できないようなのでそれがネック。)
 
-以上、OSWEの受験記録でした。この記事を読んで、OSWEの受験について興味を持った方がいたら、ぜひ TwitterやMeetyで気軽にご連絡ください！ 
+以上、OSWEの受験記録でした。この記事を読んで、OSWEの受験について興味を持った方がいたら、ぜひ[Twitter](https://twitter.com/s_tajima)等で気軽にご連絡ください！ 

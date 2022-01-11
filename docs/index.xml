@@ -5,6 +5,196 @@
     <link>https://blog.s-tajima.work/</link>
     <description>Recent content on s_tajima::TechBlog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>ja-JP</language><atom:link href="https://blog.s-tajima.work/index.xml" rel="self" type="application/rss+xml" />
+    <language>ja-JP</language>
+    <lastBuildDate>Tue, 11 Jan 2022 21:00:00 +0900</lastBuildDate><atom:link href="https://blog.s-tajima.work/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OSWE合格までの道のり</title>
+      <link>https://blog.s-tajima.work/post/2022/oswe-journey/</link>
+      <pubDate>Tue, 11 Jan 2022 21:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2022/oswe-journey/</guid>
+      <description>先日、OSWE (Offensive Security Web Expert) というWebアプリケーションに特化したペネトレーションテストの資格を取りました。OSCPの合格に続き、Offensiv</description>
+    </item>
+    
+    <item>
+      <title>2021年のインプット・アウトプットまとめ</title>
+      <link>https://blog.s-tajima.work/post/2021/input-output/</link>
+      <pubDate>Thu, 30 Dec 2021 23:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2021/input-output/</guid>
+      <description>例年どおり、2021年のインプットとアウトプットのまとめです。 (今年も会社の業務としてやったことは公開できるもの以外は割愛) インプット 本 IT</description>
+    </item>
+    
+    <item>
+      <title>OSCP合格までの道のりとそこから学んだこと</title>
+      <link>https://blog.s-tajima.work/post/2021/oscp-journey-and-things-i-learned/</link>
+      <pubDate>Sun, 09 May 2021 22:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2021/oscp-journey-and-things-i-learned/</guid>
+      <description>先日、OSCPというペネトレーションテストの資格試験を受けて無事に合格できました！ 合格までの間、多くの先人の方々のブログを参考にさせてもらっ</description>
+    </item>
+    
+    <item>
+      <title>2020年のインプット・アウトプットまとめ</title>
+      <link>https://blog.s-tajima.work/post/2020/input-output/</link>
+      <pubDate>Wed, 30 Dec 2020 23:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2020/input-output/</guid>
+      <description>去年と同様、2020年のインプットとアウトプットのまとめです。 (今年も会社の業務としてやったことは公開できるもの以外は割愛) インプット 本 今年</description>
+    </item>
+    
+    <item>
+      <title>ISUCON10本選に参加して4位(KLab賞)でした - 一口坂46</title>
+      <link>https://blog.s-tajima.work/post/2020/isucon10-final-hz46/</link>
+      <pubDate>Mon, 05 Oct 2020 18:45:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2020/isucon10-final-hz46/</guid>
+      <description>10月3日に行われたISUCON10に、チーム 一口坂46 として参加しました。 結果としては4位で、KLab賞をいただききました！ 私は主にOS/</description>
+    </item>
+    
+    <item>
+      <title>GoでNIST SP 800-63Bに則ったPassword Validatorを作りました</title>
+      <link>https://blog.s-tajima.work/post/2020/nspv/</link>
+      <pubDate>Sun, 05 Jul 2020 12:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2020/nspv/</guid>
+      <description>インターネットのサービスを利用する上で、どんなパスワードを設定するかというのはアカウントを安全に保護する上で重要な要素になります。 日常的にデ</description>
+    </item>
+    
+    <item>
+      <title>DEF CON CTF Qualifier 2020 uploooadit WriteUp</title>
+      <link>https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/</link>
+      <pubDate>Mon, 18 May 2020 23:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2020/dc28-quals-uploooadit-write-up/</guid>
+      <description>2020/05/16 ~ 2020/05/18 に開催されたDEF CON CTF Qualifier 2020に参加して、 welcome-to-dc2020-quals, welcome-video, uploooaditの3問をときました。 最初の2つはチュートリアルなので割愛して、up</description>
+    </item>
+    
+    <item>
+      <title>2019年のインプット・アウトプットまとめ</title>
+      <link>https://blog.s-tajima.work/post/2019/input-output/</link>
+      <pubDate>Mon, 30 Dec 2019 09:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2019/input-output/</guid>
+      <description>残念ながら今年はこのブログをあんまり更新できなかったので、せめてこれくらいはということで2019年のインプットとアウトプットについてまとめて</description>
+    </item>
+    
+    <item>
+      <title>セキュリティ診断で確認する項目</title>
+      <link>https://blog.s-tajima.work/post/2019/security-assessment/</link>
+      <pubDate>Tue, 12 Feb 2019 23:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2019/security-assessment/</guid>
+      <description>安心してサービスを運用するために、セキュリティ関連の設定や運用に問題がないかをチェックしておくのは重要です。 最近、そんなチェックする機会が増</description>
+    </item>
+    
+    <item>
+      <title>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</title>
+      <link>https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/</link>
+      <pubDate>Sun, 25 Nov 2018 12:30:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/</guid>
+      <description>I participated in CODE BLUE 2018 held from Oct 29, 2018, to Nov 02, 2018,
+and challenged the Smart Contract Hacking Challenge presented by PolySwarm.
+As a result, I solved it in 1st place, so I publish its WriteUp.
+Background When I started to solve it, I &amp;hellip;
+ Am interested in Crypto Currency and have traded that on some exchanges. Study Smart Contract as a hobby and understand the overview.</description>
+    </item>
+    
+    <item>
+      <title>CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp</title>
+      <link>https://blog.s-tajima.work/post/2018/smart-contract-write-up/</link>
+      <pubDate>Thu, 08 Nov 2018 12:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2018/smart-contract-write-up/</guid>
+      <description>2018/10/29 ~ 2018/11/02 に開催された CODE BLUE 2018 に参加し、 そこで行われていた PolySwarm の Smart Contract Hacking Challenge に挑戦してみました。 結果、1位で解くことができたのでそのWriteUpを公開</description>
+    </item>
+    
+    <item>
+      <title>shell2httpでAWS FargateやSSHレスの運用を少しだけ楽にする</title>
+      <link>https://blog.s-tajima.work/post/2018/shell2http-on-fargate/</link>
+      <pubDate>Mon, 22 Oct 2018 23:30:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2018/shell2http-on-fargate/</guid>
+      <description>はじめに AWS Fargate、便利ですよね。 EC2のコンテナインスタンスの管理が不要になり、コンテナの管理だけを気にすればよくなるため、設定の管</description>
+    </item>
+    
+    <item>
+      <title>ptraceを使ってプロセスの *現在の* 環境変数を参照する</title>
+      <link>https://blog.s-tajima.work/post/2018/intro-peke-envs/</link>
+      <pubDate>Mon, 15 Oct 2018 12:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2018/intro-peke-envs/</guid>
+      <description>ptraceを使って特定のプロセスの 現在の 環境変数を参照するためのプログラムを書いてみたのでその紹介です。 背景 Linuxを使っていると、プロ</description>
+    </item>
+    
+    <item>
+      <title>CVE-2018-17082によるXSSに関する見解</title>
+      <link>https://blog.s-tajima.work/post/2018/cve-2018-17082/</link>
+      <pubDate>Fri, 21 Sep 2018 18:30:25 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2018/cve-2018-17082/</guid>
+      <description>2018/10/13 追記 徳丸さん(@ockeghem) により、mod_cache利用時にXSSが成立してしまうケースが確認されました。 これにより環境によっては</description>
+    </item>
+    
+    <item>
+      <title>CentOSでslapdのauditlogを有効にする</title>
+      <link>https://blog.s-tajima.work/post/2017/use-slapd-with-auditlog/</link>
+      <pubDate>Thu, 20 Jul 2017 12:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2017/use-slapd-with-auditlog/</guid>
+      <description>概要 CentOSにてRPM(openldap-servers)でインストールしたslapdを使う際、auditlogの設定でハマったのでその</description>
+    </item>
+    
+    <item>
+      <title>AWSのAMIをゼロから作る autoknitterの紹介</title>
+      <link>https://blog.s-tajima.work/post/2017/intro-autoknitter/</link>
+      <pubDate>Thu, 11 May 2017 23:21:25 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2017/intro-autoknitter/</guid>
+      <description>TL; DR AWSでは自分で作成したAMIを使いたい。 PackerのEBS Surrogate Builderを使うと便利にAMIを作成できる。 EBS Surrogate Builderをより</description>
+    </item>
+    
+    <item>
+      <title>Breakdown investigation of network traffic using tshark.</title>
+      <link>https://blog.s-tajima.work/post/2017/intro-tshark_en/</link>
+      <pubDate>Thu, 11 May 2017 00:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2017/intro-tshark_en/</guid>
+      <description>This graph represents network traffic of a server.
+Concrete figures have been masked, however, it can be seen that network traffic volume is gradually increasing over several weeks.
+This article provides that how to investigate network traffic breakdown using tshark.
+What is tshark tshark is a CUI equivalent of Wireshark.
+If you are using RHEL-based distribution, You can use tshark by installing wireshark package.
+This article was written with Tshark 1.</description>
+    </item>
+    
+    <item>
+      <title>tsharkを用いたネットワークトラフィックの内訳の調査</title>
+      <link>https://blog.s-tajima.work/post/2017/intro-tshark/</link>
+      <pubDate>Wed, 10 May 2017 19:11:08 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2017/intro-tshark/</guid>
+      <description>下の図は、とあるサーバのネットワークトラフィックのモニタリングのグラフです。 具体的な数値はマスクしてありますが、数週間かけてじわじわとトラフ</description>
+    </item>
+    
+    <item>
+      <title>hello</title>
+      <link>https://blog.s-tajima.work/post/2017/hello/</link>
+      <pubDate>Fri, 05 May 2017 23:03:50 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2017/hello/</guid>
+      <description>Hatena Blogから移転してきました。 本ブログは ホスティングはGitHub Pages コンテンツ作成はHugo CDN, TLS配信はCloudflare を利用して運</description>
+    </item>
+    
+    <item>
+      <title>GitHubのPull Requestへのレビュアーアサインを自動化するツール「github-dice」の紹介</title>
+      <link>https://blog.s-tajima.work/post/2016/intro-github-dice/</link>
+      <pubDate>Mon, 19 Dec 2016 00:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2016/intro-github-dice/</guid>
+      <description>ブログ移転のテストです。 元の記事はこちら。 http://s-tajima.hateblo.jp/entry/2016/12/19/131319 こんにちは、今回はGitHubのPull Requestへのアサインを自動化するツール 「githu</description>
+    </item>
+    
   </channel>
 </rss>

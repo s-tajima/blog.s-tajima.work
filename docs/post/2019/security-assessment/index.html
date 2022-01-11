@@ -1,0 +1,814 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        
+            
+                <title>セキュリティ診断で確認する項目</title>
+            
+        
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="generator" content="Hugo 0.76.0-DEV" />
+        
+
+
+        
+            <meta name="author" content="Satoshi Tajima">
+        
+        
+            
+                <meta name="description" content="s_tajima::TechBlog">
+            
+        
+
+        
+        
+
+        <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="セキュリティ診断で確認する項目"/>
+<meta name="twitter:description" content="安心してサービスを運用するために、セキュリティ関連の設定や運用に問題がないかをチェックしておくのは重要です。 最近、そんなチェックする機会が増"/>
+<meta name="twitter:site" content="@s_tajima"/>
+
+        <meta property="og:title" content="セキュリティ診断で確認する項目" />
+<meta property="og:description" content="安心してサービスを運用するために、セキュリティ関連の設定や運用に問題がないかをチェックしておくのは重要です。 最近、そんなチェックする機会が増" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.s-tajima.work/post/2019/security-assessment/" />
+<meta property="article:published_time" content="2019-02-12T23:00:00+09:00" />
+<meta property="article:modified_time" content="2019-02-12T23:00:00+09:00" />
+
+        <meta itemprop="name" content="セキュリティ診断で確認する項目">
+<meta itemprop="description" content="安心してサービスを運用するために、セキュリティ関連の設定や運用に問題がないかをチェックしておくのは重要です。 最近、そんなチェックする機会が増">
+<meta itemprop="datePublished" content="2019-02-12T23:00:00+09:00" />
+<meta itemprop="dateModified" content="2019-02-12T23:00:00+09:00" />
+<meta itemprop="wordCount" content="2873">
+
+
+
+<meta itemprop="keywords" content="" />
+
+        
+
+        
+
+        
+        
+            
+        
+
+        
+        
+            <link rel="stylesheet" href="/css/google-font.css" />
+            <link rel="stylesheet" href="/css/font-awesome.min.css" />
+            <link rel="stylesheet" href="/css/main.css" />
+            <link rel="stylesheet" href="/css/add-on.css" />
+            <link rel="stylesheet" href="/css/monokai-sublime.css">
+        
+
+        
+            
+                
+            
+                
+                    <link rel="stylesheet" href="/css/custom.css" />
+                
+            
+        
+
+        
+        
+        
+            
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-22927498-5', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+        
+    </head>
+    <body>
+
+        
+        <div id="wrapper">
+
+    
+    
+<header id="header">
+    
+        <h2><a href="/">s_tajima::TechBlog</i></a></h2>
+    
+
+    <nav class="links">
+        <ul>
+            
+                <li>
+                    <a href="/about">
+                        
+                            <i class="fa fa-user">&nbsp;</i>About
+                    </a>
+                </li>
+            
+        </ul>
+    </nav>
+    <nav class="main">
+        <ul>
+            
+            <li id="share-nav" class="share-menu" style="display:none;">
+                <a class="fa-share-alt" href="#share-menu">Share</a>
+            </li>
+            
+            <li class="search">
+                <a class="fa-search" href="#search">Search</a>
+                <form id="search" method="get" action="//google.com/search">
+                    <input type="text" name="q" placeholder="Search" />
+                    <input type="hidden" name="q" value="site:https://blog.s-tajima.work/">
+                </form>
+            </li>
+            <li class="menu">
+                <a class="fa-bars" href="#menu">Menu</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+<section id="menu">
+
+    
+        <section>
+            <form class="search" method="get" action="//google.com/search">
+                <input type="text" name="q" placeholder="Search" />
+                <input type="hidden" name="q" value="site:https://blog.s-tajima.work/">
+            </form>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                
+                    <li>
+                        <a href="/about">
+                            <h3>
+                                
+                                    <i class="fa fa-user">&nbsp;</i>
+                                
+                                About
+                            </h3>
+                        </a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2022/oswe-journey/"><p>OSWE合格までの道のり</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/"><p>Posts</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2021/input-output/"><p>2021年のインプット・アウトプットまとめ</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2021/oscp-journey-and-things-i-learned/"><p>OSCP合格までの道のりとそこから学んだこと</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2020/input-output/"><p>2020年のインプット・アウトプットまとめ</p></a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        
+</section>
+
+    <section id="share-menu">
+    <section id="social-share-nav">
+        <ul class="links">
+            <header>
+                <h3>Share this post <i class="fa fa-smile-o"></i></h3>
+            </header>
+            
+
+
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f&text=%e3%82%bb%e3%82%ad%e3%83%a5%e3%83%aa%e3%83%86%e3%82%a3%e8%a8%ba%e6%96%ad%e3%81%a7%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b%e9%a0%85%e7%9b%ae&via=s_tajima" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
+
+
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f&title=%e3%82%bb%e3%82%ad%e3%83%a5%e3%83%aa%e3%83%86%e3%82%a3%e8%a8%ba%e6%96%ad%e3%81%a7%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b%e9%a0%85%e7%9b%ae" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f&title=%e3%82%bb%e3%82%ad%e3%83%a5%e3%83%aa%e3%83%86%e3%82%a3%e8%a8%ba%e6%96%ad%e3%81%a7%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b%e9%a0%85%e7%9b%ae" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f&title=%e3%82%bb%e3%82%ad%e3%83%a5%e3%83%aa%e3%83%86%e3%82%a3%e8%a8%ba%e6%96%ad%e3%81%a7%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b%e9%a0%85%e7%9b%ae" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+</section>
+
+    
+    <div id="main">
+        
+        
+        <article class="post">
+    <header>
+    <div class="title">
+        
+            <h1><a href="https://blog.s-tajima.work/post/2019/security-assessment/">セキュリティ診断で確認する項目</a></h1>
+            
+        
+        
+    </div>
+    <div class="meta">
+        
+            
+        
+
+        <time class="published"
+            datetime='2019-02-12'>
+            February 12, 2019</time>
+        <span class="author">Satoshi Tajima</span>
+        
+        
+    </div>
+</header>
+
+
+    
+
+    <div id="content">
+        <p>安心してサービスを運用するために、セキュリティ関連の設定や運用に問題がないかをチェックしておくのは重要です。<br>
+最近、そんなチェックする機会が増えてきたので分野ごとによく指摘する・注意して確認する項目をリストにしてみました。</p>
+<p>チェックする方法は手動の場合もツールを使って自動化する場合もあるし、参照する情報もソースコードだったり実際にHTTPリクエストをかけてみた挙動だったり、サーバにログインしてみてコマンドを叩いたりと様々です。<br>
+それぞれの項目をどうチェックしてるかは別途個別の記事にしたい(いつか)</p>
+<ul>
+<li>全てに対応しなければならない というリストではありません。サービスや事業の要件次第です。</li>
+<li>逆に、 すべて対応すればセキュリティの問題はなくなる というリストでもありません。</li>
+<li>リストは都度追加・削除・修正していく予定です。</li>
+<li>粒度や抽象度がバラバラですが、より多くの場面で経験したものは抽象的になっている傾向があります。</li>
+<li>順番は思いついた順です。重要度や優先度も要件次第だと思っているのであえて並び替えたりしていません。</li>
+<li>このようなチェックをしてほしいサービス・事業がある方がいましたら<a href="https://blog.s-tajima.work/about/">メール</a>や<a href="https://twitter.com/s_tajima">Twitter</a>等でご相談ください。</li>
+</ul>
+<hr>
+<h2 id="webアプリケーション">Webアプリケーション</h2>
+<ul>
+<li><input disabled="" type="checkbox"> XSSの対策がされているか</li>
+<li><input disabled="" type="checkbox"> CSRFの対策がされているか</li>
+<li><input disabled="" type="checkbox"> SQL Injectionの対策がされているか</li>
+<li><input disabled="" type="checkbox"> 重要な情報が、(Blindも含む) SQL Injectionだけで盗めてしまわないよう対策されているか</li>
+<li><input disabled="" type="checkbox"> OSコマンドインジェクションが実行できそうな余地がないか</li>
+<li><input disabled="" type="checkbox"> SSRFが実行できそうな余地がないか</li>
+<li><input disabled="" type="checkbox"> ディレクトリトラバーサルが実行できそうな余地がないか</li>
+<li><input disabled="" type="checkbox"> 外部からの入力値が適切にバリデーションされているか (アップロードされるファイル等も含む)</li>
+<li><input disabled="" type="checkbox"> セキュリティ関連のレスポンスヘッダが適切に設定されているか</li>
+<li><input disabled="" type="checkbox"> X-Forwarded-For ヘッダの取り扱いが適切か</li>
+<li><input disabled="" type="checkbox"> パスワードが適切な手法でハッシュ化された状態で保存されているか</li>
+<li><input disabled="" type="checkbox"> 意図しないHTTPメソッドでリクエストを処理していないか</li>
+<li><input disabled="" type="checkbox"> 機微な情報をGETパラメータで送信していないか</li>
+<li><input disabled="" type="checkbox"> 機微な情報をログに出力していないか</li>
+<li><input disabled="" type="checkbox"> 機微な情報がブラウザやCDNにキャッシュされてしまわないか</li>
+<li><input disabled="" type="checkbox"> ユーザがパスワードを変更する手段が提供されているか</li>
+<li><input disabled="" type="checkbox"> ユーザがパスワードを紛失してしまった場合に再設定する手段が提供されているか</li>
+<li><input disabled="" type="checkbox"> パスワードリセット等からサービス利用者のメールアドレス一覧を作成できてしまわないか</li>
+<li><input disabled="" type="checkbox"> 認証・認可を回避して情報の表示や操作ができてしまわないか</li>
+<li><input disabled="" type="checkbox"> 一定回数のログイン失敗でアカウントがロックされるようになっているか</li>
+<li><input disabled="" type="checkbox"> ログアウト時にサーバーサイドでもセッション情報が破棄されているか</li>
+<li><input disabled="" type="checkbox"> ログインセッションは適切な時間経過によって失効されるようになっているか</li>
+<li><input disabled="" type="checkbox"> ユーザが既存のログインセッションを無効化する手段が提供されているか</li>
+<li><input disabled="" type="checkbox"> 管理者用の画面が、無防備にインターネットに公開されてしまっていないか</li>
+<li><input disabled="" type="checkbox"> メールに適切なSPF, DKIMの設定がされているか</li>
+<li><input disabled="" type="checkbox"> ユーザ固有の情報がキャッシュされ、他のユーザから閲覧されててしまう可能性がないか</li>
+<li><input disabled="" type="checkbox"> (AoSSLの場合) 平文で利用できてしまうエンドポイントはないか</li>
+<li><input disabled="" type="checkbox"> 証明書, 中間証明書が適切に設定できているか</li>
+<li><input disabled="" type="checkbox"> SSL/TLSのProtocol, Cipher Suiteが適切に設定されているか</li>
+<li><input disabled="" type="checkbox"> ドメインのWhoisが適切に設定できているか</li>
+<li><input disabled="" type="checkbox"> 利用している暗号のアルゴリズム・鍵の強度が適切か</li>
+<li><input disabled="" type="checkbox"> 乱数の生成や、ランダムな選択が適切な手段で行えているか</li>
+<li><input disabled="" type="checkbox"> ディレクトリインデックスが表示される設定になっていないか</li>
+<li><input disabled="" type="checkbox"> ソースマップファイルが公開されていないか</li>
+<li><input disabled="" type="checkbox"> .git/ 等の公開する意図のないファイルにアクセスできてしなわないか</li>
+<li><input disabled="" type="checkbox"> MySQLサーバーとの接続に、 <a href="https://dev.mysql.com/doc/refman/8.0/en/mysql-real-connect.html">CLIENT_MULTI_STATEMENTS</a> が指定されていないか</li>
+<li><input disabled="" type="checkbox"> MySQL等のデータストアへの接続に、不必要に強い権限を持ったユーザを利用していないか</li>
+<li><input disabled="" type="checkbox"> DDoSを受けたときの対応プランがあるか</li>
+</ul>
+<h2 id="スマートフォンアプリ">スマートフォンアプリ</h2>
+<p>今の所スマートフォンアプリをチェックする機会がそれほど多くないのでここは内容が薄いです&hellip;</p>
+<ul>
+<li><input disabled="" type="checkbox"> サーバーサイドとの通信は暗号化されているか</li>
+<li><input disabled="" type="checkbox"> 重要/緊急な情報をユーザに通知する手段があるか</li>
+<li><input disabled="" type="checkbox"> 改ざんされると困る重要なロジックをスマートフォンアプリ側で実行していないか</li>
+<li><input disabled="" type="checkbox"> 機微な情報を適切なデータストアに保存しているか</li>
+<li><input disabled="" type="checkbox"> AWSのシークレットアクセスキーのような閲覧されると困る情報をアプリ内にコーディングしていないか</li>
+</ul>
+<h2 id="osミドルウェア">OS/ミドルウェア</h2>
+<ul>
+<li><input disabled="" type="checkbox"> サーバー上のオペレーションの内容が保全され、誰の作業か特定できるようになっているか</li>
+<li><input disabled="" type="checkbox"> 各種ファイルに適切なオーナー・グループ・パーミッションが設定されているか</li>
+<li><input disabled="" type="checkbox"> 不必要に強い権限で起動しているプロセスがいないか</li>
+<li><input disabled="" type="checkbox"> 安全でない可能性のあるDocker Imageを利用していないか</li>
+<li><input disabled="" type="checkbox"> Docker Imageの中に機微な情報を埋め込んでしまっていないか</li>
+<li><input disabled="" type="checkbox"> クリティカルな脆弱性の見つかっているカーネル・OS・ミドルウェアを利用していないか</li>
+<li><input disabled="" type="checkbox"> バナー (バージョン情報) の外部公開を無効にしてあるか</li>
+<li><input disabled="" type="checkbox"> 不必要なデーモン/プロセスが起動していないか</li>
+<li><input disabled="" type="checkbox"> ログがサーバーの外部(S3等)に保全されるようになっているか</li>
+<li><input disabled="" type="checkbox"> 不必要な野良ルートCA証明書がインストールされていないか</li>
+<li><input disabled="" type="checkbox"> 必要に応じて素早くメモリやディスクの情報の保全を行う準備があるか</li>
+<li><input disabled="" type="checkbox"> 必要に応じて新規構築した新環境に切り替えることができるか</li>
+</ul>
+<h2 id="aws">AWS</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Trusted Advisorに対応すべき警告がでていないか</li>
+<li><input disabled="" type="checkbox"> CloudTrailが有効になっているか</li>
+<li><input disabled="" type="checkbox"> AWS Configが有効になっているか</li>
+<li><input disabled="" type="checkbox"> VPC FlowLogsが有効になっているか</li>
+<li><input disabled="" type="checkbox"> Guard Dutyが有効になっているか</li>
+<li><input disabled="" type="checkbox"> 安全でない可能性のあるAMIを利用していないか</li>
+<li><input disabled="" type="checkbox"> ALB・CloudFront等のアクセスログが有効になっているか</li>
+<li><input disabled="" type="checkbox"> EBS, S3, RDS等のストレージの有効化の設定が有効になっているか</li>
+<li><input disabled="" type="checkbox"> S3に不必要な読み込み・書き込みの権限のついたバケットポリシーが設定されていないか</li>
+<li><input disabled="" type="checkbox"> 不必要に権限の強いIAMユーザが存在していないか</li>
+<li><input disabled="" type="checkbox"> 意図しない環境からAssume Roleされてしまう可能性のあるIAMロールが存在していないか</li>
+<li><input disabled="" type="checkbox"> 不必要に広くポートが開放されているセキュリティグループが存在していないか</li>
+<li><input disabled="" type="checkbox"> RDS/RedshiftのPublic Accessibleが不必要に有効になっていないか</li>
+</ul>
+<h2 id="ネットワーク">ネットワーク</h2>
+<ul>
+<li><input disabled="" type="checkbox"> 不審な通信に気がつく仕組みがあるか</li>
+<li><input disabled="" type="checkbox"> 不審な通信に気づいた場合にそれを詳しく調査する方法があるか</li>
+<li><input disabled="" type="checkbox"> 不必要に外部公開されてしまっているポートがないか</li>
+<li><input disabled="" type="checkbox"> 外部公開されているアプリケーションに既知の脆弱性がないか</li>
+<li><input disabled="" type="checkbox"> SSH/Active Directory/LDAP等の認証に弱い強度のアカウントが存在しないか</li>
+<li><input disabled="" type="checkbox"> 重要な通信が平文になっていないか</li>
+<li><input disabled="" type="checkbox"> 無線LANが適切なプロトコル(現在ならWPA2-AES等)で運用されているか</li>
+</ul>
+<h2 id="その他">その他</h2>
+<ul>
+<li><input disabled="" type="checkbox"> リポジトリ上に機微な情報が平文でコミットされていないか</li>
+<li><input disabled="" type="checkbox"> TLS通信時に、証明書の検証をスキップしていないか</li>
+<li><input disabled="" type="checkbox"> パスワード・パスフレーズ・シークレットトークンをデフォルト値のままにしていないか</li>
+</ul>
+<hr>
+<p>以上です。<br>
+ここもみておくべきだろうというご意見は歓迎です。 ぜひご連絡ください。</p>
+
+    </div>
+
+    <footer>
+        <ul class="stats">
+    
+        
+
+        
+        
+            <li>
+                
+                
+                    
+
+                    
+                        Categories
+                    
+                
+            </li>
+        
+    
+
+    
+    
+        <li><a href='/categories/ja'>ja</a></li>
+    
+        <li><a href='/categories/security'>security</a></li>
+    
+</ul>
+
+    </footer>
+
+    <section id="social-share">
+        <ul class="icons">
+            
+
+
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f&text=%e3%82%bb%e3%82%ad%e3%83%a5%e3%83%aa%e3%83%86%e3%82%a3%e8%a8%ba%e6%96%ad%e3%81%a7%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b%e9%a0%85%e7%9b%ae&via=s_tajima" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
+
+
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f&title=%e3%82%bb%e3%82%ad%e3%83%a5%e3%83%aa%e3%83%86%e3%82%a3%e8%a8%ba%e6%96%ad%e3%81%a7%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b%e9%a0%85%e7%9b%ae" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f&title=%e3%82%bb%e3%82%ad%e3%83%a5%e3%83%aa%e3%83%86%e3%82%a3%e8%a8%ba%e6%96%ad%e3%81%a7%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b%e9%a0%85%e7%9b%ae" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f&title=%e3%82%bb%e3%82%ad%e3%83%a5%e3%83%aa%e3%83%86%e3%82%a3%e8%a8%ba%e6%96%ad%e3%81%a7%e7%a2%ba%e8%aa%8d%e3%81%99%e3%82%8b%e9%a0%85%e7%9b%ae" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2019%2fsecurity-assessment%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+</article>
+<ul class="actions pagination">
+    
+        <li><a href="https://blog.s-tajima.work/post/2018/smart-contract-write-up_en/"
+                class="button big previous">CODE BLUE 2018 Smart Contract Hacking Challenge WriteUp (en)</a></li>
+    
+
+    
+        <li><a href="https://blog.s-tajima.work/post/2019/input-output/"
+                class="button big next">2019年のインプット・アウトプットまとめ</a></li>
+    
+</ul>
+
+
+
+
+    </div>
+    
+<section id="sidebar">
+
+    
+        <section id="intro">
+            
+            
+            
+                <header>
+                    <h2></h2>
+                    <p>Tech blog, written by infrastructure/security engineer work in Chiyoda-Ku.</p>
+                </header>
+            
+            <ul class="icons">
+                
+                
+                    
+<li><a href="//github.com/s-tajima" target="_blank" title="GitHub" class="fa fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/s_tajima" target="_blank" title="Twitter" class="fa fa-twitter"></a></li>
+
+
+
+
+                
+            </ul>
+        </section>
+
+    
+        <section id="recent-posts">
+            <ul class="posts">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2022/oswe-journey/">OSWE合格までの道のり</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2022-01-11'>
+                                    January 11, 2022</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/">Posts</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2022-01-11'>
+                                    January 11, 2022</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2021/input-output/">2021年のインプット・アウトプットまとめ</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2021-12-30'>
+                                    December 30, 2021</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2021/oscp-journey-and-things-i-learned/">OSCP合格までの道のりとそこから学んだこと</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2021-05-09'>
+                                    May 9, 2021</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2020/input-output/">2020年のインプット・アウトプットまとめ</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2020-12-30'>
+                                    December 30, 2020</time>
+                            </header>
+                        </article>
+                    </li>
+                
+
+                
+                    <li>
+                        <ul class="actions">
+                            <li><a href=
+                            
+                                /post/
+                            
+                            class="button">View more posts</a></li>
+                        </ul>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+    
+    
+    
+        <section id="categories">
+            <ul class="posts">
+                <header>
+                    <h3><a href="/categories/">Categories</a></h3>
+                </header>
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/aws/">aws</a>
+                                <span style="float:right;">2</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/en/">en</a>
+                                <span style="float:right;">2</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/ja/">ja</a>
+                                <span style="float:right;">18</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/ldap/">ldap</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/misc/">misc</a>
+                                <span style="float:right;">2</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/security/">security</a>
+                                <span style="float:right;">4</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/tools/">tools</a>
+                                <span style="float:right;">3</span>
+                            </header>
+                        </article>
+                    </li>
+                
+            </ul>
+        </section>
+    
+
+    
+        
+        <section class="blurb">
+            <h2>About</h2>
+            <p>Written by Satoshi Tajima. I&#39;m a infrastructure/security engineer, work in Chiyoda-Ku.</p>
+
+            <ul class="actions">
+                <li><a href="/about/" class="button">Learn More</a></li>
+            </ul>
+        </section>
+        
+
+    
+        <section id="footer">
+            <ul class="icons">
+                
+                
+            </ul>
+
+            <p class="copyright">&copy; s_tajima::TechBlog. Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a>. Ported by <a href="//github.com/jpescador" target="_blank">Julio Pescador</a>. Powered by <a href="//gohugo.io" target="_blank">Hugo</a></p>
+        </section>
+
+</section>
+
+            </div>
+        <a id="back-to-top" href="#" class="fa fa-arrow-up fa-border fa-2x"></a>
+        
+
+        
+        
+            
+        
+
+        
+        
+            <script src="/js/jquery.min.js"></script>
+            <script src="/js/skel.min.js"></script>
+            <script src="/js/util.js"></script>
+            <script src="/js/main.js"></script>
+            <script src="/js/backToTop.js"></script>
+            <script src="/js/highlight.pack.js"></script>
+        
+
+        
+
+            
+            <script>hljs.initHighlightingOnLoad();</script>
+            
+    </body>
+</html>
+

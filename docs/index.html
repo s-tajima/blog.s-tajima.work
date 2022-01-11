@@ -36,7 +36,7 @@
 <meta property="og:description" content="s_tajima::TechBlog" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://blog.s-tajima.work/" />
-
+<meta property="og:updated_time" content="2022-01-11T21:00:00+09:00" />
 
         <meta itemprop="name" content="s_tajima::TechBlog">
 <meta itemprop="description" content="s_tajima::TechBlog">
@@ -173,6 +173,26 @@ if (!doNotTrack) {
                 
 
                 
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2022/oswe-journey/"><p>OSWE合格までの道のり</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/"><p>Posts</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2021/input-output/"><p>2021年のインプット・アウトプットまとめ</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2021/oscp-journey-and-things-i-learned/"><p>OSCP合格までの道のりとそこから学んだこと</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://blog.s-tajima.work/post/2020/input-output/"><p>2020年のインプット・アウトプットまとめ</p></a>
+                    </li>
+                
             </ul>
         </section>
 
@@ -182,6 +202,273 @@ if (!doNotTrack) {
 
     
     <div id="main">
+        
+            <article class="post">
+    <header>
+    <div class="title">
+        
+            <h2><a href="https://blog.s-tajima.work/post/2022/oswe-journey/">OSWE合格までの道のり</a></h2>
+        
+        
+            <p>OSWEというWebアプリケーションのペネトレーションテストの資格獲得までの記録です。</p>
+        
+    </div>
+    <div class="meta">
+        
+            
+        
+
+        <time class="published"
+            datetime='2022-01-11'>
+            January 11, 2022</time>
+        <span class="author">Satoshi Tajima</span>
+        
+        
+    </div>
+</header>
+
+
+    
+
+    <div id="content">
+        <p>先日、OSWE (Offensive Security Web Expert) というWebアプリケーションに特化したペネトレーションテストの資格を取りました。<a href="https://blog.s-tajima.work/post/2021/oscp-journey-and-things-i-learned/">OSCPの合格</a>に続き、<a href="https://www.offensive-security.com/">Offensive Security社</a>の2つ目の資格を取得したことになります。</p>
+<p>今回も、合格までの道のりを書いておこうと思います。この記事で、OSWEとは何かを知ってもらえたり、OSWEをこれから受ける人にとって有益な情報を提供できたら嬉しいです。</p>
+<p>ちなみに、今回も受験にあたっての費用($1,649)は、会社の<a href="https://hd.finatext.com/recruit/benefits/">キャリア形成支援の制度</a>で全額支払ってもらえたので感謝しています。</p>
+<h1 id="osweとは">OSWEとは</h1>
+<p>まず、OSWEの概要をまとめておきます。</p>
+<ul>
+<li>Offensive Securityという、Kali Linuxを提供していることで有名な企業によるペネトレーションテストの資格の1つ。</li>
+<li>テーマはWebアプリケーションに特化していて、Webアプリケーションを通じて対象サーバーのシェルを獲得するためのテクニックを試される。</li>
+<li>OSWEの試験の前に、AWAE(Advanced Web Attacks and Exploitation) / WEB-300 と呼ばれるオンラインのトレーニングを行う。</li>
+<li>AWAEは、主に約560ページのPDF・10時間+の動画・実際に攻撃を試すためのLab環境で構成される。</li>
+<li>多くのトレーニングはホワイトボックステスト(ソースコードや実行環境がわかっている状態で脆弱性を探す)だが、一部ブラックボックステストの手法についても触れられる。</li>
+<li>試験はオンラインでの実技試験で、 <strong>47時間45分で2台のWebアプリケーションを攻略し、続く24時間でその攻略手順をまとめたレポートを書く</strong>。</li>
+<li>試験中は、Webカメラと画面共有で監視を受けるが、行動に制限があるわけではなく、睡眠や食事や外出は許されている。</li>
+</ul>
+<p>このように大枠のスキームはPWK/OSCPと同じなのですが、</p>
+<ul>
+<li>PWK/OSCPは、既存のExploitを探し出し、それを実行するだけで攻撃が成功するものが多かったが、AWAE/OSWEは、Webアプリケーションの挙動を分析し、それを攻撃するコードを自分で書く必要がある。(公式の解説ではPythonが使われるが、試験で使う言語は自由。)</li>
+<li>AWAEはPDFと動画での学習がメインで、自力で攻略が必要なトレーニング用マシンは3台だけ。</li>
+<li>AWAEで利用するLab環境は、受講者間で共有されておらず、個人専用のマシンが与えられる。</li>
+<li>試験は、前半の実技が約24時間→約48時間と長くなっている。</li>
+</ul>
+<p>という部分が大きな違いかなと思います。</p>
+<h1 id="作業環境">作業環境</h1>
+<p>AWAEも、公式には<a href="https://help.offensive-security.com/hc/en-us/articles/360049796792-Kali-Linux-Virtual-Machine">VMware + Kali Linuxという構成</a>ですすめることが推奨されていますが、私は</p>
+<ul>
+<li>ホストOSでLabとのVPNを確立、BurpSuiteはホストOSで起動。</li>
+<li>Kali LinuxをDocker/コンテナで動かし、そこで攻撃コードの作成と実行。</li>
+</ul>
+<p>という構成で対応しました。
+AWAEはPWKと違い、インストール・実行が必要なソフトウェアもそこまで多くはない (ミニマムでcurl・BurpSuite・python・ncくらい?) ので、あまり制約なく好きな環境で作業できると思います。</p>
+<h1 id="トレーニング">トレーニング</h1>
+<h2 id="awae-pdfvideolab">AWAE PDF/Video/Lab</h2>
+<p>前述の通り、OSWEの試験を受ける前には、AWAEと呼ばれるオンラインのトレーニングを受けることになります。トレーニング用のLab環境を使える期間は60日か90日が選べます。私は90日を選びましたが、試験はだいたい70日経過時点くらいで受けました。感覚的には60日でも間に合わせることはできた気がします。(おそらく<a href="https://ja.wikipedia.org/wiki/%E3%83%91%E3%83%BC%E3%82%AD%E3%83%B3%E3%82%BD%E3%83%B3%E3%81%AE%E6%B3%95%E5%89%87">試験の準備にかかる時間は、Labアクセスの期間だけ長くなります。</a>)</p>
+<p>このPDFが <a href="https://www.offensive-security.com/documentation/awae-syllabus.pdf">公式のシラバス</a> です。</p>
+<p>個人的に特に面白かったのは(ここでは詳しい内容の説明は控えますが)openITCOCKPITのBlackboxによるXSSの発見手法で、この攻撃ベクタは言われてみればたしかにという感じだったのですが、今まであまりケアしてこなかったところなので、勉強になりました。(セキュリティベンダーによる脆弱性診断でもあまりチェックされていない項目のような気がします。)</p>
+<p>多くのトレーニング用マシンはPDF/Videoによる解説がありますが、Answers・DocEdit・Sqeakrという最後の3台は攻撃方法が解説されておらず、自力で脆弱性を見つける必要があります。</p>
+<p>AWAEは、後述の更新分も含めて試験前にすべてやり終えました。</p>
+<p>Tipsですが、テキストでは通信の内容をBurp Suiteで分析する際、通常のブラウザのProxy設定を修正する方法が説明されていますが、最近のBurp Suiteは <a href="https://portswigger.net/burp/documentation/desktop/functions/embedded-browser">「Proxy」タブの「Open Browser」からビルトインのブラウザ(Chromiumベース)を起動できる</a> ので、そちらを使うのが手軽だと思います。</p>
+<h2 id="awae以外のトレーニング">AWAE以外のトレーニング</h2>
+<p>OSCPのときはHack The  Boxをそこそこやり込んでからPWKに進みましたが、今回はAWAE以外のコンテンツはほとんどやらずに終わりました。もしHack The Boxをやる場合は、このまとめが役に立つと思います。<br>
+<a href="https://github.com/rkhal101/Hack-the-Box-OSWE-Preparation">https://github.com/rkhal101/Hack-the-Box-OSWE-Preparation</a></p>
+<h1 id="awae-のアップデート">AWAE のアップデート</h1>
+<p>AWAEを始めて2週間ちょっとしたタイミングで、AWAEの更新に関する案内のメールが届きました。<br>
+メールと、問い合わせで返ってきた内容によると、</p>
+<ul>
+<li>すでにAWAEを受講しているメンバーは、この更新を適用せず既存のカリキュラムのままで試験を受けることができる。</li>
+<li>しかし、希望すれば無料でAWAEの更新を適用することもできる。</li>
+<li>更新を適用すると、Lab環境の操作等は Offensive Security Training Library (PG Playなどでも使われていたトレーニング提供用の新しい基盤) に移る。</li>
+</ul>
+<p>ということがわかりました。</p>
+<p>更新によって追加されるコンテンツは、</p>
+<ul>
+<li>Server Side Request Forgery</li>
+<li>Prototype Pollution</li>
+<li>Concord CORS and RCE</li>
+</ul>
+<p>ということで、面白そうだったので適用してみることにしました。</p>
+<p>ちなみにこの更新を適用したタイミングでは、更新によって試験範囲も変わる(≒ 合格可能性に影響がある)とおもっていたのですが、 今改めて<a href="https://help.offensive-security.com/hc/en-us/articles/4410288813716-WEB-300-Course-Update-FAQ-November-2021-#h_01FMHQGPDCECSDSRQBA1K728Z0">公式のFAQ</a> を見たら、試験内容は変わらないと書いてありました。</p>
+<h1 id="試験準備">試験準備</h1>
+<h2 id="レポート用のテンプレート作成">レポート用のテンプレート作成</h2>
+<p>OSCPのときと同様、今回もレポートはGoogle Docsで書きました。<br>
+OSCPのときはそのほうが効率的にレポートがかけたのですが、試験が終わった今振り返ると、OSWEに関してはMarkdownで書いてPDFに変換する方式でも良かったかなあと思っています。</p>
+<p>理由としては、OSCPのときはスクリーンショットの枚数が多く、いちいちファイルに保存してそれを参照させるのが面倒だったのですが、今回のレポートはソースコードの引用が中心で、スクリーンショットの枚数はそれほど多くありませんでした。よって、コードブロックが使えるMarkdownのほうが楽だった気がします。</p>
+<h1 id="試験当日">試験当日</h1>
+<h2 id="想定スケジュールと実際のタイムライン">想定スケジュールと実際のタイムライン</h2>
+<p>今回も、スプレッドシートを使って想定スケジュールと実際のタイムラインをメモしておきました。<br>
+かなり縦に長くなるので、今回はレポート提出までの実際のタイムラインだけ表示しておきます。(<a href="/post/2022/oswe-journey/timeline_full.png">フルバージョンはこちら</a>)</p>
+<p><img src="/post/2022/oswe-journey/timeline.png" alt="timeline.png"></p>
+<p>もともとレポート提出までで約72時間の試験でしたが、結果としては15時間弱で2台のマシンを攻略し、30時間弱でレポート提出までできました。OSCPのときは、なかなか攻略の糸口が掴めないマシンもあり、20時間以上ぶっ通しで作業していたので、精神的にも体力的にもかなり辛かった記憶がありますが、それに比べるとOSWEはかなり余裕があったかなと思います。</p>
+<h2 id="レポート">レポート</h2>
+<p>レポートは、全部で39ページになりました。</p>
+<p>地味に困ったポイントとして、OSWEはレポートのテンプレートは公開されていますが、内容が埋められたサンプルレポートのようなものが見つからず、どんな内容をどんな粒度で書けばいいかがよくわかっていませんでした。
+私が書いたレポートがどれくらい正しいものだったのかはわからないのですが、一応書いた内容を簡単にメモしておきます。</p>
+<ul>
+<li>デバッグ用サーバにログイン後、アプリケーションの分析を始める前に行った環境把握の内容・デバッグ用の設定の内容</li>
+<li>見つけた脆弱性が、ソースコード上のどのような実装にもとづき実行されるかの説明</li>
+<li>その脆弱性をつく攻撃コードが、添付したPoCコードのどの部分に該当するか</li>
+<li>PoCコードの全体と、その実行コマンド、実行結果のログ</li>
+</ul>
+<p>尚、これとは別に試験のレギュレーションで明示的に求められている内容(local.txt, proof.txtの内容等) も記載しています。</p>
+<h1 id="試験後">試験後</h1>
+<p>レポート提出後、40時間ほどのタイミングで合格通知が届きました。</p>
+<p><img src="/post/2022/oswe-journey/result.png" alt="result.png"></p>
+<p>OSWEの合格も、(ISC)² の40 CPEとしてカウントできます。(が、すでに次回の更新に必要な120 CPEは取得済みだったので登録はせず。)</p>
+<h1 id="全体を通しての感想">全体を通しての感想</h1>
+<p>AWAE/OSWE はOffensive Security社の分類では、PWK/OSCPよりも上位のランクの資格に分類されていますが、個人的な技術バックグラウンド(複数の言語でのWebアプリケーションの開発経験があり、MVCやマイクロサービス等の概念も理解していて、業務で簡易的なWebの脆弱性診断もすることがある)からすると、トレーニングも試験もどちらかと言うとOSCPのほうが大変だったなという感想を持ちました。</p>
+<p>一方で、そのような経験があったとしても、AWAE/OSWEから学べたことはたくさんありました。この資格は、セキュリティを専門としていなくても、Webアプリケーションを開発する立場にあるエンジニアは受けてみる価値があると思います。XSSやSQL Injectionといった、存在自体をしっていてメカニズムや修正方法を説明できる脆弱性が、どのように悪用できるのかをより詳しく理解することで、今後自分の開発するサービスに脆弱性を発見した/されたときに、より適切なリスク判断ができるようになると思います。</p>
+<p>OSWEのシラバスを見て、ちょっと難しすぎそうだなと思う方向けに、<a href="https://www.offensive-security.com/web200-oswa/">WEB-200/OSWA</a> という、エントリーレベルのコースも最近公開されたようです。(ただ現時点だと最低でLearn Oneという$2499のパッケージがないと受講できないようなのでそれがネック。)</p>
+<p>以上、OSWEの受験記録でした。この記事を読んで、OSWEの受験について興味を持った方がいたら、ぜひ<a href="https://twitter.com/s_tajima">Twitter</a>等で気軽にご連絡ください！</p>
+
+    </div>
+
+    <footer>
+        <ul class="stats">
+    
+        
+
+        
+        
+            <li>
+                
+                
+                    
+
+                    
+                        Categories
+                    
+                
+            </li>
+        
+    
+
+    
+    
+        <li><a href='/categories/security'>security</a></li>
+    
+        <li><a href='/categories/ja'>ja</a></li>
+    
+</ul>
+
+    </footer>
+
+    <section id="social-share">
+        <ul class="icons">
+            
+
+
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2022%2foswe-journey%2f&text=OSWE%e5%90%88%e6%a0%bc%e3%81%be%e3%81%a7%e3%81%ae%e9%81%93%e3%81%ae%e3%82%8a&via=s_tajima" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
+
+
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2022%2foswe-journey%2f" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2022%2foswe-journey%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2022%2foswe-journey%2f&title=OSWE%e5%90%88%e6%a0%bc%e3%81%be%e3%81%a7%e3%81%ae%e9%81%93%e3%81%ae%e3%82%8a" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2022%2foswe-journey%2f&title=OSWE%e5%90%88%e6%a0%bc%e3%81%be%e3%81%a7%e3%81%ae%e9%81%93%e3%81%ae%e3%82%8a" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2022%2foswe-journey%2f&title=OSWE%e5%90%88%e6%a0%bc%e3%81%be%e3%81%a7%e3%81%ae%e9%81%93%e3%81%ae%e3%82%8a" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2022%2foswe-journey%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+</article>
+<ul class="actions pagination">
+    
+        <li><a href="https://blog.s-tajima.work/post/2021/input-output/"
+                class="button big previous">2021年のインプット・アウトプットまとめ</a></li>
+    
+
+    
+</ul>
+
+
+
+
+
+            <section id="share-menu">
+    <section id="social-share-nav">
+        <ul class="links">
+            <header>
+                <h3>Share this post <i class="fa fa-smile-o"></i></h3>
+            </header>
+            
+
+
+<li><a href="//twitter.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2022%2foswe-journey%2f&text=OSWE%e5%90%88%e6%a0%bc%e3%81%be%e3%81%a7%e3%81%ae%e9%81%93%e3%81%ae%e3%82%8a&via=s_tajima" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
+
+
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2022%2foswe-journey%2f" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2022%2foswe-journey%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2022%2foswe-journey%2f&title=OSWE%e5%90%88%e6%a0%bc%e3%81%be%e3%81%a7%e3%81%ae%e9%81%93%e3%81%ae%e3%82%8a" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2022%2foswe-journey%2f&title=OSWE%e5%90%88%e6%a0%bc%e3%81%be%e3%81%a7%e3%81%ae%e9%81%93%e3%81%ae%e3%82%8a" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2022%2foswe-journey%2f&title=OSWE%e5%90%88%e6%a0%bc%e3%81%be%e3%81%a7%e3%81%ae%e9%81%93%e3%81%ae%e3%82%8a" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by Satoshi%20Tajima&body=https%3a%2f%2fblog.s-tajima.work%2fpost%2f2022%2foswe-journey%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+</section>
+
         
     </div>
     
@@ -278,7 +565,87 @@ if (!doNotTrack) {
                 
 
                 
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2022/oswe-journey/">OSWE合格までの道のり</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2022-01-11'>
+                                    January 11, 2022</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/">Posts</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2022-01-11'>
+                                    January 11, 2022</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2021/input-output/">2021年のインプット・アウトプットまとめ</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2021-12-30'>
+                                    December 30, 2021</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2021/oscp-journey-and-things-i-learned/">OSCP合格までの道のりとそこから学んだこと</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2021-05-09'>
+                                    May 9, 2021</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://blog.s-tajima.work/post/2020/input-output/">2020年のインプット・アウトプットまとめ</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2020-12-30'>
+                                    December 30, 2020</time>
+                            </header>
+                        </article>
+                    </li>
+                
 
+                
+                    <li>
+                        <ul class="actions">
+                            <li><a href=
+                            
+                                /post/
+                            
+                            class="button">View more posts</a></li>
+                        </ul>
+                    </li>
                 
             </ul>
         </section>
@@ -297,6 +664,69 @@ if (!doNotTrack) {
                     
                 
 
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/aws/">aws</a>
+                                <span style="float:right;">2</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/en/">en</a>
+                                <span style="float:right;">2</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/ja/">ja</a>
+                                <span style="float:right;">18</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/ldap/">ldap</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/misc/">misc</a>
+                                <span style="float:right;">2</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/security/">security</a>
+                                <span style="float:right;">4</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="/categories/tools/">tools</a>
+                                <span style="float:right;">3</span>
+                            </header>
+                        </article>
+                    </li>
                 
             </ul>
         </section>
