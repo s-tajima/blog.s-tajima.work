@@ -8,6 +8,24 @@
     <language>ja-JP</language>
     <lastBuildDate>Tue, 11 Jan 2022 21:00:00 +0900</lastBuildDate><atom:link href="https://blog.s-tajima.work/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>about</title>
+      <link>https://blog.s-tajima.work/about/</link>
+      <pubDate>Tue, 11 Jan 2022 22:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/about/</guid>
+      <description>In English me Satoshi Tajima (@s_tajima) 千代田区で働くエンジニアです。セキュリティやクラウドやコーポレートエンジニアリングが得意です。 プログラミング言語はGoやRuby</description>
+    </item>
+    
+    <item>
+      <title>about</title>
+      <link>https://blog.s-tajima.work/about_en/</link>
+      <pubDate>Tue, 11 Jan 2022 22:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/about_en/</guid>
+      <description>日本語版 me Satoshi Tajima (@s_tajima) Security/Cloud engineer, work in Chiyoda-Ku. I like Go/Ruby/Python. Email: tajima1989 ~at~ gmail.com blog This blog is &amp;hellip; Hosted on GitHub Pages. Created by Hugo. Using Cloudflare for CDN and TLS. Past articles are here. http://s-tajima.hateblo.jp/</description>
+    </item>
+    
+    <item>
       <title>OSWE合格までの道のり</title>
       <link>https://blog.s-tajima.work/post/2022/oswe-journey/</link>
       <pubDate>Tue, 11 Jan 2022 21:00:00 +0900</pubDate>
