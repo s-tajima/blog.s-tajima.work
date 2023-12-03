@@ -6,7 +6,16 @@
     <description>Recent content in Posts on s_tajima::TechBlog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-JP</language>
-    <lastBuildDate>Tue, 11 Jan 2022 21:00:00 +0900</lastBuildDate><atom:link href="https://blog.s-tajima.work/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 03 Dec 2023 23:00:00 +0900</lastBuildDate><atom:link href="https://blog.s-tajima.work/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>re:Invent 2023 参加記録</title>
+      <link>https://blog.s-tajima.work/post/2023/reinvent-2023/</link>
+      <pubDate>Sun, 03 Dec 2023 23:00:00 +0900</pubDate>
+      
+      <guid>https://blog.s-tajima.work/post/2023/reinvent-2023/</guid>
+      <description>AWS re:Invent 2023 の参加記録です。 re:Inventへの参加は2014年、2016年に続いて、今回が7年ぶり3回目です。 私が働くFinatextホールデ</description>
+    </item>
+    
     <item>
       <title>OSWE合格までの道のり</title>
       <link>https://blog.s-tajima.work/post/2022/oswe-journey/</link>
