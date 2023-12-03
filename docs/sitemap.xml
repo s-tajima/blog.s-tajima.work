@@ -38,6 +38,16 @@
   </url>
   
   <url>
+    <loc>https://blog.s-tajima.work/post/2022/input-output/</loc>
+    <lastmod>2022-12-30T20:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/categories/misc/</loc>
+    <lastmod>2022-12-30T20:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://blog.s-tajima.work/about/</loc>
     <lastmod>2022-01-11T22:00:00+09:00</lastmod>
   </url>
@@ -59,11 +69,6 @@
   
   <url>
     <loc>https://blog.s-tajima.work/post/2021/input-output/</loc>
-    <lastmod>2021-12-30T23:00:00+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.s-tajima.work/categories/misc/</loc>
     <lastmod>2021-12-30T23:00:00+09:00</lastmod>
   </url>
   
