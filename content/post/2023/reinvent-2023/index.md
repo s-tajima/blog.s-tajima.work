@@ -9,7 +9,8 @@ featuredalt = ""
 featuredpath = ""
 linktitle = ""
 images = ["post/2023/reinvent-2023/ogp.png"]
-title = "AWS re:Invent 2023 に行ってきました"
+title = "re:Invent 2023 参加記録"
+tags = [ "." ]
 
 +++
 
