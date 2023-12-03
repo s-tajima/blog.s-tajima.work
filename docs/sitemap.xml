@@ -3,32 +3,47 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://blog.s-tajima.work/categories/aws/</loc>
+    <lastmod>2023-12-03T23:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/categories/</loc>
+    <lastmod>2023-12-03T23:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/categories/ja/</loc>
+    <lastmod>2023-12-03T23:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/post/</loc>
+    <lastmod>2023-12-03T23:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/post/2023/reinvent-2023/</loc>
+    <lastmod>2023-12-03T23:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/categories/reinvent/</loc>
+    <lastmod>2023-12-03T23:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.s-tajima.work/</loc>
+    <lastmod>2023-12-03T23:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://blog.s-tajima.work/post/2022/input-output/</loc>
     <lastmod>2022-12-30T20:00:00+09:00</lastmod>
   </url>
   
   <url>
-    <loc>https://blog.s-tajima.work/categories/</loc>
-    <lastmod>2022-12-30T20:00:00+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.s-tajima.work/categories/ja/</loc>
-    <lastmod>2022-12-30T20:00:00+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://blog.s-tajima.work/categories/misc/</loc>
-    <lastmod>2022-12-30T20:00:00+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.s-tajima.work/post/</loc>
-    <lastmod>2022-12-30T20:00:00+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.s-tajima.work/</loc>
     <lastmod>2022-12-30T20:00:00+09:00</lastmod>
   </url>
   
@@ -105,11 +120,6 @@
   <url>
     <loc>https://blog.s-tajima.work/post/2018/smart-contract-write-up/</loc>
     <lastmod>2018-11-08T12:00:00+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.s-tajima.work/categories/aws/</loc>
-    <lastmod>2018-10-22T23:30:00+09:00</lastmod>
   </url>
   
   <url>
