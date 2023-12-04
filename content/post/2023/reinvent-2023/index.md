@@ -27,7 +27,7 @@ re:Inventへの参加は[2014年](https://s-tajima.hateblo.jp/entry/2014/11/17/1
 ## [StackHawk](https://www.stackhawk.com/)
 
 * APIのセキュリティテストのためのSaaS。
-* 内部的にZAPがベースになっていて、OWAP Top 10の脆弱性を中心に検知可能。
+* 内部的にZAPがベースになっていて、OWASP Top 10の脆弱性を中心に検知可能。
 * CI/CDに組み込んで実行可能。
 * REST APIだけでなく、GraphQLやgRPCも対象にできる。
 * GUIだけでなく、CLIによる操作も可能。
